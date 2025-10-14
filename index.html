@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Blaszkow Legal PLLC – Records Request Portal</title>
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- PDF Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+
+<style>
+  body { font-family: ui-sans-serif, system-ui, -apple-system; }
+  .brand-red { color:#b91c1c; }
+  .brand-bg { background-color:#b91c1c; }
+  .brand-gray { background-color:#f3f4f6; }
+  .nav-btn { @apply text-white hover:bg-red-700 px-3 py-2 rounded-md cursor-pointer; }
+</style>
+</head>
+<body class="min-h-screen flex flex-col brand-gray">
+
+<!-- ===== HEADER ===== -->
+<header class="brand-bg text-white p-4 flex justify-between items-center">
+  <h1 class="text-xl font-bold tracking-wide">
+    Blaszkow Legal PLLC
+  </h1>
+  <div id="userArea" class="text-sm"></div>
+</header>
+
+<!-- ===== MAIN LAYOUT ===== -->
+<main class="flex flex-1">
+  <!-- SIDEBAR -->
+  <nav class="bg-gray-800 w-56 text-white flex flex-col space-y-2 p-4">
+    <button class="nav-btn" onclick="showPage('dashboard')">Dashboard</button>
+    <button class="nav-btn" onclick="showPage('clients')">Clients</button>
+    <button class="nav-btn" onclick="showPage('providers')">Providers</button>
+    <button class="nav-btn" onclick="showPage('templates')">Templates</button>
+    <button class="nav-btn" onclick="showPage('settings')">Settings</button>
+  </nav>
+
+  <!-- CONTENT AREA -->
+  <section id="content" class="flex-1 p-6 overflow-y-auto bg-white">
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="page">
+      <h2 class="text-2xl font-bold mb-4 brand-red">Generate Correspondence</h2>
+      <p class="text-gray-700 mb-3">
+        Select a client and provider, then click “Generate PDF.”  (PDF logic added in Part 3.)
+      </p>
+
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Client</label>
+          <select id="dashClient" class="border p-2 w-full rounded"></select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Provider</label>
+          <select id="dashProvider" class="border p-2 w-full rounded"></select>
+        </div>
+      </div>
+
+      <button id="generateBtn"
+        class="brand-bg text-white px-4 py-2 rounded shadow hover:bg-red-700 transition">
+        Generate Combined PDF
+      </button>
+    </div>
+
+    <!-- CLIENTS PAGE -->
+    <div id="clients" class="page hidden">
+      <h2 class="text-2xl font-bold mb-4 brand-red">Client Profiles</h2>
+      <form id="clientForm" class="space-y-2 mb-4">
+        <input type="text" id="cName" placeholder="Full Name" class="border p-2 w-full rounded" />
+        <input type="date" id="cDOB" class="border p-2 w-full rounded" />
+        <input type="text" id="cSSN" placeholder="SSN" class="border p-2 w-full rounded" />
+        <input type="date" id="cInjury" class="border p-2 w-full rounded" />
+        <button type="button" onclick="saveClient()"
+          class="brand-bg text-white px-4 py-2 rounded">Save Client</button>
+      </form>
+      <ul id="clientList" class="list-disc pl-6 text-gray-700"></ul>
+    </div>
+
+    <!-- PROVIDERS PAGE -->
+    <div id="providers" class="page hidden">
+      <h2 class="text-2xl font-bold mb-4 brand-red">Provider Profiles</h2>
+      <form id="provForm" class="space-y-2 mb-4">
+        <input type="text" id="pName" placeholder="Provider Name" class="border p-2 w-full rounded" />
+        <textarea id="pAddress" placeholder="Address" class="border p-2 w-full rounded"></textarea>
+        <input type="text" id="pFax" placeholder="Fax" class="border p-2 w-full rounded" />
+        <input type="text" id="pEmail" placeholder="Email" class="border p-2 w-full rounded" />
+        <button type="button" onclick="saveProvider()"
+          class="brand-bg text-white px-4 py-2 rounded">Save Provider</button>
+      </f
+    <!-- ===== TEMPLATES PAGE ===== -->
+    <div id="templates" class="page hidden">
+      <h2 class="text-2xl font-bold mb-4 brand-red">Templates</h2>
+      <p class="text-gray-700 mb-2">
+        Upload or update your HIPAA PDF and Letter templates. They’re saved in your browser.
+      </p>
+      <div class="space-y-3">
+        <input type="file" id="hipaaFile" accept=".pdf" class="border p-2 w-full rounded" />
+        <input type="file" id="letterFile" accept=".doc,.docx,.wpd,.pdf" class="border p-2 w-full rounded" />
+        <button type="button" onclick="saveTemplates()"
+          class="brand-bg text-white px-4 py-2 rounded">Save Templates</button>
+      </div>
+    </div>
+
+    <!-- ===== SETTINGS PAGE ===== -->
+    <div id="settings" class="page hidden">
+      <h2 class="text-2xl font-bold mb-4 brand-red">Settings & Account</h2>
+      <p class="text-gray-700 mb-3">Manage your account and clear local data.</p>
+      <div class="space-y-2">
+        <button class="brand-bg text-white px-4 py-2 rounded" onclick="logout()">Log Out</button>
+        <button class="bg-gray-600 text-white px-4 py-2 rounded" onclick="clearAll()">Clear All Local Data</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ===== LOGIN / SIGNUP OVERLAY ===== -->
+<div id="authOverlay" class="fixed inset-0 bg-gray-100 flex items-center justify-center z-50">
+  <div class="bg-white p-8 rounded shadow-lg w-80 border border-gray-300">
+    <h2 id="authTitle" class="text-xl font-semibold mb-4 text-center brand-red">Login</h2>
+    <input type="email" id="authEmail" placeholder="Email" class="border p-2 w-full mb-2 rounded" />
+    <input type="password" id="authPass" placeholder="Password" class="border p-2 w-full mb-2 rounded" />
+    <button onclick="authAction()" class="brand-bg text-white px-4 py-2 rounded w-full">Login</button>
+    <p id="authToggle" class="text-center text-red-700 text-sm mt-3 cursor-pointer" onclick="toggleAuth()">Need an account? Sign up</p>
+  </div>
+</div>
+
+<!-- ===== JAVASCRIPT LOGIC ===== -->
+<script>
+let isSignup = false;
+
+/* ---------- AUTH ---------- */
+function toggleAuth(){
+  isSignup = !isSignup;
+  document.getElementById('authTitle').innerText = isSignup ? 'Sign Up' : 'Login';
+  document.querySelector('#authOverlay button').innerText = isSignup ? 'Sign Up' : 'Login';
+  document.getElementById('authToggle').innerText = isSignup
+    ? 'Already have an account? Login' : 'Need an account? Sign up';
+}
+
+function authAction(){
+  const email = authEmail.value.trim();
+  const pass  = authPass.value.trim();
+  if(!email || !pass) return alert('Enter email and password');
+  const users = JSON.parse(localStorage.getItem('users') || '{}');
+
+  if(isSignup){
+    if(users[email]) return alert('User exists');
+    users[email] = { password: pass };
+    localStorage.setItem('users', JSON.stringify(users));
+    alert('Account created');
+    toggleAuth();
+  } else {
+    if(!users[email] || users[email].password !== pass)
+      return alert('Invalid credentials');
+    localStorage.setItem('currentUser', email);
+    document.getElementById('authOverlay').classList.add('hidden');
+    userArea.innerText = email;
+  }
+}
+
+function logout(){
+  localStorage.removeItem('currentUser');
+  location.reload();
+}
+
+window.onload = ()=>{
+  const user = localStorage.getItem('currentUser');
+  if(user){
+    authOverlay.classList.add('hidden');
+    userArea.innerText = user;
+  }
+  renderClients();
+  renderProviders();
+};
+
+/* ---------- NAVIGATION ---------- */
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
+
+/* ---------- CLIENTS ---------- */
+function saveClient(){
+  const c = {
+    name: cName.value,
+    dob: cDOB.value,
+    ssn: cSSN.value,
+    inj: cInjury.value
+  };
+  if(!c.name) return alert('Enter client name');
+  let list = JSON.parse(localStorage.getItem('clients') || '[]');
+  list.push(c);
+  localStorage.setItem('clients', JSON.stringify(list));
+  cName.value = cDOB.value = cSSN.value = cInjury.value = '';
+  renderClients();
+}
+
+function renderClients(){
+  const ul = clientList;
+  ul.innerHTML = '';
+  const clients = JSON.parse(localStorage.getItem('clients') || '[]');
+  clients.forEach(c=>{
+    const li = document.createElement('li');
+    li.textContent = `${c.name} (DOB: ${c.dob})`;
+    ul.appendChild(li);
+  });
+  const select = dashClient;
+  if(select){
+    select.innerHTML = '<option value="">Select Client</option>';
+    clients.forEach((c,i)=>{
+      const opt = document.createElement('option');
+      opt.value = i; opt.textContent = c.name;
+      select.appendChild(opt);
+    });
+  }
+}
+
+/* ---------- PROVIDERS ---------- */
+function saveProvider(){
+  const p = {
+    name: pName.value,
+    address: pAddress.value,
+    fax: pFax.value,
+    email: pEmail.value
+  };
+  if(!p.name) return alert('Enter provider name');
+  let list = JSON.parse(localStorage.getItem('providers') || '[]');
+  list.push(p);
+  localStorage.setItem('providers', JSON.stringify(list));
+  pName.value = pAddress.value = pFax.value = pEmail.value = '';
+  renderProviders();
+}
+
+function renderProviders(){
+  const ul = provList;
+  ul.innerHTML = '';
+  const provs = JSON.parse(localStorage.getItem('providers') || '[]');
+  provs.forEach(p=>{
+    const li = document.createElement('li');
+    li.textContent = `${p.name} – ${p.address}`;
+    ul.appendChild(li);
+  });
+  const select = dashProvider;
+  if(select){
+    select.innerHTML = '<option value="">Select Provider</option>';
+    provs.forEach((p,i)=>{
+      const opt = document.createElement('option');
+      opt.value = i; opt.textContent = p.name;
+      select.appendChild(opt);
+    });
+  }
+}
+
+/* ---------- TEMPLATES ---------- */
+function saveTemplates(){
+  const hipaa = hipaaFile.files[0];
+  const letter = letterFile.files[0];
+  if(!hipaa || !letter) return alert('Select both files');
+  const reader1 = new FileReader();
+  reader1.onload = e=>{
+    localStorage.setItem('hipaaTemplate', e.target.result);
+  };
+  reader1.readAsDataURL(hipaa);
+  const reader2 = new FileReader();
+  reader2.onload = e=>{
+    localStorage.setItem('letterTemplate', e.target.result);
+  };
+  reader2.readAsDataURL(letter);
+  alert('Templates saved locally');
+}
+
+/* ---------- CLEAR DATA ---------- */
+function clearAll(){
+  if(confirm('Delete all local data?')){
+    localStorage.clear();
+    location.reload();
+  }
+}
+/* ---------- PDF GENERATION ---------- */
+async function generatePDF(){
+  const clients = JSON.parse(localStorage.getItem('clients') || '[]');
+  const provs   = JSON.parse(localStorage.getItem('providers') || '[]');
+  const cIndex  = dashClient.value;
+  const pIndex  = dashProvider.value;
+  if(cIndex==='' || pIndex===''){ alert('Select a client and provider'); return; }
+  const client  = clients[cIndex];
+  const prov    = provs[pIndex];
+
+  const hipaaData  = localStorage.getItem('hipaaTemplate');
+  const letterData = localStorage.getItem('letterTemplate');
+  if(!hipaaData || !letterData){
+    alert('Upload templates first under Templates tab');
+    return;
+  }
+
+  const hipaaBytes  = await fetch(hipaaData).then(r=>r.arrayBuffer());
+  const letterBytes = await fetch(letterData).then(r=>r.arrayBuffer());
+  const hipaaPdf  = await PDFLib.PDFDocument.load(hipaaBytes);
+  const letterPdf = await PDFLib.PDFDocument.load(letterBytes);
+
+  const mergedPdf = await PDFLib.PDFDocument.create();
+  const [hipaaPages]  = await mergedPdf.copyPages(hipaaPdf,  hipaaPdf.getPageIndices());
+  const [letterPages] = await mergedPdf.copyPages(letterPdf, letterPdf.getPageIndices());
+  hipaaPages.forEach(p => mergedPdf.addPage(p));
+  letterPages.forEach(p => mergedPdf.addPage(p));
+
+  const firstPage = mergedPdf.getPage(0);
+  const { width, height } = firstPage.getSize();
+  const font = await mergedPdf.embedFont(PDFLib.StandardFonts.Helvetica);
+  const drawText = (text, x, y, size=10)=>{
+    firstPage.drawText(text || '', { x, y, size, font, color: PDFLib.rgb(0.2,0.2,0.2) });
+  };
+
+  drawText(`Patient: ${client.name}`, 50, height-80);
+  drawText(`DOB: ${client.dob}`, 50, height-95);
+  drawText(`SSN: ${client.ssn}`, 50, height-110);
+  drawText(`Injury Date: ${client.inj}`, 50, height-125);
+  drawText(`Provider: ${prov.name}`, 50, height-155);
+  drawText(`Address: ${prov.address}`, 50, height-170);
+  drawText(`Fax: ${prov.fax || 'N/A'}`, 50, height-185);
+  drawText(`Email: ${prov.email || 'N/A'}`, 50, height-200);
+  drawText(`Generated: ${new Date().toLocaleDateString()}`, 50, height-230);
+
+  const pdfBytes = await mergedPdf.save();
+  const filename = `${client.name.replace(/\s+/g,'_')}_${prov.name.replace(/\s+/g,'_')}_RecordsRequest.pdf`;
+  saveAs(new Blob([pdfBytes], {type:'application/pdf'}), filename);
+}
+
+generateBtn.addEventListener('click', generatePDF);
+</script>
+</body>
+</html>
