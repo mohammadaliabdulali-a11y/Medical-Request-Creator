@@ -1,8 +1,8 @@
 diff --git a/index.html b/index.html
-index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..02c0cfbfd1882e56f5cade95f60461d1dabca604 100644
+index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..aeace3cce872fa6cca47d117a75061c263f1be46 100644
 --- a/index.html
 +++ b/index.html
-@@ -1,338 +1,785 @@
+@@ -1,338 +1,1025 @@
  <!DOCTYPE html>
  <html lang="en">
  <head>
@@ -277,20 +277,7 @@ index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..02c0cfbfd1882e56f5cade95f60461d1
 +          <h2 class="text-2xl font-bold mb-2 brand-red">Templates</h2>
 +          <p class="text-gray-600">Upload your HIPAA PDF and author the medical records request letter using dynamic placeholders.</p>
 +        </div>
- 
--    <!-- CLIENTS PAGE -->
--    <div id="clients" class="page hidden">
--      <h2 class="text-2xl font-bold mb-4 brand-red">Client Profiles</h2>
--      <form id="clientForm" class="space-y-2 mb-4">
--        <input type="text" id="cName" placeholder="Full Name" class="border p-2 w-full rounded" />
--        <input type="date" id="cDOB" class="border p-2 w-full rounded" />
--        <input type="text" id="cSSN" placeholder="SSN" class="border p-2 w-full rounded" />
--        <input type="date" id="cInjury" class="border p-2 w-full rounded" />
--        <button type="button" onclick="saveClient()"
--          class="brand-bg text-white px-4 py-2 rounded">Save Client</button>
--      </form>
--      <ul id="clientList" class="list-disc pl-6 text-gray-700"></ul>
--    </div>
++
 +        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 +          <div class="bg-gray-50 border rounded p-4 space-y-3">
 +            <h3 class="text-lg font-semibold text-gray-700">HIPAA Release PDF</h3>
@@ -308,21 +295,131 @@ index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..02c0cfbfd1882e56f5cade95f60461d1
 +            <textarea id="letterTemplate" rows="14" class="border p-3 w-full rounded text-sm font-mono"></textarea>
 +          </div>
 +        </div>
-+
+ 
+-    <!-- CLIENTS PAGE -->
+-    <div id="clients" class="page hidden">
+-      <h2 class="text-2xl font-bold mb-4 brand-red">Client Profiles</h2>
+-      <form id="clientForm" class="space-y-2 mb-4">
+-        <input type="text" id="cName" placeholder="Full Name" class="border p-2 w-full rounded" />
+-        <input type="date" id="cDOB" class="border p-2 w-full rounded" />
+-        <input type="text" id="cSSN" placeholder="SSN" class="border p-2 w-full rounded" />
+-        <input type="date" id="cInjury" class="border p-2 w-full rounded" />
+-        <button type="button" onclick="saveClient()"
+-          class="brand-bg text-white px-4 py-2 rounded">Save Client</button>
 +        <div class="bg-white border rounded p-4">
-+          <h4 class="text-md font-semibold text-gray-700 mb-2">Available placeholders</h4>
-+          <ul class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-600">
-+            <li><code>{{client.name}}</code> – Full client name</li>
-+            <li><code>{{client.dob}}</code> – Client date of birth</li>
-+            <li><code>{{client.ssn}}</code> – Client SSN / identifier</li>
-+            <li><code>{{client.injuryDate}}</code> – Date of injury</li>
-+            <li><code>{{provider.name}}</code> – Provider name</li>
-+            <li><code>{{provider.address}}</code> – Provider address</li>
-+            <li><code>{{provider.fax}}</code> – Provider fax</li>
-+            <li><code>{{provider.email}}</code> – Provider email</li>
-+            <li><code>{{today}}</code> – Today&apos;s date</li>
-+          </ul>
++          <h4 class="text-md font-semibold text-gray-700 mb-3">Available placeholders</h4>
++          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
++            <div class="border border-red-100 rounded-lg p-3 bg-red-50/60">
++              <p class="font-semibold text-red-700"><code>{{client.name}}</code></p>
++              <p class="text-gray-600">Full client name</p>
++            </div>
++            <div class="border border-red-100 rounded-lg p-3 bg-red-50/60">
++              <p class="font-semibold text-red-700"><code>{{client.dob}}</code></p>
++              <p class="text-gray-600">Client date of birth</p>
++            </div>
++            <div class="border border-red-100 rounded-lg p-3 bg-red-50/60">
++              <p class="font-semibold text-red-700"><code>{{client.ssn}}</code></p>
++              <p class="text-gray-600">Client SSN / identifier</p>
++            </div>
++            <div class="border border-red-100 rounded-lg p-3 bg-red-50/60">
++              <p class="font-semibold text-red-700"><code>{{client.injuryDate}}</code></p>
++              <p class="text-gray-600">Date of injury</p>
++            </div>
++            <div class="border border-red-100 rounded-lg p-3 bg-red-50/60">
++              <p class="font-semibold text-red-700"><code>{{provider.name}}</code></p>
++              <p class="text-gray-600">Provider name</p>
++            </div>
++            <div class="border border-red-100 rounded-lg p-3 bg-red-50/60">
++              <p class="font-semibold text-red-700"><code>{{provider.address}}</code></p>
++              <p class="text-gray-600">Provider address</p>
++            </div>
++            <div class="border border-red-100 rounded-lg p-3 bg-red-50/60">
++              <p class="font-semibold text-red-700"><code>{{provider.fax}}</code></p>
++              <p class="text-gray-600">Provider fax</p>
++            </div>
++            <div class="border border-red-100 rounded-lg p-3 bg-red-50/60">
++              <p class="font-semibold text-red-700"><code>{{provider.email}}</code></p>
++              <p class="text-gray-600">Provider email</p>
++            </div>
++            <div class="border border-red-100 rounded-lg p-3 bg-red-50/60 md:col-span-2">
++              <p class="font-semibold text-red-700"><code>{{today}}</code></p>
++              <p class="text-gray-600">Today&apos;s date</p>
++            </div>
++          </div>
 +        </div>
++
++        <div class="flex gap-3">
++          <button type="button" onclick="saveTemplates()" class="brand-bg text-white px-4 py-2 rounded">Save Templates</button>
++          <button type="button" onclick="resetLetterTemplate()" class="px-4 py-2 rounded border border-gray-300 text-gray-600">Reset Letter Template</button>
++        </div>
++      </div>
++
++      <!-- ===== SETTINGS PAGE ===== -->
++      <div id="settings" class="page hidden space-y-4">
++        <h2 class="text-2xl font-bold brand-red">Settings &amp; Account</h2>
++        <p class="text-gray-700">Manage authentication and clear local browser storage.</p>
++        <div class="space-y-2">
++          <button class="brand-bg text-white px-4 py-2 rounded" onclick="logout()">Log Out</button>
++          <button class="bg-gray-600 text-white px-4 py-2 rounded" onclick="clearAll()">Clear All Local Data</button>
++        </div>
++      </div>
++    </section>
++  </main>
++
++  <!-- ===== LOGIN / SIGNUP OVERLAY ===== -->
++  <div id="authOverlay" class="fixed inset-0 bg-gray-900/70 backdrop-blur flex items-center justify-center z-50">
++    <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md border border-gray-200 space-y-6">
++      <header class="text-center space-y-2">
++        <h2 id="authTitle" class="text-2xl font-semibold brand-red">Secure Portal Access</h2>
++        <p id="authSubtitle" class="text-sm text-gray-600">
++          Use the default administrator account below or create a new user to begin.
++        </p>
++        <p class="text-xs text-gray-500">Default admin: <strong>admin@blaszkowlegal.com</strong> / <strong>Admin123!</strong></p>
++      </header>
++
++      <form id="loginForm" class="space-y-3">
++        <div>
++          <label class="form-label" for="loginEmail">Email</label>
++          <input type="email" id="loginEmail" class="border p-2 w-full rounded" autocomplete="username" required />
++        </div>
++        <div>
++          <label class="form-label" for="loginPassword">Password</label>
++          <input type="password" id="loginPassword" class="border p-2 w-full rounded" autocomplete="current-password" required />
++        </div>
++        <button type="submit" class="brand-bg text-white px-4 py-2 rounded w-full">Sign In</button>
++      </form>
++
++      <form id="signupForm" class="space-y-3 hidden">
++        <div class="grid grid-cols-1 gap-3">
++          <div>
++            <label class="form-label" for="signupEmail">Email</label>
++            <input type="email" id="signupEmail" class="border p-2 w-full rounded" autocomplete="email" required />
++          </div>
++          <div>
++            <label class="form-label" for="signupPassword">Password</label>
++            <input type="password" id="signupPassword" class="border p-2 w-full rounded" autocomplete="new-password" required />
++          </div>
++          <div>
++            <label class="form-label" for="signupConfirm">Confirm Password</label>
++            <input type="password" id="signupConfirm" class="border p-2 w-full rounded" autocomplete="new-password" required />
++          </div>
++        </div>
++        <button type="submit" class="brand-bg text-white px-4 py-2 rounded w-full">Create Account</button>
++      </form>
++
++      <form id="resetForm" class="space-y-3 hidden">
++        <div>
++          <label class="form-label" for="resetEmail">Account Email</label>
++          <input type="email" id="resetEmail" class="border p-2 w-full rounded" autocomplete="email" required />
++        </div>
++        <div>
++          <label class="form-label" for="resetPassword">New Password</label>
++          <input type="password" id="resetPassword" class="border p-2 w-full rounded" autocomplete="new-password" required />
++        </div>
++        <button type="submit" class="brand-bg text-white px-4 py-2 rounded w-full">Reset Password</button>
+       </form>
+-      <ul id="clientList" class="list-disc pl-6 text-gray-700"></ul>
+-    </div>
  
 -    <!-- PROVIDERS PAGE -->
 -    <div id="providers" class="page hidden">
@@ -346,10 +443,12 @@ index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..02c0cfbfd1882e56f5cade95f60461d1
 -        <input type="file" id="letterFile" accept=".doc,.docx,.wpd,.pdf" class="border p-2 w-full rounded" />
 -        <button type="button" onclick="saveTemplates()"
 -          class="brand-bg text-white px-4 py-2 rounded">Save Templates</button>
-+        <div class="flex gap-3">
-+          <button type="button" onclick="saveTemplates()" class="brand-bg text-white px-4 py-2 rounded">Save Templates</button>
-+          <button type="button" onclick="resetLetterTemplate()" class="px-4 py-2 rounded border border-gray-300 text-gray-600">Reset Letter Template</button>
-+        </div>
++      <div id="lookupPanel" class="space-y-3 hidden">
++        <p class="text-sm text-gray-700">
++          These are the usernames (emails) currently saved in this browser for the portal. Use one to sign in or reset your
++          password.
++        </p>
++        <ul id="lookupList" class="border border-gray-200 rounded divide-y bg-gray-50 text-sm"></ul>
        </div>
 -    </div>
  
@@ -360,26 +459,14 @@ index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..02c0cfbfd1882e56f5cade95f60461d1
 -      <div class="space-y-2">
 -        <button class="brand-bg text-white px-4 py-2 rounded" onclick="logout()">Log Out</button>
 -        <button class="bg-gray-600 text-white px-4 py-2 rounded" onclick="clearAll()">Clear All Local Data</button>
-+      <!-- ===== SETTINGS PAGE ===== -->
-+      <div id="settings" class="page hidden space-y-4">
-+        <h2 class="text-2xl font-bold brand-red">Settings &amp; Account</h2>
-+        <p class="text-gray-700">Manage authentication and clear local browser storage.</p>
-+        <div class="space-y-2">
-+          <button class="brand-bg text-white px-4 py-2 rounded" onclick="logout()">Log Out</button>
-+          <button class="bg-gray-600 text-white px-4 py-2 rounded" onclick="clearAll()">Clear All Local Data</button>
++      <div class="text-center text-sm text-gray-600 space-y-2">
++        <button type="button" data-mode="login" class="auth-toggle block w-full border border-gray-200 rounded py-2 hover:border-red-300 transition">Back to Login</button>
++        <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
++          <button type="button" data-mode="signup" class="auth-toggle text-red-700 hover:underline">Need an account? Sign up</button>
++          <button type="button" data-mode="reset" class="auth-toggle text-gray-700 hover:underline">Forgot password?</button>
++          <button type="button" data-mode="lookup" class="auth-toggle text-gray-700 hover:underline">Forgot username?</button>
 +        </div>
        </div>
-+    </section>
-+  </main>
-+
-+  <!-- ===== LOGIN / SIGNUP OVERLAY ===== -->
-+  <div id="authOverlay" class="fixed inset-0 bg-gray-100 flex items-center justify-center z-50">
-+    <div class="bg-white p-8 rounded shadow-lg w-80 border border-gray-300">
-+      <h2 id="authTitle" class="text-xl font-semibold mb-4 text-center brand-red">Login</h2>
-+      <input type="email" id="authEmail" placeholder="Email" class="border p-2 w-full mb-2 rounded" />
-+      <input type="password" id="authPass" placeholder="Password" class="border p-2 w-full mb-2 rounded" />
-+      <button onclick="authAction()" class="brand-bg text-white px-4 py-2 rounded w-full">Login</button>
-+      <p id="authToggle" class="text-center text-red-700 text-sm mt-3 cursor-pointer" onclick="toggleAuth()">Need an account? Sign up</p>
      </div>
 -  </section>
 -</main>
@@ -515,6 +602,25 @@ index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..02c0cfbfd1882e56f5cade95f60461d1
 +Records Department`;
 +
 +    const navButtons = Array.from(document.querySelectorAll('.nav-btn'));
++    const userArea = document.getElementById('userArea');
++    const recordCount = document.getElementById('recordCount');
++    const dashClient = document.getElementById('dashClient');
++    const dashProvider = document.getElementById('dashProvider');
++    const letterPreview = document.getElementById('letterPreview');
++    const clientForm = document.getElementById('clientForm');
++    const clientIndex = document.getElementById('clientIndex');
++    const clientSubmitLabel = document.getElementById('clientSubmitLabel');
++    const cancelClientEdit = document.getElementById('cancelClientEdit');
++    const clientTable = document.getElementById('clientTable');
++    const providerForm = document.getElementById('providerForm');
++    const providerIndex = document.getElementById('providerIndex');
++    const providerSubmitLabel = document.getElementById('providerSubmitLabel');
++    const cancelProviderEdit = document.getElementById('cancelProviderEdit');
++    const providerTable = document.getElementById('providerTable');
++    const hipaaFile = document.getElementById('hipaaFile');
++    const hipaaStatus = document.getElementById('hipaaStatus');
++    const letterTemplate = document.getElementById('letterTemplate');
++    const generateBtn = document.getElementById('generateBtn');
 +    navButtons.forEach(btn => btn.addEventListener('click', () => showPage(btn.dataset.target)));
 +
 +    function readJSON(key, fallback) {
@@ -539,39 +645,285 @@ index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..02c0cfbfd1882e56f5cade95f60461d1
 +    }
 +
 +    /* ---------- AUTH ---------- */
-+    let isSignup = false;
++    const authOverlay = document.getElementById('authOverlay');
++    const loginForm = document.getElementById('loginForm');
++    const signupForm = document.getElementById('signupForm');
++    const resetForm = document.getElementById('resetForm');
++    const authTitle = document.getElementById('authTitle');
++    const authSubtitle = document.getElementById('authSubtitle');
++    const authToggles = Array.from(document.querySelectorAll('.auth-toggle'));
++    const loginEmailInput = document.getElementById('loginEmail');
++    const loginPasswordInput = document.getElementById('loginPassword');
++    const signupEmailInput = document.getElementById('signupEmail');
++    const signupPasswordInput = document.getElementById('signupPassword');
++    const signupConfirmInput = document.getElementById('signupConfirm');
++    const resetEmailInput = document.getElementById('resetEmail');
++    const resetPasswordInput = document.getElementById('resetPassword');
++    const lookupPanel = document.getElementById('lookupPanel');
++    const lookupList = document.getElementById('lookupList');
 +
-+    function toggleAuth() {
-+      isSignup = !isSignup;
-+      document.getElementById('authTitle').innerText = isSignup ? 'Sign Up' : 'Login';
-+      document.querySelector('#authOverlay button').innerText = isSignup ? 'Sign Up' : 'Login';
-+      document.getElementById('authToggle').innerText = isSignup ? 'Already have an account? Login' : 'Need an account? Sign up';
-+    }
++    const DEFAULT_ADMIN = {
++      email: 'admin@blaszkowlegal.com',
++      password: 'Admin123!',
++      role: 'admin'
++    };
 +
-+    function authAction() {
-+      const email = authEmail.value.trim();
-+      const pass = authPass.value.trim();
-+      if (!email || !pass) return alert('Enter email and password');
-+
++    function ensureDefaultAdmin() {
 +      const users = readJSON(STORAGE_KEYS.users, {});
-+
-+      if (isSignup) {
-+        if (users[email]) return alert('User already exists.');
-+        users[email] = { password: pass };
++      if (!users[DEFAULT_ADMIN.email]) {
++        users[DEFAULT_ADMIN.email] = { password: DEFAULT_ADMIN.password, role: DEFAULT_ADMIN.role };
 +        writeJSON(STORAGE_KEYS.users, users);
-+        alert('Account created. You can now log in.');
-+        toggleAuth();
-+      } else {
-+        if (!users[email] || users[email].password !== pass) return alert('Invalid credentials');
-+        writeJSON(STORAGE_KEYS.currentUser, email);
-+        document.getElementById('authOverlay').classList.add('hidden');
-+        userArea.innerText = email;
 +      }
 +    }
 +
++    const AUTH_MODES = {
++      login: {
++        title: 'Secure Portal Access',
++        subtitle: 'Use your credentials to access the records automation workspace.'
++      },
++      signup: {
++        title: 'Create a Team Account',
++        subtitle: 'Set up an additional user for staff or co-counsel access.'
++      },
++      reset: {
++        title: 'Reset Your Password',
++        subtitle: 'Enter your email and a new password to regain access.'
++      },
++      lookup: {
++        title: 'Look Up Your Username',
++        subtitle: 'Reference the saved account emails for this browser session.'
++      }
++    };
++
++    let currentAuthMode = 'login';
++
++    function setAuthMode(mode) {
++      currentAuthMode = mode;
++      loginForm.classList.toggle('hidden', mode !== 'login');
++      signupForm.classList.toggle('hidden', mode !== 'signup');
++      resetForm.classList.toggle('hidden', mode !== 'reset');
++      lookupPanel.classList.toggle('hidden', mode !== 'lookup');
++      authTitle.innerText = AUTH_MODES[mode].title;
++      authSubtitle.innerText = AUTH_MODES[mode].subtitle;
++      authToggles.forEach(btn => {
++        btn.classList.toggle('hidden', btn.dataset.mode === mode);
++      });
++      if (mode === 'lookup') {
++        populateLookup();
++      }
++    }
++
++    function populateLookup() {
++      const users = readJSON(STORAGE_KEYS.users, {});
++      const accounts = Object.keys(users).sort();
++      lookupList.innerHTML = '';
++      if (!accounts.length) {
++        const empty = document.createElement('li');
++        empty.className = 'px-3 py-2 text-gray-500';
++        empty.innerText = 'No usernames stored yet. Create an account to get started.';
++        lookupList.appendChild(empty);
++        return;
++      }
++      accounts.forEach(email => {
++        const item = document.createElement('li');
++        item.className = 'px-3 py-2 flex items-center justify-between';
++        item.innerHTML = `<span>${email}</span><span class="text-xs uppercase tracking-wide text-gray-400">${(users[email].role || 'user')}</span>`;
++        lookupList.appendChild(item);
++      });
++    }
++
++    authToggles.forEach(btn => {
++      btn.addEventListener('click', () => setAuthMode(btn.dataset.mode));
++    });
++
++    loginForm.addEventListener('submit', event => {
++      event.preventDefault();
++      const email = loginEmailInput.value.trim().toLowerCase();
++      const password = loginPasswordInput.value.trim();
++      if (!email || !password) return alert('Enter email and password.');
++
++      const users = readJSON(STORAGE_KEYS.users, {});
++      const user = users[email];
++      if (!user || user.password !== password) {
++        alert('Invalid email or password.');
++        return;
++      }
++      writeJSON(STORAGE_KEYS.currentUser, email);
++      authOverlay.classList.add('hidden');
++      userArea.innerText = email;
++      setAuthMode('login');
++      loginForm.reset();
+     });
+-  }
+-}
+-
+-/* ---------- PROVIDERS ---------- */
+-function saveProvider(){
+-  const p = {
+-    name: pName.value,
+-    address: pAddress.value,
+-    fax: pFax.value,
+-    email: pEmail.value
+-  };
+-  if(!p.name) return alert('Enter provider name');
+-  let list = JSON.parse(localStorage.getItem('providers') || '[]');
+-  list.push(p);
+-  localStorage.setItem('providers', JSON.stringify(list));
+-  pName.value = pAddress.value = pFax.value = pEmail.value = '';
+-  renderProviders();
+-}
+-
+-function renderProviders(){
+-  const ul = provList;
+-  ul.innerHTML = '';
+-  const provs = JSON.parse(localStorage.getItem('providers') || '[]');
+-  provs.forEach(p=>{
+-    const li = document.createElement('li');
+-    li.textContent = `${p.name} – ${p.address}`;
+-    ul.appendChild(li);
+-  });
+-  const select = dashProvider;
+-  if(select){
+-    select.innerHTML = '<option value="">Select Provider</option>';
+-    provs.forEach((p,i)=>{
+-      const opt = document.createElement('option');
+-      opt.value = i; opt.textContent = p.name;
+-      select.appendChild(opt);
++
++    signupForm.addEventListener('submit', event => {
++      event.preventDefault();
++      const email = signupEmailInput.value.trim().toLowerCase();
++      const password = signupPasswordInput.value.trim();
++      const confirm = signupConfirmInput.value.trim();
++      if (!email || !password || !confirm) {
++        alert('Complete all fields.');
++        return;
++      }
++      if (password.length < 8) {
++        alert('Choose a password with at least 8 characters.');
++        return;
++      }
++      if (password !== confirm) {
++        alert('Passwords do not match.');
++        return;
++      }
++      const users = readJSON(STORAGE_KEYS.users, {});
++      if (users[email]) {
++        alert('An account with this email already exists.');
++        return;
++      }
++      users[email] = { password, role: 'staff' };
++      writeJSON(STORAGE_KEYS.users, users);
++      alert('Account created. You can sign in now.');
++      signupForm.reset();
++      setAuthMode('login');
++    });
++
++    resetForm.addEventListener('submit', event => {
++      event.preventDefault();
++      const email = resetEmailInput.value.trim().toLowerCase();
++      const password = resetPasswordInput.value.trim();
++      if (!email || !password) {
++        alert('Enter your account email and a new password.');
++        return;
++      }
++      const users = readJSON(STORAGE_KEYS.users, {});
++      if (!users[email]) {
++        alert('No account found with that email.');
++        return;
++      }
++      users[email].password = password;
++      writeJSON(STORAGE_KEYS.users, users);
++      alert('Password updated. Sign in with your new credentials.');
++      resetForm.reset();
++      setAuthMode('login');
+     });
+-  }
+-}
+-
+-/* ---------- TEMPLATES ---------- */
+-function saveTemplates(){
+-  const hipaa = hipaaFile.files[0];
+-  const letter = letterFile.files[0];
+-  if(!hipaa || !letter) return alert('Select both files');
+-  const reader1 = new FileReader();
+-  reader1.onload = e=>{
+-    localStorage.setItem('hipaaTemplate', e.target.result);
+-  };
+-  reader1.readAsDataURL(hipaa);
+-  const reader2 = new FileReader();
+-  reader2.onload = e=>{
+-    localStorage.setItem('letterTemplate', e.target.result);
+-  };
+-  reader2.readAsDataURL(letter);
+-  alert('Templates saved locally');
+-}
+-
+-/* ---------- CLEAR DATA ---------- */
+-function clearAll(){
+-  if(confirm('Delete all local data?')){
+-    localStorage.clear();
+-    location.reload();
+-  }
+-}
+-/* ---------- PDF GENERATION ---------- */
+-async function generatePDF(){
+-  const clients = JSON.parse(localStorage.getItem('clients') || '[]');
+-  const provs   = JSON.parse(localStorage.getItem('providers') || '[]');
+-  const cIndex  = dashClient.value;
+-  const pIndex  = dashProvider.value;
+-  if(cIndex==='' || pIndex===''){ alert('Select a client and provider'); return; }
+-  const client  = clients[cIndex];
+-  const prov    = provs[pIndex];
+-
+-  const hipaaData  = localStorage.getItem('hipaaTemplate');
+-  const letterData = localStorage.getItem('letterTemplate');
+-  if(!hipaaData || !letterData){
+-    alert('Upload templates first under Templates tab');
+-    return;
+-  }
+-
+-  const hipaaBytes  = await fetch(hipaaData).then(r=>r.arrayBuffer());
+-  const letterBytes = await fetch(letterData).then(r=>r.arrayBuffer());
+-  const hipaaPdf  = await PDFLib.PDFDocument.load(hipaaBytes);
+-  const letterPdf = await PDFLib.PDFDocument.load(letterBytes);
+-
+-  const mergedPdf = await PDFLib.PDFDocument.create();
+-  const [hipaaPages]  = await mergedPdf.copyPages(hipaaPdf,  hipaaPdf.getPageIndices());
+-  const [letterPages] = await mergedPdf.copyPages(letterPdf, letterPdf.getPageIndices());
+-  hipaaPages.forEach(p => mergedPdf.addPage(p));
+-  letterPages.forEach(p => mergedPdf.addPage(p));
+-
+-  const firstPage = mergedPdf.getPage(0);
+-  const { width, height } = firstPage.getSize();
+-  const font = await mergedPdf.embedFont(PDFLib.StandardFonts.Helvetica);
+-  const drawText = (text, x, y, size=10)=>{
+-    firstPage.drawText(text || '', { x, y, size, font, color: PDFLib.rgb(0.2,0.2,0.2) });
+-  };
+-
+-  drawText(`Patient: ${client.name}`, 50, height-80);
+-  drawText(`DOB: ${client.dob}`, 50, height-95);
+-  drawText(`SSN: ${client.ssn}`, 50, height-110);
+-  drawText(`Injury Date: ${client.inj}`, 50, height-125);
+-  drawText(`Provider: ${prov.name}`, 50, height-155);
+-  drawText(`Address: ${prov.address}`, 50, height-170);
+-  drawText(`Fax: ${prov.fax || 'N/A'}`, 50, height-185);
+-  drawText(`Email: ${prov.email || 'N/A'}`, 50, height-200);
+-  drawText(`Generated: ${new Date().toLocaleDateString()}`, 50, height-230);
+-
+-  const pdfBytes = await mergedPdf.save();
+-  const filename = `${client.name.replace(/\s+/g,'_')}_${prov.name.replace(/\s+/g,'_')}_RecordsRequest.pdf`;
+-  saveAs(new Blob([pdfBytes], {type:'application/pdf'}), filename);
+-}
+-
+-generateBtn.addEventListener('click', generatePDF);
+-</script>
++
 +    function logout() {
 +      localStorage.removeItem(STORAGE_KEYS.currentUser);
-+      location.reload();
++      userArea.innerText = '';
++      setAuthMode('login');
++      authOverlay.classList.remove('hidden');
 +    }
 +
 +    /* ---------- NAVIGATION ---------- */
@@ -678,42 +1030,7 @@ index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..02c0cfbfd1882e56f5cade95f60461d1
 +          renderClients();
 +        }
 +      }
-     });
--  }
--}
--
--/* ---------- PROVIDERS ---------- */
--function saveProvider(){
--  const p = {
--    name: pName.value,
--    address: pAddress.value,
--    fax: pFax.value,
--    email: pEmail.value
--  };
--  if(!p.name) return alert('Enter provider name');
--  let list = JSON.parse(localStorage.getItem('providers') || '[]');
--  list.push(p);
--  localStorage.setItem('providers', JSON.stringify(list));
--  pName.value = pAddress.value = pFax.value = pEmail.value = '';
--  renderProviders();
--}
--
--function renderProviders(){
--  const ul = provList;
--  ul.innerHTML = '';
--  const provs = JSON.parse(localStorage.getItem('providers') || '[]');
--  provs.forEach(p=>{
--    const li = document.createElement('li');
--    li.textContent = `${p.name} – ${p.address}`;
--    ul.appendChild(li);
--  });
--  const select = dashProvider;
--  if(select){
--    select.innerHTML = '<option value="">Select Provider</option>';
--    provs.forEach((p,i)=>{
--      const opt = document.createElement('option');
--      opt.value = i; opt.textContent = p.name;
--      select.appendChild(opt);
++    });
 +
 +    /* ---------- PROVIDERS ---------- */
 +    function getProviders() {
@@ -751,87 +1068,7 @@ index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..02c0cfbfd1882e56f5cade95f60461d1
 +      saveProviders(providers);
 +      resetProviderForm();
 +      renderProviders();
-     });
--  }
--}
--
--/* ---------- TEMPLATES ---------- */
--function saveTemplates(){
--  const hipaa = hipaaFile.files[0];
--  const letter = letterFile.files[0];
--  if(!hipaa || !letter) return alert('Select both files');
--  const reader1 = new FileReader();
--  reader1.onload = e=>{
--    localStorage.setItem('hipaaTemplate', e.target.result);
--  };
--  reader1.readAsDataURL(hipaa);
--  const reader2 = new FileReader();
--  reader2.onload = e=>{
--    localStorage.setItem('letterTemplate', e.target.result);
--  };
--  reader2.readAsDataURL(letter);
--  alert('Templates saved locally');
--}
--
--/* ---------- CLEAR DATA ---------- */
--function clearAll(){
--  if(confirm('Delete all local data?')){
--    localStorage.clear();
--    location.reload();
--  }
--}
--/* ---------- PDF GENERATION ---------- */
--async function generatePDF(){
--  const clients = JSON.parse(localStorage.getItem('clients') || '[]');
--  const provs   = JSON.parse(localStorage.getItem('providers') || '[]');
--  const cIndex  = dashClient.value;
--  const pIndex  = dashProvider.value;
--  if(cIndex==='' || pIndex===''){ alert('Select a client and provider'); return; }
--  const client  = clients[cIndex];
--  const prov    = provs[pIndex];
--
--  const hipaaData  = localStorage.getItem('hipaaTemplate');
--  const letterData = localStorage.getItem('letterTemplate');
--  if(!hipaaData || !letterData){
--    alert('Upload templates first under Templates tab');
--    return;
--  }
--
--  const hipaaBytes  = await fetch(hipaaData).then(r=>r.arrayBuffer());
--  const letterBytes = await fetch(letterData).then(r=>r.arrayBuffer());
--  const hipaaPdf  = await PDFLib.PDFDocument.load(hipaaBytes);
--  const letterPdf = await PDFLib.PDFDocument.load(letterBytes);
--
--  const mergedPdf = await PDFLib.PDFDocument.create();
--  const [hipaaPages]  = await mergedPdf.copyPages(hipaaPdf,  hipaaPdf.getPageIndices());
--  const [letterPages] = await mergedPdf.copyPages(letterPdf, letterPdf.getPageIndices());
--  hipaaPages.forEach(p => mergedPdf.addPage(p));
--  letterPages.forEach(p => mergedPdf.addPage(p));
--
--  const firstPage = mergedPdf.getPage(0);
--  const { width, height } = firstPage.getSize();
--  const font = await mergedPdf.embedFont(PDFLib.StandardFonts.Helvetica);
--  const drawText = (text, x, y, size=10)=>{
--    firstPage.drawText(text || '', { x, y, size, font, color: PDFLib.rgb(0.2,0.2,0.2) });
--  };
--
--  drawText(`Patient: ${client.name}`, 50, height-80);
--  drawText(`DOB: ${client.dob}`, 50, height-95);
--  drawText(`SSN: ${client.ssn}`, 50, height-110);
--  drawText(`Injury Date: ${client.inj}`, 50, height-125);
--  drawText(`Provider: ${prov.name}`, 50, height-155);
--  drawText(`Address: ${prov.address}`, 50, height-170);
--  drawText(`Fax: ${prov.fax || 'N/A'}`, 50, height-185);
--  drawText(`Email: ${prov.email || 'N/A'}`, 50, height-200);
--  drawText(`Generated: ${new Date().toLocaleDateString()}`, 50, height-230);
--
--  const pdfBytes = await mergedPdf.save();
--  const filename = `${client.name.replace(/\s+/g,'_')}_${prov.name.replace(/\s+/g,'_')}_RecordsRequest.pdf`;
--  saveAs(new Blob([pdfBytes], {type:'application/pdf'}), filename);
--}
--
--generateBtn.addEventListener('click', generatePDF);
--</script>
++    });
 +
 +    cancelProviderEdit.addEventListener('click', resetProviderForm);
 +
@@ -1090,6 +1327,8 @@ index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..02c0cfbfd1882e56f5cade95f60461d1
 +
 +    /* ---------- INITIALIZATION ---------- */
 +    window.onload = () => {
++      ensureDefaultAdmin();
++      setAuthMode('login');
 +      const currentUser = readJSON(STORAGE_KEYS.currentUser, null);
 +      if (currentUser) {
 +        authOverlay.classList.add('hidden');
