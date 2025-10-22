@@ -1,11 +1,11 @@
 diff --git a/index.html b/index.html
-index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..34fddc782e2008fa314d13069fc0852fa8028b08 100644
+index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..246884f4bb85dbcd18af894d98a6b85ef5c8aeb3 100644
 --- a/index.html
 +++ b/index.html
-@@ -1,338 +1,1064 @@
+@@ -1,338 +1,3407 @@
  <!DOCTYPE html>
  <html lang="en">
--<head>
+ <head>
 -<meta charset="UTF-8" />
 -<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 -<title>Blaszkow Legal PLLC – Records Request Portal</title>
@@ -24,7 +24,1141 @@ index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..34fddc782e2008fa314d13069fc0852f
 -  .brand-gray { background-color:#f3f4f6; }
 -  .nav-btn { @apply text-white hover:bg-red-700 px-3 py-2 rounded-md cursor-pointer; }
 -</style>
--</head>
++  <meta charset="UTF-8" />
++  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
++  <title>Medical Correspondence Workspace</title>
++  <link rel="preconnect" href="https://fonts.googleapis.com" />
++  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
++  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
++  <style>
++    :root {
++      --surface-50: #f8fafc;
++      --surface-100: #eef2f7;
++      --surface-200: #d9e2ec;
++      --surface-300: #c4d5e3;
++      --surface-400: #9fb8d0;
++      --surface-500: #5d8bb9;
++      --surface-600: #426da3;
++      --surface-700: #33578a;
++      --surface-800: #27426b;
++      --surface-900: #1b2e4a;
++      --surface-950: #101b2e;
++      --primary-100: #ecf6ff;
++      --primary-200: #cde8ff;
++      --primary-300: #9ed0ff;
++      --primary-400: #6fb8ff;
++      --primary-500: #419fff;
++      --primary-600: #1c85ff;
++      --primary-700: #116de6;
++      --primary-800: #0b55b4;
++      --primary-900: #08408a;
++      --danger-100: #ffe5e5;
++      --danger-500: #f04438;
++      --warning-100: #fff5e6;
++      --warning-400: #f6a800;
++      --success-100: #e3fcec;
++      --success-500: #12b76a;
++      --radius-sm: 8px;
++      --radius-md: 16px;
++      --radius-lg: 24px;
++      --shadow-sm: 0 6px 18px rgba(15, 23, 42, 0.06);
++      --shadow-md: 0 16px 40px rgba(15, 23, 42, 0.12);
++      --shadow-lg: 0 32px 60px rgba(15, 23, 42, 0.18);
++      --border-color: rgba(15, 23, 42, 0.08);
++      --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
++    }
++
++    *,
++    *::before,
++    *::after {
++      box-sizing: border-box;
++    }
++
++    html,
++    body {
++      margin: 0;
++      padding: 0;
++      font-family: var(--font-sans);
++      background: var(--surface-50);
++      color: var(--surface-950);
++      min-height: 100vh;
++      -webkit-font-smoothing: antialiased;
++    }
++
++    body {
++      display: flex;
++      flex-direction: column;
++    }
++
++    h1,
++    h2,
++    h3,
++    h4,
++    h5,
++    h6 {
++      margin: 0;
++      font-weight: 700;
++      color: var(--surface-900);
++    }
++
++    p {
++      margin: 0;
++      color: rgba(17, 24, 39, 0.7);
++    }
++
++    button {
++      font-family: var(--font-sans);
++      border: none;
++      cursor: pointer;
++    }
++
++    input,
++    textarea,
++    select {
++      font-family: var(--font-sans);
++    }
++
++    a {
++      color: inherit;
++      text-decoration: none;
++    }
++
++    .app-shell {
++      flex: 1;
++      display: grid;
++      grid-template-columns: 320px 1fr;
++      background: var(--surface-100);
++      min-height: 100vh;
++    }
++
++    .sidebar {
++      background: linear-gradient(185deg, var(--surface-900), var(--surface-950));
++      color: #fff;
++      display: flex;
++      flex-direction: column;
++      padding: 32px 28px;
++      gap: 28px;
++      position: relative;
++      z-index: 1;
++    }
++
++    .sidebar::after {
++      content: '';
++      position: absolute;
++      inset: 0;
++      background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.12), transparent 60%),
++        radial-gradient(circle at bottom right, rgba(65, 159, 255, 0.2), transparent 55%);
++      pointer-events: none;
++      z-index: -1;
++    }
++
++    .sidebar-logo {
++      display: flex;
++      align-items: center;
++      gap: 12px;
++    }
++
++    .sidebar-logo .mark {
++      width: 42px;
++      height: 42px;
++      border-radius: 14px;
++      background: linear-gradient(135deg, var(--primary-500), var(--primary-700));
++      display: grid;
++      place-items: center;
++      color: #fff;
++      font-weight: 700;
++      font-size: 20px;
++      letter-spacing: 0.04em;
++      box-shadow: 0 10px 30px rgba(17, 106, 230, 0.4);
++    }
++
++    .sidebar-logo .meta {
++      display: flex;
++      flex-direction: column;
++      gap: 4px;
++    }
++
++    .sidebar-logo span {
++      font-size: 13px;
++      opacity: 0.72;
++      letter-spacing: 0.08em;
++      text-transform: uppercase;
++    }
++
++    .sidebar-logo strong {
++      font-size: 18px;
++      letter-spacing: 0.02em;
++    }
++
++    .sidebar-nav {
++      display: flex;
++      flex-direction: column;
++      gap: 8px;
++    }
++
++    .sidebar-nav button {
++      padding: 14px 16px;
++      border-radius: var(--radius-md);
++      display: flex;
++      gap: 12px;
++      align-items: center;
++      font-size: 15px;
++      font-weight: 500;
++      background: transparent;
++      color: rgba(255, 255, 255, 0.78);
++      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
++    }
++
++    .sidebar-nav button.active,
++    .sidebar-nav button:hover {
++      background: rgba(255, 255, 255, 0.12);
++      color: #fff;
++      transform: translateX(2px);
++    }
++
++    .sidebar-nav button.active::before,
++    .sidebar-nav button:hover::before {
++      opacity: 1;
++      transform: translateX(-6px);
++    }
++
++    .sidebar-nav button::before {
++      content: '';
++      width: 4px;
++      height: 60%;
++      background: linear-gradient(180deg, var(--primary-400), var(--primary-700));
++      border-radius: 999px;
++      opacity: 0;
++      transition: opacity 0.2s ease, transform 0.2s ease;
++    }
++
++    .sidebar-footer {
++      margin-top: auto;
++      display: grid;
++      gap: 16px;
++    }
++
++    .sidebar-card {
++      padding: 18px;
++      background: rgba(255, 255, 255, 0.04);
++      border: 1px solid rgba(255, 255, 255, 0.1);
++      border-radius: var(--radius-md);
++      display: grid;
++      gap: 12px;
++    }
++
++    .sidebar-card h4 {
++      color: #fff;
++      font-size: 16px;
++      margin-bottom: 4px;
++    }
++
++    .sidebar-card p {
++      color: rgba(255, 255, 255, 0.72);
++      font-size: 13px;
++    }
++
++    .sidebar-card button {
++      background: #fff;
++      color: var(--surface-900);
++      padding: 10px 12px;
++      border-radius: 12px;
++      font-weight: 600;
++      font-size: 13px;
++      display: inline-flex;
++      align-items: center;
++      justify-content: center;
++      gap: 8px;
++    }
++
++    .workspace {
++      padding: 32px;
++      display: grid;
++      grid-template-rows: auto 1fr;
++      gap: 32px;
++    }
++
++    .topbar {
++      display: flex;
++      align-items: center;
++      justify-content: space-between;
++    }
++
++    .topbar .welcome {
++      display: flex;
++      flex-direction: column;
++      gap: 6px;
++    }
++
++    .topbar .welcome h1 {
++      font-size: 28px;
++      color: var(--surface-950);
++    }
++
++    .topbar .welcome span {
++      color: rgba(17, 24, 39, 0.6);
++      font-size: 14px;
++    }
++
++    .topbar-actions {
++      display: flex;
++      align-items: center;
++      gap: 12px;
++    }
++
++    .topbar-actions button {
++      padding: 10px 16px;
++      border-radius: 999px;
++      background: var(--surface-200);
++      color: var(--surface-900);
++      font-weight: 600;
++      transition: background 0.2s ease;
++    }
++
++    .topbar-actions button:hover {
++      background: var(--surface-300);
++    }
++
++    .topbar-profile {
++      display: flex;
++      align-items: center;
++      gap: 10px;
++      padding: 10px 14px;
++      border-radius: 999px;
++      background: #fff;
++      box-shadow: var(--shadow-sm);
++    }
++
++    .topbar-profile .avatar {
++      width: 36px;
++      height: 36px;
++      border-radius: 50%;
++      background: linear-gradient(135deg, var(--primary-400), var(--primary-700));
++      color: #fff;
++      display: grid;
++      place-items: center;
++      font-weight: 600;
++    }
++
++    .topbar-profile .meta {
++      display: flex;
++      flex-direction: column;
++      line-height: 1.1;
++    }
++
++    .topbar-profile .meta strong {
++      font-size: 14px;
++      color: var(--surface-900);
++    }
++
++    .topbar-profile .meta span {
++      font-size: 12px;
++      color: rgba(15, 23, 42, 0.56);
++    }
++
++    .dashboard-content {
++      display: grid;
++      grid-template-columns: 340px 1fr;
++      gap: 24px;
++      height: 100%;
++    }
++
++    .panel {
++      background: #fff;
++      border-radius: var(--radius-lg);
++      padding: 24px;
++      box-shadow: var(--shadow-sm);
++      display: flex;
++      flex-direction: column;
++      gap: 20px;
++      border: 1px solid rgba(15, 23, 42, 0.05);
++    }
++
++    .panel h2 {
++      font-size: 20px;
++      display: flex;
++      align-items: center;
++      justify-content: space-between;
++    }
++
++    .panel h2 span {
++      font-size: 13px;
++      font-weight: 600;
++      color: rgba(15, 23, 42, 0.45);
++      text-transform: uppercase;
++      letter-spacing: 0.08em;
++    }
++
++    .panel p.lead {
++      font-size: 14px;
++      line-height: 1.6;
++    }
++
++    .progress-grid {
++      display: grid;
++      gap: 14px;
++    }
++
++    .progress-card {
++      padding: 16px;
++      border-radius: var(--radius-md);
++      border: 1px solid var(--border-color);
++      display: flex;
++      flex-direction: column;
++      gap: 10px;
++      background: var(--surface-50);
++    }
++
++    .progress-card strong {
++      font-size: 18px;
++    }
++
++    .progress-card span {
++      font-size: 13px;
++      color: rgba(15, 23, 42, 0.6);
++    }
++
++    .progress-bar {
++      width: 100%;
++      height: 10px;
++      background: rgba(65, 159, 255, 0.18);
++      border-radius: 999px;
++      overflow: hidden;
++    }
++
++    .progress-bar .fill {
++      height: 100%;
++      background: linear-gradient(135deg, var(--primary-400), var(--primary-700));
++      border-radius: inherit;
++      transition: width 0.3s ease;
++    }
++
++    .section-content {
++      display: grid;
++      grid-template-rows: auto 1fr;
++      gap: 20px;
++      overflow: hidden;
++    }
++
++    .tabs {
++      display: flex;
++      gap: 12px;
++      border-bottom: 1px solid rgba(15, 23, 42, 0.08);
++      padding-bottom: 8px;
++    }
++
++    .tabs button {
++      padding: 10px 18px;
++      border-radius: 999px;
++      background: transparent;
++      color: rgba(17, 24, 39, 0.6);
++      font-weight: 600;
++      font-size: 14px;
++      transition: background 0.2s ease, color 0.2s ease;
++    }
++
++    .tabs button.active {
++      background: rgba(65, 159, 255, 0.18);
++      color: var(--primary-800);
++    }
++
++    .section-body {
++      overflow-y: auto;
++      padding-right: 8px;
++      display: grid;
++      gap: 24px;
++    }
++
++    .grid-two {
++      display: grid;
++      grid-template-columns: repeat(2, minmax(0, 1fr));
++      gap: 20px;
++    }
++
++    .grid-three {
++      display: grid;
++      grid-template-columns: repeat(3, minmax(0, 1fr));
++      gap: 20px;
++    }
++
++    .form-card {
++      background: #fff;
++      border-radius: var(--radius-md);
++      padding: 20px;
++      border: 1px solid rgba(15, 23, 42, 0.05);
++      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.04);
++      display: grid;
++      gap: 16px;
++    }
++
++    .form-card h3 {
++      font-size: 18px;
++      display: flex;
++      align-items: center;
++      justify-content: space-between;
++    }
++
++    .input-field {
++      display: flex;
++      flex-direction: column;
++      gap: 6px;
++    }
++
++    .input-field label {
++      font-size: 13px;
++      font-weight: 600;
++      color: rgba(17, 24, 39, 0.7);
++    }
++
++    .input-field input,
++    .input-field select,
++    .input-field textarea {
++      padding: 12px 14px;
++      border-radius: 12px;
++      border: 1px solid rgba(15, 23, 42, 0.12);
++      background: #fff;
++      transition: border-color 0.2s ease, box-shadow 0.2s ease;
++      resize: vertical;
++    }
++
++    .input-field input:focus,
++    .input-field select:focus,
++    .input-field textarea:focus {
++      border-color: var(--primary-500);
++      box-shadow: 0 0 0 4px rgba(65, 159, 255, 0.15);
++      outline: none;
++    }
++
++    .primary-btn {
++      background: linear-gradient(135deg, var(--primary-500), var(--primary-700));
++      color: #fff;
++      padding: 12px 18px;
++      border-radius: 12px;
++      font-weight: 600;
++      font-size: 15px;
++      display: inline-flex;
++      align-items: center;
++      justify-content: center;
++      gap: 10px;
++      transition: transform 0.2s ease, box-shadow 0.2s ease;
++    }
++
++    .primary-btn:hover {
++      transform: translateY(-1px);
++      box-shadow: 0 12px 30px rgba(65, 159, 255, 0.3);
++    }
++
++    .secondary-btn {
++      background: rgba(15, 23, 42, 0.06);
++      color: var(--surface-900);
++      padding: 12px 16px;
++      border-radius: 12px;
++      font-weight: 600;
++      font-size: 14px;
++    }
++
++    table {
++      width: 100%;
++      border-collapse: separate;
++      border-spacing: 0 12px;
++    }
++
++    th {
++      text-align: left;
++      font-size: 12px;
++      text-transform: uppercase;
++      letter-spacing: 0.08em;
++      color: rgba(17, 24, 39, 0.52);
++      padding-bottom: 8px;
++    }
++
++    td {
++      background: #fff;
++      padding: 14px 16px;
++      border-top: 1px solid rgba(15, 23, 42, 0.06);
++      border-bottom: 1px solid rgba(15, 23, 42, 0.06);
++    }
++
++    td:first-child {
++      border-left: 1px solid rgba(15, 23, 42, 0.06);
++      border-top-left-radius: 14px;
++      border-bottom-left-radius: 14px;
++    }
++
++    td:last-child {
++      border-right: 1px solid rgba(15, 23, 42, 0.06);
++      border-top-right-radius: 14px;
++      border-bottom-right-radius: 14px;
++    }
++    .table-actions {
++      display: flex;
++      gap: 10px;
++      justify-content: flex-end;
++    }
++
++    .table-actions button {
++      padding: 8px 12px;
++      border-radius: 10px;
++      font-size: 13px;
++      font-weight: 600;
++    }
++
++    .table-actions .edit {
++      background: rgba(65, 159, 255, 0.16);
++      color: var(--primary-800);
++    }
++
++    .table-actions .delete {
++      background: rgba(240, 68, 56, 0.12);
++      color: var(--danger-500);
++    }
++
++    .empty-state {
++      padding: 40px;
++      border: 2px dashed rgba(15, 23, 42, 0.12);
++      border-radius: var(--radius-md);
++      text-align: center;
++      color: rgba(15, 23, 42, 0.6);
++      display: grid;
++      gap: 16px;
++    }
++
++    .empty-state span {
++      font-weight: 600;
++      color: var(--surface-900);
++    }
++
++    .document-preview {
++      background: #fff;
++      border-radius: var(--radius-md);
++      padding: 24px;
++      border: 1px solid rgba(15, 23, 42, 0.08);
++      box-shadow: var(--shadow-sm);
++      line-height: 1.6;
++      font-size: 14px;
++      white-space: pre-wrap;
++    }
++
++    .modal-backdrop {
++      position: fixed;
++      inset: 0;
++      background: rgba(15, 23, 42, 0.58);
++      display: grid;
++      place-items: center;
++      padding: 40px 20px;
++      z-index: 10;
++      backdrop-filter: blur(8px);
++    }
++
++    .auth-modal {
++      width: min(960px, 100%);
++      background: #fff;
++      border-radius: var(--radius-lg);
++      display: grid;
++      grid-template-columns: 380px 1fr;
++      overflow: hidden;
++      box-shadow: var(--shadow-lg);
++    }
++
++    .auth-hero {
++      background: linear-gradient(135deg, var(--primary-500), var(--primary-800));
++      color: #fff;
++      padding: 48px 36px;
++      display: flex;
++      flex-direction: column;
++      justify-content: space-between;
++      position: relative;
++      z-index: 0;
++    }
++
++    .auth-hero::after {
++      content: '';
++      position: absolute;
++      inset: 0;
++      background: radial-gradient(circle at 40% 20%, rgba(255, 255, 255, 0.25), transparent 55%),
++        radial-gradient(circle at 80% 80%, rgba(12, 74, 110, 0.35), transparent 60%);
++      z-index: -1;
++    }
++
++    .auth-hero h2 {
++      font-size: 32px;
++      line-height: 1.2;
++      color: #fff;
++    }
++
++    .auth-hero p {
++      color: rgba(255, 255, 255, 0.78);
++      font-size: 15px;
++      line-height: 1.6;
++    }
++
++    .auth-steps {
++      display: grid;
++      gap: 18px;
++      margin-top: 32px;
++    }
++
++    .auth-step {
++      display: flex;
++      align-items: center;
++      gap: 14px;
++      padding: 14px;
++      border-radius: var(--radius-md);
++      background: rgba(255, 255, 255, 0.08);
++      border: 1px solid rgba(255, 255, 255, 0.12);
++    }
++
++    .auth-step .badge {
++      width: 34px;
++      height: 34px;
++      border-radius: 12px;
++      display: grid;
++      place-items: center;
++      background: rgba(255, 255, 255, 0.18);
++      font-weight: 600;
++    }
++
++    .auth-body {
++      padding: 40px;
++      display: flex;
++      flex-direction: column;
++      gap: 24px;
++      position: relative;
++    }
++
++    .auth-tabs {
++      display: flex;
++      gap: 10px;
++      border-bottom: 1px solid rgba(15, 23, 42, 0.08);
++      padding-bottom: 12px;
++    }
++
++    .auth-tabs button {
++      padding: 10px 18px;
++      border-radius: 12px 12px 0 0;
++      background: transparent;
++      font-weight: 600;
++      color: rgba(15, 23, 42, 0.6);
++      border: none;
++      border-bottom: 3px solid transparent;
++    }
++
++    .auth-tabs button.active {
++      color: var(--primary-700);
++      border-bottom-color: var(--primary-500);
++    }
++
++    .auth-form {
++      display: grid;
++      gap: 18px;
++    }
++
++    .auth-form .input-field input {
++      background: var(--surface-50);
++    }
++
++    .auth-form button[type="submit"] {
++      padding: 12px;
++      border-radius: 12px;
++      font-weight: 600;
++      background: linear-gradient(135deg, var(--primary-500), var(--primary-700));
++      color: #fff;
++      border: none;
++    }
++
++    .auth-helper {
++      font-size: 13px;
++      color: rgba(15, 23, 42, 0.6);
++      text-align: center;
++    }
++
++    .pill {
++      padding: 6px 10px;
++      border-radius: 999px;
++      background: rgba(65, 159, 255, 0.18);
++      color: var(--primary-800);
++      font-weight: 600;
++      font-size: 12px;
++    }
++
++    .data-chip {
++      display: inline-flex;
++      align-items: center;
++      padding: 6px 10px;
++      border-radius: 999px;
++      background: rgba(17, 24, 39, 0.08);
++      font-size: 12px;
++      font-weight: 600;
++      gap: 6px;
++    }
++
++    .list-cards {
++      display: grid;
++      gap: 16px;
++    }
++
++    .list-card {
++      border: 1px solid rgba(15, 23, 42, 0.05);
++      border-radius: var(--radius-md);
++      padding: 20px;
++      background: #fff;
++      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
++      display: grid;
++      gap: 12px;
++    }
++
++    .list-card-header {
++      display: flex;
++      justify-content: space-between;
++      align-items: flex-start;
++    }
++
++    .list-card h4 {
++      font-size: 16px;
++    }
++
++    .list-card-meta {
++      display: flex;
++      flex-wrap: wrap;
++      gap: 8px;
++      font-size: 13px;
++      color: rgba(15, 23, 42, 0.68);
++    }
++
++    .timeline {
++      display: grid;
++      gap: 20px;
++      padding-left: 12px;
++      position: relative;
++    }
++
++    .timeline::before {
++      content: '';
++      position: absolute;
++      left: 6px;
++      top: 4px;
++      bottom: 4px;
++      width: 2px;
++      background: rgba(15, 23, 42, 0.1);
++    }
++
++    .timeline-item {
++      position: relative;
++      padding-left: 28px;
++      display: flex;
++      flex-direction: column;
++      gap: 6px;
++    }
++
++    .timeline-item::before {
++      content: '';
++      position: absolute;
++      left: -1px;
++      top: 4px;
++      width: 10px;
++      height: 10px;
++      border-radius: 50%;
++      background: var(--primary-500);
++      box-shadow: 0 0 0 4px rgba(65, 159, 255, 0.2);
++    }
++
++    .timeline-item strong {
++      font-size: 14px;
++      color: var(--surface-800);
++    }
++
++    .timeline-item span {
++      font-size: 12px;
++      color: rgba(15, 23, 42, 0.6);
++    }
++
++    .notification {
++      padding: 14px 16px;
++      border-radius: 12px;
++      border: 1px solid rgba(15, 23, 42, 0.08);
++      background: rgba(17, 24, 39, 0.02);
++      display: flex;
++      justify-content: space-between;
++      align-items: center;
++      font-size: 13px;
++    }
++
++    .notification strong {
++      color: var(--surface-800);
++    }
++
++    .settings-grid {
++      display: grid;
++      grid-template-columns: repeat(2, minmax(0, 1fr));
++      gap: 20px;
++    }
++
++    .settings-card {
++      padding: 20px;
++      border-radius: var(--radius-md);
++      background: #fff;
++      border: 1px solid rgba(15, 23, 42, 0.05);
++      display: grid;
++      gap: 12px;
++    }
++
++    .settings-card h3 {
++      font-size: 17px;
++    }
++
++    .settings-card p {
++      font-size: 13px;
++      line-height: 1.6;
++    }
++
++    .settings-card .actions {
++      display: flex;
++      gap: 12px;
++    }
++
++    .tag-cloud {
++      display: flex;
++      flex-wrap: wrap;
++      gap: 8px;
++    }
++
++    .tag-cloud span {
++      padding: 6px 10px;
++      border-radius: 10px;
++      background: rgba(15, 23, 42, 0.08);
++      font-size: 12px;
++      font-weight: 600;
++    }
++
++    .editor {
++      display: grid;
++      gap: 10px;
++    }
++
++    .editor-toolbar {
++      display: flex;
++      gap: 10px;
++      flex-wrap: wrap;
++    }
++
++    .editor-toolbar button {
++      padding: 8px 12px;
++      border-radius: 10px;
++      background: rgba(15, 23, 42, 0.08);
++      font-weight: 600;
++      font-size: 12px;
++    }
++
++    .editor textarea {
++      min-height: 200px;
++      font-family: 'Courier New', monospace;
++      font-size: 14px;
++    }
++
++    .status-bar {
++      display: flex;
++      justify-content: space-between;
++      align-items: center;
++      font-size: 12px;
++      color: rgba(15, 23, 42, 0.6);
++    }
++
++    .activity-log {
++      display: grid;
++      gap: 12px;
++    }
++
++    .activity-entry {
++      padding: 14px 16px;
++      border-radius: 12px;
++      background: rgba(15, 23, 42, 0.03);
++      border: 1px solid rgba(15, 23, 42, 0.05);
++      display: grid;
++      gap: 6px;
++    }
++
++    .activity-entry strong {
++      color: var(--surface-800);
++    }
++
++    .toast-container {
++      position: fixed;
++      right: 24px;
++      bottom: 24px;
++      display: grid;
++      gap: 12px;
++      z-index: 20;
++    }
++
++    .toast {
++      min-width: 260px;
++      max-width: 340px;
++      padding: 16px 18px;
++      border-radius: 14px;
++      background: #fff;
++      box-shadow: var(--shadow-md);
++      border-left: 4px solid var(--primary-500);
++      display: grid;
++      gap: 8px;
++    }
++
++    .toast strong {
++      font-size: 14px;
++      color: var(--surface-900);
++    }
++
++    .toast span {
++      font-size: 12px;
++      color: rgba(15, 23, 42, 0.6);
++    }
++
++    .badge-grid {
++      display: grid;
++      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
++      gap: 12px;
++    }
++
++    .badge-grid span {
++      padding: 8px 12px;
++      background: rgba(15, 23, 42, 0.05);
++      border-radius: 999px;
++      font-size: 12px;
++      text-align: center;
++      font-weight: 600;
++    }
++
++    .generator-grid {
++      display: grid;
++      grid-template-columns: repeat(2, minmax(0, 1fr));
++      gap: 20px;
++    }
++
++    .generator-controls {
++      display: grid;
++      gap: 18px;
++    }
++
++    .list-table {
++      overflow-x: auto;
++    }
++
++    .list-table table {
++      min-width: 720px;
++    }
++
++    .loading-indicator {
++      display: none;
++      align-items: center;
++      justify-content: center;
++      gap: 10px;
++      font-size: 13px;
++    }
++
++    .loading-indicator.active {
++      display: flex;
++    }
++
++    .loading-indicator span {
++      width: 12px;
++      height: 12px;
++      border-radius: 999px;
++      border: 2px solid rgba(15, 23, 42, 0.12);
++      border-top-color: var(--primary-500);
++      animation: spin 1s linear infinite;
++    }
++
++    @keyframes spin {
++      to {
++        transform: rotate(360deg);
++      }
++    }
++
++    .grid-responsive {
++      display: grid;
++      gap: 20px;
++    }
++
++    @media (max-width: 1280px) {
++      .app-shell {
++        grid-template-columns: 280px 1fr;
++      }
++
++      .auth-modal {
++        grid-template-columns: 1fr;
++      }
++
++      .auth-hero {
++        display: none;
++      }
++    }
++
++    @media (max-width: 960px) {
++      .app-shell {
++        grid-template-columns: 1fr;
++      }
++
++      .sidebar {
++        position: fixed;
++        inset: 0 auto 0 0;
++        width: 260px;
++        transform: translateX(-110%);
++        transition: transform 0.3s ease;
++        z-index: 20;
++      }
++
++      .sidebar.open {
++        transform: translateX(0);
++      }
++
++      .workspace {
++        padding: 24px;
++      }
++
++      .dashboard-content {
++        grid-template-columns: 1fr;
++      }
++
++      .generator-grid {
++        grid-template-columns: 1fr;
++      }
++
++      .topbar-actions button.toggle-menu {
++        display: inline-flex;
++      }
++    }
++
++    @media (max-width: 720px) {
++      .workspace {
++        padding: 16px;
++      }
++
++      .topbar {
++        flex-direction: column;
++        align-items: flex-start;
++        gap: 16px;
++      }
++
++      .topbar-actions {
++        width: 100%;
++        justify-content: space-between;
++      }
++
++      .grid-two,
++      .grid-three,
++      .settings-grid {
++        grid-template-columns: 1fr;
++      }
++
++      table {
++        min-width: 540px;
++      }
++    }
++
++    .hidden {
++      display: none !important;
++    }
++  </style>
+ </head>
 -<body class="min-h-screen flex flex-col brand-gray">
 -
 -<!-- ===== HEADER ===== -->
@@ -57,314 +1191,740 @@ index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..34fddc782e2008fa314d13069fc0852f
 -      </p>
 -
 -      <div class="grid grid-cols-2 gap-4 mb-4">
-+  <head>
-+    <meta charset="UTF-8" />
-+    <meta name="viewport" content="width=device-width, initial-scale=1" />
-+    <title>Blaszkow Legal PLLC | Medical Records Portal</title>
-+    <script src="https://cdn.tailwindcss.com"></script>
-+    <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-+    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
-+    <style>
-+      :root {
-+        color-scheme: light;
-+      }
-+      body {
-+        font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont;
-+        background-color: #f5f6fa;
-+      }
-+      .app-shell {
-+        min-height: 100vh;
-+      }
-+      .nav-button.active {
-+        background: rgba(255, 255, 255, 0.9);
-+        color: #7f1d1d;
-+        font-weight: 600;
-+      }
-+      .nav-button:hover {
-+        background: rgba(255, 255, 255, 0.7);
-+      }
-+      .glass-panel {
-+        background: rgba(255, 255, 255, 0.88);
-+        backdrop-filter: blur(12px);
-+      }
-+      .badge {
-+        background: rgba(127, 29, 29, 0.1);
-+        color: #7f1d1d;
-+      }
-+      .tab.active {
-+        border-color: #7f1d1d;
-+        color: #7f1d1d;
-+        background: rgba(127, 29, 29, 0.08);
-+        font-weight: 600;
-+      }
-+      .table-scroll {
-+        max-height: 24rem;
-+        overflow: auto;
-+      }
-+      textarea {
-+        font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-+      }
-+    </style>
-+  </head>
-+  <body class="app-shell">
-+    <div class="flex h-full">
-+      <aside class="hidden lg:flex flex-col w-72 bg-[#7f1d1d] text-white px-6 py-8 space-y-10 shadow-xl">
++<body>
++  <div class="toast-container" id="toastContainer"></div>
++  <div class="modal-backdrop" id="authOverlay">
++    <div class="auth-modal">
++      <div class="auth-hero">
          <div>
 -          <label class="block text-sm font-medium text-gray-700">Client</label>
 -          <select id="dashClient" class="border p-2 w-full rounded"></select>
-+          <p class="text-sm uppercase tracking-[0.3em] text-red-100">Blaszkow Legal PLLC</p>
-+          <h1 class="text-2xl font-semibold leading-tight mt-1">Medical Records Portal</h1>
++          <div class="sidebar-logo" style="color: #fff;">
++            <div class="mark">MC</div>
++            <div class="meta">
++              <span>Secure Workspace</span>
++              <strong>Medical Correspondence</strong>
++            </div>
++          </div>
++          <h2>Your compliant launchpad for medical records collaboration</h2>
++          <p>Sign in with the seeded administrator credentials or create a new workspace user. Every action you take inside this environment is encrypted in local storage for your device only.</p>
          </div>
--        <div>
+         <div>
 -          <label class="block text-sm font-medium text-gray-700">Provider</label>
 -          <select id="dashProvider" class="border p-2 w-full rounded"></select>
-+        <nav class="space-y-2" id="sidebarNav">
-+          <button class="nav-button w-full text-left px-4 py-3 rounded-lg transition" data-page="dashboard">Dashboard</button>
-+          <button class="nav-button w-full text-left px-4 py-3 rounded-lg transition" data-page="clients">Client Profiles</button>
-+          <button class="nav-button w-full text-left px-4 py-3 rounded-lg transition" data-page="providers">Provider Directory</button>
-+          <button class="nav-button w-full text-left px-4 py-3 rounded-lg transition" data-page="templates">Template Library</button>
-+          <button class="nav-button w-full text-left px-4 py-3 rounded-lg transition" data-page="accounts">Account Admin</button>
-+        </nav>
-+        <div class="mt-auto space-y-2 text-sm text-red-100">
-+          <p>Need help? Email <span class="font-semibold">records@blaszkowlegal.com</span></p>
-+          <button id="logoutBtn" class="w-full px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition">Log Out</button>
++          <div class="auth-steps">
++            <div class="auth-step">
++              <span class="badge">1</span>
++              <div>
++                <strong>Access the Portal</strong>
++                <p>Authenticate with the default admin account or your own credentials.</p>
++              </div>
++            </div>
++            <div class="auth-step">
++              <span class="badge">2</span>
++              <div>
++                <strong>Curate Profiles</strong>
++                <p>Capture provider and client details, contact data, and compliance checkpoints.</p>
++              </div>
++            </div>
++            <div class="auth-step">
++              <span class="badge">3</span>
++              <div>
++                <strong>Generate Requests</strong>
++                <p>Merge HIPAA releases and medical requests, then export and dispatch.</p>
++              </div>
++            </div>
++          </div>
++        </div>
++      </div>
++      <div class="auth-body">
++        <div class="auth-tabs">
++          <button class="active" data-auth-tab="sign-in">Sign In</button>
++          <button data-auth-tab="create-account">Create Account</button>
++          <button data-auth-tab="recover-password">Reset Password</button>
++          <button data-auth-tab="lookup-username">Find Username</button>
++        </div>
++        <div class="auth-forms">
++          <form class="auth-form" id="signInForm" data-auth-panel="sign-in">
++            <div class="notification" id="signInHint">
++              <span>Default administrator credentials ready:</span>
++              <strong>admin@workspace.test / SecurePortal!24</strong>
++            </div>
++            <div class="input-field">
++              <label for="signInEmail">Email</label>
++              <input type="email" id="signInEmail" placeholder="you@example.com" required />
++            </div>
++            <div class="input-field">
++              <label for="signInPassword">Password</label>
++              <input type="password" id="signInPassword" placeholder="Enter password" required />
++            </div>
++            <button type="submit">Access Workspace</button>
++            <div class="auth-helper">Need help? Switch tabs above to recover your credentials.</div>
++          </form>
++          <form class="auth-form hidden" id="createAccountForm" data-auth-panel="create-account">
++            <div class="input-field">
++              <label for="createFullName">Full Name</label>
++              <input type="text" id="createFullName" placeholder="Jordan Rivera" required />
++            </div>
++            <div class="input-field">
++              <label for="createEmail">Email</label>
++              <input type="email" id="createEmail" placeholder="jordan@example.com" required />
++            </div>
++            <div class="input-field">
++              <label for="createPassword">Password</label>
++              <input type="password" id="createPassword" placeholder="Choose a secure password" required />
++            </div>
++            <div class="input-field">
++              <label for="createConfirmPassword">Confirm Password</label>
++              <input type="password" id="createConfirmPassword" placeholder="Repeat your password" required />
++            </div>
++            <button type="submit">Create Secure Account</button>
++            <div class="auth-helper">Passwords must match and include at least 8 characters with letters and numbers.</div>
++          </form>
++          <form class="auth-form hidden" id="recoverPasswordForm" data-auth-panel="recover-password">
++            <div class="input-field">
++              <label for="recoverEmail">Account Email</label>
++              <input type="email" id="recoverEmail" placeholder="Enter the email on file" required />
++            </div>
++            <button type="submit">Send Reset Instructions</button>
++            <div class="auth-helper">A temporary reset token will appear in the notification center.</div>
++          </form>
++          <form class="auth-form hidden" id="lookupUsernameForm" data-auth-panel="lookup-username">
++            <div class="input-field">
++              <label for="lookupName">Full Name</label>
++              <input type="text" id="lookupName" placeholder="Name linked to the account" required />
++            </div>
++            <button type="submit">Reveal Username</button>
++            <div class="auth-helper">Usernames are the email addresses stored for each authorized account.</div>
++          </form>
++        </div>
++      </div>
++    </div>
++  </div>
++  <div class="app-shell">
++    <aside class="sidebar" id="sidebar">
++      <div>
++        <div class="sidebar-logo">
++          <div class="mark">MC</div>
++          <div class="meta">
++            <span>Operations Suite</span>
++            <strong>Medical Desk</strong>
++          </div>
++        </div>
++      </div>
++      <nav class="sidebar-nav" id="sidebarNav">
++        <button class="active" data-view="dashboard">
++          <span>Dashboard</span>
++        </button>
++        <button data-view="clients">
++          <span>Client Registry</span>
++        </button>
++        <button data-view="providers">
++          <span>Provider Directory</span>
++        </button>
++        <button data-view="templates">
++          <span>Document Templates</span>
++        </button>
++        <button data-view="generator">
++          <span>Request Generator</span>
++        </button>
++        <button data-view="settings">
++          <span>Workspace Settings</span>
++        </button>
++        <button data-view="activity">
++          <span>Activity Journal</span>
++        </button>
++      </nav>
++      <div class="sidebar-footer">
++        <div class="sidebar-card">
++          <h4>Need a walkthrough?</h4>
++          <p>Review the compliance checklist to ensure HIPAA releases and medical requests align with provider requirements.</p>
++          <button id="openChecklist">View checklist</button>
++        </div>
++        <div class="sidebar-card">
++          <h4>Export workspace</h4>
++          <p>Download a secure archive of clients, providers, and templates for your records.</p>
++          <button id="exportWorkspace">Export data</button>
          </div>
--      </div>
-+      </aside>
+       </div>
++    </aside>
++    <main class="workspace">
++      <header class="topbar">
++        <div class="welcome">
++          <h1 id="dashboardGreeting">Welcome to the Medical Correspondence Workspace</h1>
++          <span>Organize provider requests, capture client authorizations, and assemble compliant packets.</span>
++        </div>
++        <div class="topbar-actions">
++          <button class="toggle-menu" id="toggleSidebar" style="display:none;">Menu</button>
++          <button id="quickAdd">Quick Add</button>
++          <div class="topbar-profile" id="userProfile">
++            <div class="avatar" id="userAvatar">MC</div>
++            <div class="meta">
++              <strong id="userName">Team Member</strong>
++              <span id="userEmail">user@workspace.test</span>
++            </div>
++          </div>
++        </div>
++      </header>
++      <section class="dashboard-content" id="dashboardView">
++        <div class="panel" id="snapshotPanel">
++          <h2>
++            Workspace Snapshot
++            <span id="snapshotDate"></span>
++          </h2>
++          <p class="lead">Monitor the health of your medical records pipeline. Review outstanding packets, confirm HIPAA authorizations, and anticipate provider response timelines.</p>
++          <div class="progress-grid">
++            <div class="progress-card">
++              <strong id="clientCount">0 Clients</strong>
++              <span>Active clients with completed intake</span>
++              <div class="progress-bar">
++                <div class="fill" id="clientProgress" style="width:0%"></div>
++              </div>
++            </div>
++            <div class="progress-card">
++              <strong id="providerCount">0 Providers</strong>
++              <span>Verified provider profiles prepared for requests</span>
++              <div class="progress-bar">
++                <div class="fill" id="providerProgress" style="width:0%"></div>
++              </div>
++            </div>
++            <div class="progress-card">
++              <strong id="templateCount">0 Templates</strong>
++              <span>HIPAA and request templates ready for merging</span>
++              <div class="progress-bar">
++                <div class="fill" id="templateProgress" style="width:0%"></div>
++              </div>
++            </div>
++          </div>
++          <div class="notification">
++            <div>
++              <strong>Checklist reminder:</strong> ensure HIPAA releases are less than 12 months old before dispatching.
++            </div>
++            <button class="secondary-btn" id="viewChecklist">Open checklist</button>
++          </div>
++          <div class="timeline" id="timelineFeed"></div>
++        </div>
++        <div class="panel section-content">
++          <div class="tabs" id="dashboardTabs">
++            <button class="active" data-tab="overview">Overview</button>
++            <button data-tab="clients">Client Insights</button>
++            <button data-tab="providers">Provider Insights</button>
++            <button data-tab="tasks">Task Board</button>
++          </div>
++          <div class="section-body">
++            <div data-tab-panel="overview">
++              <div class="grid-two">
++                <div class="form-card">
++                  <h3>Daily Readiness</h3>
++                  <div class="tag-cloud" id="dailyReadiness"></div>
++                </div>
++                <div class="form-card">
++                  <h3>Upcoming Deadlines</h3>
++                  <div class="activity-log" id="upcomingDeadlines"></div>
++                </div>
++              </div>
++              <div class="grid-two">
++                <div class="form-card">
++                  <h3>Packet Generation Health</h3>
++                  <div class="badge-grid" id="packetHealth"></div>
++                </div>
++                <div class="form-card">
++                  <h3>Compliance Tasks</h3>
++                  <div class="activity-log" id="complianceTasks"></div>
++                </div>
++              </div>
++            </div>
++            <div class="hidden" data-tab-panel="clients">
++              <div class="form-card">
++                <h3>Client Milestones</h3>
++                <div class="activity-log" id="clientMilestones"></div>
++              </div>
++            </div>
++            <div class="hidden" data-tab-panel="providers">
++              <div class="form-card">
++                <h3>Provider Communications</h3>
++                <div class="activity-log" id="providerCommunications"></div>
++              </div>
++            </div>
++            <div class="hidden" data-tab-panel="tasks">
++              <div class="form-card">
++                <h3>Operations Kanban</h3>
++                <div class="activity-log" id="operationsKanban"></div>
++              </div>
++            </div>
++          </div>
++        </div>
++      </section>
++      <section class="panel hidden" id="clientsView">
++        <h2>Client Profiles <span id="clientViewCount"></span></h2>
++        <p class="lead">Capture client authorization details, contact data, and case specifics. These profiles populate HIPAA releases and medical request letters.</p>
++        <div class="grid-two">
++          <form class="form-card" id="clientForm">
++            <h3>New Client Intake</h3>
++            <div class="grid-two">
++              <div class="input-field">
++                <label for="clientFirstName">First Name</label>
++                <input type="text" id="clientFirstName" required />
++              </div>
++              <div class="input-field">
++                <label for="clientLastName">Last Name</label>
++                <input type="text" id="clientLastName" required />
++              </div>
++            </div>
++            <div class="grid-two">
++              <div class="input-field">
++                <label for="clientEmail">Email</label>
++                <input type="email" id="clientEmail" required />
++              </div>
++              <div class="input-field">
++                <label for="clientPhone">Phone</label>
++                <input type="tel" id="clientPhone" required />
++              </div>
++            </div>
++            <div class="grid-two">
++              <div class="input-field">
++                <label for="clientDob">Date of Birth</label>
++                <input type="date" id="clientDob" required />
++              </div>
++              <div class="input-field">
++                <label for="clientIdentifier">Client ID / MRN</label>
++                <input type="text" id="clientIdentifier" placeholder="Optional medical record number" />
++              </div>
++            </div>
++            <div class="input-field">
++              <label for="clientAddress">Mailing Address</label>
++              <textarea id="clientAddress" rows="3" placeholder="Include city, state, and postal code" required></textarea>
++            </div>
++            <div class="input-field">
++              <label for="clientNotes">Case Notes</label>
++              <textarea id="clientNotes" rows="3" placeholder="Primary incident details, treatment summaries, or constraints"></textarea>
++            </div>
++            <div class="grid-two">
++              <div class="input-field">
++                <label for="clientAuthorizationDate">HIPAA Authorization Date</label>
++                <input type="date" id="clientAuthorizationDate" />
++              </div>
++              <div class="input-field">
++                <label for="clientAuthorizationScope">Authorization Scope</label>
++                <input type="text" id="clientAuthorizationScope" placeholder="e.g., Medical records from Jan 2022 - Present" />
++              </div>
++            </div>
++            <div class="grid-two">
++              <div class="input-field">
++                <label for="clientAttorney">Attorney Assigned</label>
++                <input type="text" id="clientAttorney" placeholder="Attorney or case manager" />
++              </div>
++              <div class="input-field">
++                <label for="clientStatus">Status</label>
++                <select id="clientStatus">
++                  <option value="Intake">Intake</option>
++                  <option value="Awaiting Authorization">Awaiting Authorization</option>
++                  <option value="Ready for Request">Ready for Request</option>
++                  <option value="Request Submitted">Request Submitted</option>
++                  <option value="Records Received">Records Received</option>
++                </select>
++              </div>
++            </div>
++            <div class="grid-two">
++              <div class="input-field">
++                <label for="clientInsurance">Insurance Provider</label>
++                <input type="text" id="clientInsurance" placeholder="Primary insurance carrier" />
++              </div>
++              <div class="input-field">
++                <label for="clientPolicy">Policy Number</label>
++                <input type="text" id="clientPolicy" placeholder="Insurance policy number" />
++              </div>
++            </div>
++            <div class="grid-two">
++              <div class="input-field">
++                <label for="clientInjuryDate">Injury / Incident Date</label>
++                <input type="date" id="clientInjuryDate" />
++              </div>
++              <div class="input-field">
++                <label for="clientPreferredContact">Preferred Contact Method</label>
++                <select id="clientPreferredContact">
++                  <option value="Email">Email</option>
++                  <option value="Phone">Phone</option>
++                  <option value="Text">Text</option>
++                  <option value="Mail">Mail</option>
++                </select>
++              </div>
++            </div>
++            <div class="status-bar">
++              <span id="clientFormStatus">Complete all required fields.</span>
++              <button type="submit" class="primary-btn">Save Client Profile</button>
++            </div>
++          </form>
++          <div class="form-card">
++            <h3>Client Directory</h3>
++            <div class="input-field">
++              <label for="clientSearch">Search clients</label>
++              <input type="search" id="clientSearch" placeholder="Search by name, attorney, or status" />
++            </div>
++            <div class="list-table">
++              <table>
++                <thead>
++                  <tr>
++                    <th>Name</th>
++                    <th>Contact</th>
++                    <th>Status</th>
++                    <th>Attorney</th>
++                    <th>Authorization</th>
++                    <th>Actions</th>
++                  </tr>
++                </thead>
++                <tbody id="clientTable"></tbody>
++              </table>
++            </div>
++            <div class="empty-state hidden" id="clientEmptyState">
++              <span>No clients captured yet.</span>
++              Add a client to begin generating correspondence packets.
++            </div>
++          </div>
++        </div>
++      </section>
++      <section class="panel hidden" id="providersView">
++        <h2>Provider Profiles <span id="providerViewCount"></span></h2>
++        <p class="lead">Organize medical facilities, contacts, delivery preferences, and documentation requirements.</p>
++        <div class="grid-two">
++          <form class="form-card" id="providerForm">
++            <h3>New Provider</h3>
++            <div class="grid-two">
++              <div class="input-field">
++                <label for="providerName">Provider Name</label>
++                <input type="text" id="providerName" required />
++              </div>
++              <div class="input-field">
++                <label for="providerType">Provider Type</label>
++                <select id="providerType">
++                  <option value="Hospital">Hospital</option>
++                  <option value="Clinic">Clinic</option>
++                  <option value="Chiropractor">Chiropractor</option>
++                  <option value="Physical Therapy">Physical Therapy</option>
++                  <option value="Imaging Center">Imaging Center</option>
++                  <option value="Specialist">Specialist</option>
++                </select>
++              </div>
++            </div>
++            <div class="grid-two">
++              <div class="input-field">
++                <label for="providerEmail">Email</label>
++                <input type="email" id="providerEmail" />
++              </div>
++              <div class="input-field">
++                <label for="providerPhone">Phone</label>
++                <input type="tel" id="providerPhone" />
++              </div>
++            </div>
++            <div class="input-field">
++              <label for="providerFax">Fax Number</label>
++              <input type="text" id="providerFax" placeholder="Fax for medical records requests" />
++            </div>
++            <div class="input-field">
++              <label for="providerAddress">Address</label>
++              <textarea id="providerAddress" rows="3" required></textarea>
++            </div>
++            <div class="grid-two">
++              <div class="input-field">
++                <label for="providerAttention">Attention To</label>
++                <input type="text" id="providerAttention" placeholder="Medical Records Dept." />
++              </div>
++              <div class="input-field">
++                <label for="providerProcessingTime">Processing Time (days)</label>
++                <input type="number" id="providerProcessingTime" min="0" value="14" />
++              </div>
++            </div>
++            <div class="input-field">
++              <label for="providerRequirements">Special Requirements</label>
++              <textarea id="providerRequirements" rows="3" placeholder="e.g., Original signatures, notarized releases, processing fees"></textarea>
++            </div>
++            <div class="grid-two">
++              <div class="input-field">
++                <label for="providerDelivery">Delivery Preference</label>
++                <select id="providerDelivery">
++                  <option value="Fax">Fax</option>
++                  <option value="Portal Upload">Portal Upload</option>
++                  <option value="Mail">Mail</option>
++                  <option value="Email">Email</option>
++                  <option value="In Person Pickup">In Person Pickup</option>
++                </select>
++              </div>
++              <div class="input-field">
++                <label for="providerStatus">Status</label>
++                <select id="providerStatus">
++                  <option value="Active">Active</option>
++                  <option value="Pending">Pending</option>
++                  <option value="Inactive">Inactive</option>
++                  <option value="Archived">Archived</option>
++                </select>
++              </div>
++            </div>
++            <div class="grid-two">
++              <div class="input-field">
++                <label for="providerPortal">Records Portal</label>
++                <input type="url" id="providerPortal" placeholder="https://providerportal.com" />
++              </div>
++              <div class="input-field">
++                <label for="providerNotes">Internal Notes</label>
++                <textarea id="providerNotes" rows="3" placeholder="Payment details, follow-up numbers, fee schedules"></textarea>
++              </div>
++            </div>
++            <div class="status-bar">
++              <span id="providerFormStatus">Complete provider details to save.</span>
++              <button type="submit" class="primary-btn">Save Provider Profile</button>
++            </div>
++          </form>
++          <div class="form-card">
++            <h3>Provider Directory</h3>
++            <div class="input-field">
++              <label for="providerSearch">Search providers</label>
++              <input type="search" id="providerSearch" placeholder="Search by name, delivery preference, or status" />
++            </div>
++            <div class="list-table">
++              <table>
++                <thead>
++                  <tr>
++                    <th>Name</th>
++                    <th>Contact</th>
++                    <th>Delivery</th>
++                    <th>Processing</th>
++                    <th>Status</th>
++                    <th>Actions</th>
++                  </tr>
++                </thead>
++                <tbody id="providerTable"></tbody>
++              </table>
++            </div>
++            <div class="empty-state hidden" id="providerEmptyState">
++              <span>No providers recorded.</span>
++              Add providers to track requirements and speed up request generation.
++            </div>
++          </div>
++        </div>
++      </section>
++      <section class="panel hidden" id="templatesView">
++        <h2>Document Templates <span id="templateViewCount"></span></h2>
++        <p class="lead">Design HIPAA releases and medical request letters with placeholders that merge client and provider context automatically.</p>
++        <div class="grid-two">
++          <form class="form-card" id="templateForm">
++            <h3>Template Editor</h3>
++            <div class="grid-two">
++              <div class="input-field">
++                <label for="templateName">Template Name</label>
++                <input type="text" id="templateName" placeholder="HIPAA Release" required />
++              </div>
++              <div class="input-field">
++                <label for="templateCategory">Category</label>
++                <select id="templateCategory">
++                  <option value="HIPAA">HIPAA Authorization</option>
++                  <option value="Medical Request">Medical Records Request</option>
++                  <option value="Follow Up">Follow Up Letter</option>
++                  <option value="Invoice">Invoice Notice</option>
++                  <option value="Custom">Custom Template</option>
++                </select>
++              </div>
++            </div>
++            <div class="editor">
++              <div class="editor-toolbar">
++                <button type="button" data-insert="{{client.fullName}}">Client Name</button>
++                <button type="button" data-insert="{{client.address}}">Client Address</button>
++                <button type="button" data-insert="{{client.authorizationDate}}">Authorization Date</button>
++                <button type="button" data-insert="{{provider.name}}">Provider Name</button>
++                <button type="button" data-insert="{{provider.address}}">Provider Address</button>
++                <button type="button" data-insert="{{today}}">Today</button>
++                <button type="button" data-insert="{{workspace.user}}">Workspace User</button>
++                <button type="button" data-insert="{{workspace.organization}}">Organization Name</button>
++                <button type="button" data-insert="{{workspace.signature}}">Workspace Signature</button>
++              </div>
++              <div class="input-field">
++                <label for="templateBody">Template Body</label>
++                <textarea id="templateBody" placeholder="Dear {{provider.name}},\n\nPlease provide records for {{client.fullName}}..." required></textarea>
++              </div>
++            </div>
++            <div class="status-bar">
++              <span id="templateFormStatus">Use placeholders to personalize the template.</span>
++              <div>
++                <button type="button" class="secondary-btn" id="resetTemplate">Reset</button>
++                <button type="submit" class="primary-btn">Save Template</button>
++              </div>
++            </div>
++          </form>
++          <div class="form-card">
++            <h3>Template Library</h3>
++            <div class="input-field">
++              <label for="templateSearch">Search templates</label>
++              <input type="search" id="templateSearch" placeholder="Search by name or category" />
++            </div>
++            <div class="list-cards" id="templateList"></div>
++            <div class="empty-state hidden" id="templateEmptyState">
++              <span>No templates yet.</span>
++              Save a HIPAA or medical request template to begin generating documents.
++            </div>
++          </div>
++        </div>
++      </section>
++      <section class="panel hidden" id="generatorView">
++        <h2>Request Generator <span class="pill" id="generatorStatus">Ready</span></h2>
++        <p class="lead">Combine client authorizations and provider requirements to produce HIPAA releases and medical record request packets in seconds.</p>
++        <div class="generator-grid">
++          <div class="generator-controls">
++            <div class="form-card">
++              <h3>Packet Configuration</h3>
++              <div class="grid-two">
++                <div class="input-field">
++                  <label for="generatorClient">Select Client</label>
++                  <select id="generatorClient"></select>
++                </div>
++                <div class="input-field">
++                  <label for="generatorProvider">Select Provider</label>
++                  <select id="generatorProvider"></select>
++                </div>
++              </div>
++              <div class="input-field">
++                <label for="generatorTemplates">Templates</label>
++                <select id="generatorTemplates" multiple size="6"></select>
++              </div>
++              <div class="input-field">
++                <label for="generatorNotes">Packet Notes</label>
++                <textarea id="generatorNotes" rows="4" placeholder="Include delivery instructions, fees paid, or follow-up reminders"></textarea>
++              </div>
++              <div class="status-bar">
++                <span id="generatorFormStatus">Select a client, provider, and at least one template.</span>
++                <button class="primary-btn" id="generatePacket">Generate Packet</button>
++              </div>
++              <div class="loading-indicator" id="generatorLoading">
++                <span></span> Building PDF packet...
++              </div>
++            </div>
++            <div class="form-card">
++              <h3>Merge Preview</h3>
++              <div class="document-preview" id="mergePreview">Select data to preview merged documents.</div>
++              <div class="status-bar">
++                <span id="previewStatus">Awaiting packet configuration.</span>
++                <button class="secondary-btn" id="downloadPacket" disabled>Download PDF</button>
++              </div>
++            </div>
++          </div>
++          <div class="form-card">
++            <h3>Packet Activity</h3>
++            <div class="activity-log" id="packetActivity"></div>
++          </div>
++        </div>
++      </section>
++      <section class="panel hidden" id="settingsView">
++        <h2>Workspace Settings</h2>
++        <p class="lead">Adjust workspace preferences, manage authentication, and maintain compliance references.</p>
++        <div class="settings-grid">
++          <div class="settings-card">
++            <h3>Workspace Identity</h3>
++            <p>Set the organization name and default closing signature used in outbound correspondence.</p>
++            <div class="input-field">
++              <label for="workspaceName">Organization Name</label>
++              <input type="text" id="workspaceName" placeholder="Medical Correspondence Group" />
++            </div>
++            <div class="input-field">
++              <label for="workspaceSignature">Closing Signature</label>
++              <textarea id="workspaceSignature" rows="3" placeholder="Sincerely,\nMedical Correspondence Team"></textarea>
++            </div>
++            <div class="actions">
++              <button class="secondary-btn" id="resetIdentity">Reset</button>
++              <button class="primary-btn" id="saveIdentity">Save</button>
++            </div>
++          </div>
++          <div class="settings-card">
++            <h3>Security</h3>
++            <p>Manage workspace users, log out, or clear encrypted local data to reset the environment.</p>
++            <div class="activity-log" id="securityActions"></div>
++            <div class="actions">
++              <button class="secondary-btn" id="logoutButton">Log Out</button>
++              <button class="secondary-btn" id="clearWorkspace">Clear Local Data</button>
++            </div>
++          </div>
++          <div class="settings-card">
++            <h3>Compliance Checklist</h3>
++            <p>Track HIPAA authorization requirements and provider expectations.</p>
++            <div class="activity-log" id="complianceChecklist"></div>
++          </div>
++          <div class="settings-card">
++            <h3>Automation Preferences</h3>
++            <p>Configure merge behavior, placeholder syntax, and activity logging.</p>
++            <div class="input-field">
++              <label for="placeholderDelimiter">Placeholder Delimiter</label>
++              <input type="text" id="placeholderDelimiter" placeholder="{{ }}" />
++            </div>
++            <div class="input-field">
++              <label for="activityRetention">Activity Retention (days)</label>
++              <input type="number" id="activityRetention" min="7" value="90" />
++            </div>
++            <div class="actions">
++              <button class="secondary-btn" id="resetAutomation">Reset</button>
++              <button class="primary-btn" id="saveAutomation">Save</button>
++            </div>
++          </div>
++        </div>
++      </section>
++      <section class="panel hidden" id="activityView">
++        <h2>Activity Journal</h2>
++        <p class="lead">Review every automated action, credential event, and packet generation in chronological order.</p>
++        <div class="activity-log" id="activityFeed"></div>
++      </section>
++    </main>
++  </div>
++
++  <template id="clientRowTemplate">
++    <tr>
++      <td class="client-name"></td>
++      <td class="client-contact"></td>
++      <td class="client-status"></td>
++      <td class="client-attorney"></td>
++      <td class="client-authorization"></td>
++      <td>
++        <div class="table-actions">
++          <button type="button" class="edit">Edit</button>
++          <button type="button" class="delete">Delete</button>
++        </div>
++      </td>
++    </tr>
++  </template>
++
++  <template id="providerRowTemplate">
++    <tr>
++      <td class="provider-name"></td>
++      <td class="provider-contact"></td>
++      <td class="provider-delivery"></td>
++      <td class="provider-processing"></td>
++      <td class="provider-status"></td>
++      <td>
++        <div class="table-actions">
++          <button type="button" class="edit">Edit</button>
++          <button type="button" class="delete">Delete</button>
++        </div>
++      </td>
++    </tr>
++  </template>
  
 -      <button id="generateBtn"
 -        class="brand-bg text-white px-4 py-2 rounded shadow hover:bg-red-700 transition">
 -        Generate Combined PDF
 -      </button>
-+      <main class="flex-1 flex flex-col">
-+        <header class="glass-panel border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-+          <div>
-+            <h2 class="text-xl font-semibold text-gray-800">Correspondence Automation Workspace</h2>
-+            <p class="text-sm text-gray-500">Generate HIPAA releases and medical records requests from verified profiles.</p>
++  <template id="templateCardTemplate">
++    <div class="list-card">
++      <div class="list-card-header">
++        <div>
++          <h4 class="template-name"></h4>
++          <div class="list-card-meta">
++            <span class="template-category data-chip"></span>
++            <span class="template-updated"></span>
 +          </div>
-+          <div class="flex items-center gap-6">
-+            <div class="hidden lg:block text-right text-sm">
-+              <p class="text-gray-600">Signed in as</p>
-+              <p id="activeUser" class="font-medium text-gray-900"></p>
-+            </div>
-+            <div class="flex items-center gap-3 text-sm" id="recordSummary">
-+              <span class="badge px-3 py-1 rounded-full">Clients: <strong id="clientCount">0</strong></span>
-+              <span class="badge px-3 py-1 rounded-full">Providers: <strong id="providerCount">0</strong></span>
-+              <span class="badge px-3 py-1 rounded-full">Templates: <strong id="templateCount">0</strong></span>
-+            </div>
-+          </div>
-+        </header>
-+
-+        <section class="flex-1 overflow-y-auto p-6">
-+          <div id="page-dashboard" class="page hidden space-y-6">
-+            <div class="grid gap-4 md:grid-cols-2">
-+              <div class="glass-panel rounded-xl border border-gray-200 p-6 space-y-4">
-+                <div>
-+                  <h3 class="text-lg font-semibold text-gray-800">1. Select Client &amp; Provider</h3>
-+                  <p class="text-sm text-gray-500">Pick a client and provider to populate the correspondence.</p>
-+                </div>
-+                <label class="block text-sm font-medium text-gray-700">Client</label>
-+                <select id="dashClient" class="w-full border border-gray-300 rounded-lg px-3 py-2"></select>
-+                <label class="block text-sm font-medium text-gray-700">Provider</label>
-+                <select id="dashProvider" class="w-full border border-gray-300 rounded-lg px-3 py-2"></select>
-+                <div class="flex flex-wrap gap-4 pt-2">
-+                  <label class="inline-flex items-center gap-2 text-sm font-medium text-gray-700">
-+                    <input type="checkbox" id="includeHipaa" class="rounded border-gray-300 text-[#7f1d1d] focus:ring-[#7f1d1d]" checked />
-+                    Include HIPAA Release
-+                  </label>
-+                  <label class="inline-flex items-center gap-2 text-sm font-medium text-gray-700">
-+                    <input type="checkbox" id="includeLetter" class="rounded border-gray-300 text-[#7f1d1d] focus:ring-[#7f1d1d]" checked />
-+                    Include Medical Request Letter
-+                  </label>
-+                </div>
-+              </div>
-+              <div class="glass-panel rounded-xl border border-gray-200 p-6 space-y-4">
-+                <div>
-+                  <h3 class="text-lg font-semibold text-gray-800">2. Preview Correspondence</h3>
-+                  <p class="text-sm text-gray-500">Templates resolve placeholders in real time as you make selections.</p>
-+                </div>
-+                <div class="border border-gray-200 rounded-lg bg-white p-4 max-h-72 overflow-auto">
-+                  <pre id="letterPreview" class="text-xs leading-5 whitespace-pre-wrap text-gray-700"></pre>
-+                </div>
-+              </div>
-+            </div>
-+            <div class="glass-panel border border-gray-200 rounded-xl p-6 space-y-4">
-+              <h3 class="text-lg font-semibold text-gray-800">3. Generate Combined PDF</h3>
-+              <p class="text-sm text-gray-500">The HIPAA authorization and medical request will be merged into a single download.</p>
-+              <button id="generateBtn" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-[#7f1d1d] text-white font-semibold hover:bg-[#661313] transition disabled:opacity-40 disabled:cursor-not-allowed">
-+                <span>Create PDF Package</span>
-+              </button>
-+              <p id="generateStatus" class="text-sm text-gray-500"></p>
-+            </div>
-+          </div>
-+
-+          <div id="page-clients" class="page hidden space-y-6">
-+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-+              <div>
-+                <h3 class="text-xl font-semibold text-gray-800">Client Profiles</h3>
-+                <p class="text-sm text-gray-500">Maintain demographic and claim details for each client.</p>
-+              </div>
-+              <button id="newClientBtn" class="px-4 py-2 rounded-lg bg-[#7f1d1d] text-white text-sm font-semibold hover:bg-[#661313] transition">Add Client</button>
-+            </div>
-+            <div class="glass-panel border border-gray-200 rounded-xl p-6">
-+              <form id="clientForm" class="grid gap-4 md:grid-cols-2 hidden">
-+                <input type="hidden" id="clientIndex" />
-+                <div>
-+                  <label class="block text-sm font-medium text-gray-700">Full Name</label>
-+                  <input id="clientName" type="text" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" required />
-+                </div>
-+                <div>
-+                  <label class="block text-sm font-medium text-gray-700">Date of Birth</label>
-+                  <input id="clientDob" type="date" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" />
-+                </div>
-+                <div>
-+                  <label class="block text-sm font-medium text-gray-700">Phone</label>
-+                  <input id="clientPhone" type="tel" placeholder="(555) 000-0000" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" />
-+                </div>
-+                <div>
-+                  <label class="block text-sm font-medium text-gray-700">Email</label>
-+                  <input id="clientEmail" type="email" placeholder="client@example.com" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" />
-+                </div>
-+                <div class="md:col-span-2">
-+                  <label class="block text-sm font-medium text-gray-700">Mailing Address</label>
-+                  <input id="clientAddress" type="text" placeholder="123 Main St, City, State" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" />
-+                </div>
-+                <div>
-+                  <label class="block text-sm font-medium text-gray-700">Claim / Matter #</label>
-+                  <input id="clientClaim" type="text" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" />
-+                </div>
-+                <div>
-+                  <label class="block text-sm font-medium text-gray-700">Date of Injury</label>
-+                  <input id="clientInjury" type="date" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" />
-+                </div>
-+                <div class="md:col-span-2 flex items-center gap-3">
-+                  <button type="submit" class="px-4 py-2 rounded-lg bg-[#7f1d1d] text-white text-sm font-semibold hover:bg-[#661313] transition">Save Client</button>
-+                  <button type="button" id="cancelClient" class="px-4 py-2 rounded-lg border border-gray-300 text-sm text-gray-600">Cancel</button>
-+                </div>
-+              </form>
-+              <div class="table-scroll mt-4">
-+                <table class="w-full text-sm text-left">
-+                  <thead class="text-xs uppercase text-gray-500">
-+                    <tr class="border-b border-gray-200">
-+                      <th class="py-3 pr-4">Client</th>
-+                      <th class="py-3 pr-4">DOB</th>
-+                      <th class="py-3 pr-4">Claim #</th>
-+                      <th class="py-3 pr-4">Injury</th>
-+                      <th class="py-3 pr-4">Actions</th>
-+                    </tr>
-+                  </thead>
-+                  <tbody id="clientTable" class="divide-y divide-gray-100"></tbody>
-+                </table>
-+              </div>
-+            </div>
-+          </div>
-+
-+          <div id="page-providers" class="page hidden space-y-6">
-+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-+              <div>
-+                <h3 class="text-xl font-semibold text-gray-800">Provider Directory</h3>
-+                <p class="text-sm text-gray-500">Track facilities, contacts, and delivery preferences.</p>
-+              </div>
-+              <button id="newProviderBtn" class="px-4 py-2 rounded-lg bg-[#7f1d1d] text-white text-sm font-semibold hover:bg-[#661313] transition">Add Provider</button>
-+            </div>
-+            <div class="glass-panel border border-gray-200 rounded-xl p-6">
-+              <form id="providerForm" class="grid gap-4 md:grid-cols-2 hidden">
-+                <input type="hidden" id="providerIndex" />
-+                <div>
-+                  <label class="block text-sm font-medium text-gray-700">Facility / Provider Name</label>
-+                  <input id="providerName" type="text" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" required />
-+                </div>
-+                <div>
-+                  <label class="block text-sm font-medium text-gray-700">Attention To</label>
-+                  <input id="providerContact" type="text" placeholder="Medical Records Dept." class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" />
-+                </div>
-+                <div>
-+                  <label class="block text-sm font-medium text-gray-700">Phone</label>
-+                  <input id="providerPhone" type="tel" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" />
-+                </div>
-+                <div>
-+                  <label class="block text-sm font-medium text-gray-700">Fax</label>
-+                  <input id="providerFax" type="text" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" />
-+                </div>
-+                <div class="md:col-span-2">
-+                  <label class="block text-sm font-medium text-gray-700">Address</label>
-+                  <input id="providerAddress" type="text" placeholder="456 Health Ave, City, State" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" />
-+                </div>
-+                <div class="md:col-span-2">
-+                  <label class="block text-sm font-medium text-gray-700">Delivery Instructions</label>
-+                  <textarea id="providerNotes" rows="3" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2"></textarea>
-+                </div>
-+                <div class="md:col-span-2 flex items-center gap-3">
-+                  <button type="submit" class="px-4 py-2 rounded-lg bg-[#7f1d1d] text-white text-sm font-semibold hover:bg-[#661313] transition">Save Provider</button>
-+                  <button type="button" id="cancelProvider" class="px-4 py-2 rounded-lg border border-gray-300 text-sm text-gray-600">Cancel</button>
-+                </div>
-+              </form>
-+              <div class="table-scroll mt-4">
-+                <table class="w-full text-sm text-left">
-+                  <thead class="text-xs uppercase text-gray-500">
-+                    <tr class="border-b border-gray-200">
-+                      <th class="py-3 pr-4">Facility</th>
-+                      <th class="py-3 pr-4">Contact</th>
-+                      <th class="py-3 pr-4">Phone</th>
-+                      <th class="py-3 pr-4">Fax</th>
-+                      <th class="py-3 pr-4">Actions</th>
-+                    </tr>
-+                  </thead>
-+                  <tbody id="providerTable" class="divide-y divide-gray-100"></tbody>
-+                </table>
-+              </div>
-+            </div>
-+          </div>
-+
-+          <div id="page-templates" class="page hidden space-y-6">
-+            <div>
-+              <h3 class="text-xl font-semibold text-gray-800">Template Library</h3>
-+              <p class="text-sm text-gray-500">Customize the HIPAA release and medical request letter. Use placeholders to insert client/provider data.</p>
-+            </div>
-+            <div class="grid gap-6 lg:grid-cols-2">
-+              <div class="glass-panel border border-gray-200 rounded-xl p-6 space-y-4">
-+                <div class="flex items-center justify-between">
-+                  <h4 class="text-lg font-semibold text-gray-800">HIPAA Authorization Template</h4>
-+                  <button data-template="hipaa" class="reset-template text-sm text-[#7f1d1d] font-medium">Reset</button>
-+                </div>
-+                <textarea id="hipaaTemplate" rows="16" class="w-full border border-gray-300 rounded-lg px-3 py-2"></textarea>
-+                <p class="text-xs text-gray-500">Suggested placeholders: {{client.name}}, {{client.dob}}, {{client.address}}, {{client.claim}}, {{provider.name}}, {{provider.address}}</p>
-+              </div>
-+              <div class="glass-panel border border-gray-200 rounded-xl p-6 space-y-4">
-+                <div class="flex items-center justify-between">
-+                  <h4 class="text-lg font-semibold text-gray-800">Medical Records Request Template</h4>
-+                  <button data-template="letter" class="reset-template text-sm text-[#7f1d1d] font-medium">Reset</button>
-+                </div>
-+                <textarea id="letterTemplate" rows="16" class="w-full border border-gray-300 rounded-lg px-3 py-2"></textarea>
-+                <p class="text-xs text-gray-500">Additional placeholders: {{client.injuryDate}}, {{client.phone}}, {{provider.contact}}, {{provider.fax}}, {{today}}</p>
-+              </div>
-+            </div>
-+          </div>
-+
-+          <div id="page-accounts" class="page hidden space-y-6">
-+            <div>
-+              <h3 class="text-xl font-semibold text-gray-800">Account Administration</h3>
-+              <p class="text-sm text-gray-500">Manage internal portal accounts. Password resets require the security question answer.</p>
-+            </div>
-+            <div class="glass-panel border border-gray-200 rounded-xl p-6 space-y-4">
-+              <table class="w-full text-sm">
-+                <thead class="text-xs uppercase text-gray-500 border-b border-gray-200">
-+                  <tr>
-+                    <th class="py-3 pr-4 text-left">User</th>
-+                    <th class="py-3 pr-4 text-left">Email</th>
-+                    <th class="py-3 pr-4 text-left">Created</th>
-+                  </tr>
-+                </thead>
-+                <tbody id="accountTable" class="divide-y divide-gray-100"></tbody>
-+              </table>
-+            </div>
-+            <div class="text-sm text-gray-500">
-+              <p><strong>Security reminder:</strong> Accounts are stored locally within this browser. Export profiles periodically for safekeeping.</p>
-+            </div>
-+          </div>
-+        </section>
-+      </main>
++        </div>
++        <div class="table-actions">
++          <button type="button" class="edit">Edit</button>
++          <button type="button" class="delete">Delete</button>
++        </div>
++      </div>
++      <p class="template-preview"></p>
      </div>
++  </template>
  
 -    <!-- CLIENTS PAGE -->
 -    <div id="clients" class="page hidden">
@@ -378,23 +1938,13 @@ index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..34fddc782e2008fa314d13069fc0852f
 -          class="brand-bg text-white px-4 py-2 rounded">Save Client</button>
 -      </form>
 -      <ul id="clientList" class="list-disc pl-6 text-gray-700"></ul>
-+    <div id="mobileNav" class="lg:hidden fixed bottom-0 inset-x-0 bg-white border-t border-gray-200 shadow-lg flex justify-around py-3">
-+      <button class="nav-button flex flex-col items-center text-xs font-medium text-gray-600" data-page="dashboard">
-+        <span>Dashboard</span>
-+      </button>
-+      <button class="nav-button flex flex-col items-center text-xs font-medium text-gray-600" data-page="clients">
-+        <span>Clients</span>
-+      </button>
-+      <button class="nav-button flex flex-col items-center text-xs font-medium text-gray-600" data-page="providers">
-+        <span>Providers</span>
-+      </button>
-+      <button class="nav-button flex flex-col items-center text-xs font-medium text-gray-600" data-page="templates">
-+        <span>Templates</span>
-+      </button>
-+      <button class="nav-button flex flex-col items-center text-xs font-medium text-gray-600" data-page="accounts">
-+        <span>Accounts</span>
-+      </button>
++  <template id="activityEntryTemplate">
++    <div class="activity-entry">
++      <strong class="activity-title"></strong>
++      <span class="activity-meta"></span>
++      <p class="activity-body"></p>
      </div>
++  </template>
  
 -    <!-- PROVIDERS PAGE -->
 -    <div id="providers" class="page hidden">
@@ -418,102 +1968,31 @@ index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..34fddc782e2008fa314d13069fc0852f
 -        <input type="file" id="letterFile" accept=".doc,.docx,.wpd,.pdf" class="border p-2 w-full rounded" />
 -        <button type="button" onclick="saveTemplates()"
 -          class="brand-bg text-white px-4 py-2 rounded">Save Templates</button>
-+    <div id="authOverlay" class="fixed inset-0 bg-gray-900/70 backdrop-blur-sm flex items-center justify-center px-4">
-+      <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full grid lg:grid-cols-2 overflow-hidden">
-+        <div class="hidden lg:flex flex-col justify-between bg-[#7f1d1d] text-white p-8 space-y-6">
-+          <div>
-+            <p class="text-sm uppercase tracking-[0.3em] text-red-100">Secure Portal</p>
-+            <h2 class="text-2xl font-semibold mt-2">Welcome to the Records Automation Workspace</h2>
-+            <p class="text-sm text-red-100 mt-4 leading-relaxed">
-+              Use the seeded administrator credentials on your first visit:<br />
-+              <span class="font-semibold">Username:</span> admin<br />
-+              <span class="font-semibold">Password:</span> SecurePortal!23
-+            </p>
-+          </div>
-+          <div class="space-y-2 text-sm text-red-100">
-+            <p class="font-semibold">Portal Capabilities</p>
-+            <ul class="space-y-1 list-disc list-inside">
-+              <li>Centralize client &amp; provider profiles</li>
-+              <li>Manage HIPAA and request templates</li>
-+              <li>Generate merged correspondence PDFs in seconds</li>
-+            </ul>
-+          </div>
-+        </div>
-+        <div class="p-6 sm:p-8">
-+          <div class="flex rounded-xl border border-gray-200 overflow-hidden mb-6">
-+            <button class="tab flex-1 px-4 py-2 text-sm" data-auth="signIn">Sign In</button>
-+            <button class="tab flex-1 px-4 py-2 text-sm" data-auth="signUp">Create Account</button>
-+            <button class="tab flex-1 px-4 py-2 text-sm" data-auth="recover">Recover Access</button>
-+          </div>
++  <template id="timelineItemTemplate">
++    <div class="timeline-item">
++      <strong class="timeline-title"></strong>
++      <span class="timeline-meta"></span>
++      <p class="timeline-body"></p>
++    </div>
++  </template>
 +
-+          <form id="signInForm" class="space-y-4">
-+            <div>
-+              <label class="block text-sm font-medium text-gray-700">Username or Email</label>
-+              <input id="loginId" type="text" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" required />
-+            </div>
-+            <div>
-+              <label class="block text-sm font-medium text-gray-700">Password</label>
-+              <input id="loginPassword" type="password" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" required />
-+            </div>
-+            <button type="submit" class="w-full py-2 rounded-lg bg-[#7f1d1d] text-white font-semibold hover:bg-[#661313] transition">Access Portal</button>
-+          </form>
++  <template id="toastTemplate">
++    <div class="toast">
++      <strong class="toast-title"></strong>
++      <span class="toast-body"></span>
++    </div>
++  </template>
 +
-+          <form id="signUpForm" class="space-y-4 hidden">
-+            <div class="grid gap-4 md:grid-cols-2">
-+              <div>
-+                <label class="block text-sm font-medium text-gray-700">Full Name</label>
-+                <input id="signupName" type="text" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" required />
-+              </div>
-+              <div>
-+                <label class="block text-sm font-medium text-gray-700">Username</label>
-+                <input id="signupUsername" type="text" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" required />
-+              </div>
-+              <div>
-+                <label class="block text-sm font-medium text-gray-700">Email</label>
-+                <input id="signupEmail" type="email" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" required />
-+              </div>
-+              <div>
-+                <label class="block text-sm font-medium text-gray-700">Password</label>
-+                <input id="signupPassword" type="password" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" required />
-+              </div>
-+            </div>
-+            <div>
-+              <label class="block text-sm font-medium text-gray-700">Security Question</label>
-+              <input id="signupQuestion" type="text" placeholder="e.g., What is our case code?" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" required />
-+            </div>
-+            <div>
-+              <label class="block text-sm font-medium text-gray-700">Security Answer</label>
-+              <input id="signupAnswer" type="text" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" required />
-+            </div>
-+            <button type="submit" class="w-full py-2 rounded-lg bg-[#7f1d1d] text-white font-semibold hover:bg-[#661313] transition">Create Secure Account</button>
-+          </form>
-+
-+          <form id="recoverForm" class="space-y-6 hidden">
-+            <div class="space-y-3">
-+              <label class="block text-sm font-medium text-gray-700">Username or Email</label>
-+              <input id="recoverId" type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2" required />
-+            </div>
-+            <div id="recoveryStep" class="space-y-4 hidden">
-+              <p class="text-sm text-gray-600">Answer the security question to reset the password.</p>
-+              <div>
-+                <label class="block text-sm font-medium text-gray-700">Security Question</label>
-+                <p id="recoveryQuestion" class="mt-1 text-sm text-gray-900 font-medium"></p>
-+              </div>
-+              <div>
-+                <label class="block text-sm font-medium text-gray-700">Security Answer</label>
-+                <input id="recoveryAnswer" type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2" />
-+              </div>
-+              <div>
-+                <label class="block text-sm font-medium text-gray-700">New Password</label>
-+                <input id="recoveryPassword" type="password" class="w-full border border-gray-300 rounded-lg px-3 py-2" />
-+              </div>
-+            </div>
-+            <button type="submit" class="w-full py-2 rounded-lg bg-[#7f1d1d] text-white font-semibold hover:bg-[#661313] transition">Continue</button>
-+            <p id="recoveryStatus" class="text-sm text-gray-600"></p>
-+          </form>
-+        </div>
++  <dialog id="checklistDialog">
++    <div class="panel" style="max-width:720px;">
++      <h2>Compliance Checklist</h2>
++      <div class="activity-log" id="checklistItems"></div>
++      <div class="status-bar">
++        <span>Review this checklist before sending any packet.</span>
++        <button class="primary-btn" id="closeChecklist">Close</button>
        </div>
      </div>
++  </dialog>
  
 -    <!-- ===== SETTINGS PAGE ===== -->
 -    <div id="settings" class="page hidden">
@@ -522,12 +2001,54 @@ index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..34fddc782e2008fa314d13069fc0852f
 -      <div class="space-y-2">
 -        <button class="brand-bg text-white px-4 py-2 rounded" onclick="logout()">Log Out</button>
 -        <button class="bg-gray-600 text-white px-4 py-2 rounded" onclick="clearAll()">Clear All Local Data</button>
-+    <template id="rowActions">
-+      <div class="flex gap-2">
-+        <button class="edit px-3 py-1 text-xs font-medium rounded-lg bg-amber-100 text-amber-800">Edit</button>
-+        <button class="delete px-3 py-1 text-xs font-medium rounded-lg bg-rose-100 text-rose-700">Delete</button>
++  <dialog id="quickAddDialog">
++    <div class="panel" style="max-width:680px;">
++      <h2>Quick Add</h2>
++      <p class="lead">Capture a client and provider simultaneously to accelerate packet creation.</p>
++      <div class="grid-two">
++        <form class="form-card" id="quickAddClient">
++          <h3>Client</h3>
++          <div class="input-field">
++            <label for="quickClientName">Full Name</label>
++            <input type="text" id="quickClientName" required />
++          </div>
++          <div class="input-field">
++            <label for="quickClientEmail">Email</label>
++            <input type="email" id="quickClientEmail" required />
++          </div>
++          <div class="input-field">
++            <label for="quickClientPhone">Phone</label>
++            <input type="tel" id="quickClientPhone" required />
++          </div>
++          <div class="input-field">
++            <label for="quickClientAuthorization">Authorization Date</label>
++            <input type="date" id="quickClientAuthorization" />
++          </div>
++        </form>
++        <form class="form-card" id="quickAddProvider">
++          <h3>Provider</h3>
++          <div class="input-field">
++            <label for="quickProviderName">Name</label>
++            <input type="text" id="quickProviderName" required />
++          </div>
++          <div class="input-field">
++            <label for="quickProviderFax">Fax</label>
++            <input type="text" id="quickProviderFax" />
++          </div>
++          <div class="input-field">
++            <label for="quickProviderAddress">Address</label>
++            <textarea id="quickProviderAddress" rows="3" required></textarea>
++          </div>
++        </form>
++      </div>
++      <div class="status-bar">
++        <span id="quickAddStatus">Provide at least client and provider names to save.</span>
++        <div>
++          <button class="secondary-btn" id="cancelQuickAdd">Cancel</button>
++          <button class="primary-btn" id="saveQuickAdd">Save Both</button>
++        </div>
        </div>
--    </div>
+     </div>
 -  </section>
 -</main>
 -
@@ -746,647 +2267,1463 @@ index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..34fddc782e2008fa314d13069fc0852f
 -
 -generateBtn.addEventListener('click', generatePDF);
 -</script>
--</body>
-+    </template>
++  </dialog>
 +
-+    <script>
-+      const STORAGE_KEYS = {
-+        accounts: 'mrc_accounts',
-+        activeUser: 'mrc_active_user',
-+        clients: 'mrc_clients',
-+        providers: 'mrc_providers',
-+        templates: 'mrc_templates'
-+      };
++  <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
++  <script>
++    const $ = (selector, scope = document) => scope.querySelector(selector);
++    const $$ = (selector, scope = document) => Array.from(scope.querySelectorAll(selector));
 +
-+      const DEFAULT_ADMIN = {
-+        username: 'admin',
-+        name: 'Administrator',
-+        email: 'admin@blaszkowlegal.com',
-+        password: 'SecurePortal!23',
-+        securityQuestion: 'What word unlocks the records workspace?',
-+        securityAnswer: 'Blaszkow',
-+        createdAt: new Date().toISOString()
-+      };
-+
-+      const DEFAULT_TEMPLATES = {
-+        hipaa: `HIPAA AUTHORIZATION\n\nI, {{client.name}}, born {{client.dob}}, authorize the release of my complete medical records to Blaszkow Legal PLLC.\n\nRecords Requested From:\n{{provider.name}}\n{{provider.address}}\nPhone: {{provider.phone}} | Fax: {{provider.fax}}\n\nPurpose: Legal representation regarding claim {{client.claim}} stemming from injuries on {{client.injuryDate}}.\n\nPlease forward certified copies of the requested records to:\nBlaszkow Legal PLLC\n{{lawFirmAddress}}\nFax: (703) 879-5155\n\nClient Signature: ____________________________    Date: __________________\n`,
-+        letter: `{{today}}\n\n{{provider.name}}\n{{provider.address}}\nFax: {{provider.fax}}\n\nRE: {{client.name}} | DOB {{client.dob}} | Claim {{client.claim}}\n\nTo Whom It May Concern,\n\nPlease provide complete medical records, billing ledgers, imaging, and diagnostic studies for {{client.name}} related to the injuries sustained on {{client.injuryDate}}. Enclosed is a signed HIPAA authorization.\n\nDeliver the records to Blaszkow Legal PLLC, attention Records Department. For questions call {{lawFirmPhone}}.\n\nThank you for your prompt attention.\n\nSincerely,\nBlaszkow Legal PLLC\n{{lawFirmAddress}}\n{{lawFirmPhone}}
-+`
-+      };
-+
-+      const FIRM_PROFILE = {
-+        lawFirmAddress: '700 N Fairfax St, Suite 201, Alexandria, VA 22314',
-+        lawFirmPhone: '(703) 879-5910'
-+      };
-+
-+      const state = {
-+        accounts: [],
-+        activeUser: null,
-+        clients: [],
-+        providers: [],
-+        templates: { ...DEFAULT_TEMPLATES }
-+      };
-+
-+      document.addEventListener('DOMContentLoaded', () => {
-+        bootstrapStorage();
-+        loadState();
-+        setupNavigation();
-+        bindAuth();
-+        bindClientForm();
-+        bindProviderForm();
-+        bindTemplateHandlers();
-+        bindDashboard();
-+        renderAll();
++    const formatDate = (value) => {
++      if (!value) return 'Not specified';
++      const date = new Date(value);
++      return date.toLocaleDateString(undefined, {
++        year: 'numeric',
++        month: 'short',
++        day: 'numeric',
 +      });
++    };
 +
-+      function bootstrapStorage() {
-+        const storedAccounts = JSON.parse(localStorage.getItem(STORAGE_KEYS.accounts) || '[]');
-+        if (!storedAccounts.length) {
-+          localStorage.setItem(STORAGE_KEYS.accounts, JSON.stringify([DEFAULT_ADMIN]));
-+        }
-+        const storedTemplates = JSON.parse(localStorage.getItem(STORAGE_KEYS.templates) || 'null');
-+        if (!storedTemplates) {
-+          localStorage.setItem(STORAGE_KEYS.templates, JSON.stringify(DEFAULT_TEMPLATES));
-+        }
++    const formatPhone = (value) => {
++      if (!value) return '—';
++      const digits = value.replace(/\D/g, '');
++      if (digits.length === 10) {
++        return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
 +      }
++      return value;
++    };
 +
-+      function loadState() {
-+        state.accounts = JSON.parse(localStorage.getItem(STORAGE_KEYS.accounts) || '[]');
-+        state.clients = JSON.parse(localStorage.getItem(STORAGE_KEYS.clients) || '[]');
-+        state.providers = JSON.parse(localStorage.getItem(STORAGE_KEYS.providers) || '[]');
-+        state.templates = {
-+          ...DEFAULT_TEMPLATES,
-+          ...JSON.parse(localStorage.getItem(STORAGE_KEYS.templates) || '{}')
++    const randomId = () => Math.random().toString(36).slice(2, 10);
++
++    const debounce = (fn, wait = 250) => {
++      let timeout;
++      return (...args) => {
++        clearTimeout(timeout);
++        timeout = setTimeout(() => fn(...args), wait);
++      };
++    };
++
++    class LocalDatabase {
++      constructor(namespace) {
++        this.namespace = namespace;
++        this.state = {
++          users: [],
++          session: null,
++          clients: [],
++          providers: [],
++          templates: [],
++          activity: [],
++          settings: {
++            organization: 'Medical Correspondence Group',
++            signature: 'Sincerely,\nMedical Correspondence Team',
++            placeholderDelimiter: ['{{', '}}'],
++            activityRetention: 90,
++          },
 +        };
-+        const active = localStorage.getItem(STORAGE_KEYS.activeUser);
-+        state.activeUser = active ? JSON.parse(active) : null;
++        this.load();
 +      }
 +
-+      function persist(key, value) {
-+        localStorage.setItem(key, JSON.stringify(value));
++      load() {
++        try {
++          const raw = localStorage.getItem(this.namespace);
++          if (raw) {
++            const parsed = JSON.parse(raw);
++            this.state = Object.assign(this.state, parsed);
++          }
++        } catch (error) {
++          console.error('Failed to load workspace state', error);
++        }
++        if (!this.state.users.length) {
++          this.state.users.push({
++            id: randomId(),
++            name: 'Administrator',
++            email: 'admin@workspace.test',
++            password: 'SecurePortal!24',
++            role: 'Administrator',
++            createdAt: new Date().toISOString(),
++          });
++        }
++        if (!this.state.activity.length) {
++          this.log('Workspace initialized', 'System', 'Default data prepared for first-time use.');
++        }
++        this.save();
 +      }
 +
-+      function renderAll() {
-+        updateCounts();
-+        renderClients();
-+        renderProviders();
-+        renderTemplates();
-+        renderAccounts();
-+        renderUser();
-+        showPage(state.activeUser ? 'dashboard' : 'dashboard');
-+        updatePreview();
-+        toggleAuthOverlay(Boolean(state.activeUser));
++      save() {
++        try {
++          localStorage.setItem(this.namespace, JSON.stringify(this.state));
++        } catch (error) {
++          console.error('Failed to persist workspace state', error);
++        }
 +      }
 +
-+      function updateCounts() {
-+        document.getElementById('clientCount').textContent = state.clients.length;
-+        document.getElementById('providerCount').textContent = state.providers.length;
-+        document.getElementById('templateCount').textContent = Object.values(state.templates).filter(Boolean).length;
-+      }
-+
-+      function renderUser() {
-+        const active = state.activeUser;
-+        document.getElementById('activeUser').textContent = active ? `${active.name} (${active.username})` : 'Not signed in';
-+        document.getElementById('logoutBtn').classList.toggle('opacity-50', !active);
-+        document.getElementById('logoutBtn').disabled = !active;
-+      }
-+
-+      function renderClients() {
-+        const select = document.getElementById('dashClient');
-+        select.innerHTML = '<option value="">Select client</option>';
-+        state.clients.forEach((client, index) => {
-+          const option = document.createElement('option');
-+          option.value = index;
-+          option.textContent = `${client.name} (${client.claim || 'No claim'})`;
-+          select.appendChild(option);
++      log(title, actor, body) {
++        this.state.activity.unshift({
++          id: randomId(),
++          title,
++          actor,
++          body,
++          timestamp: new Date().toISOString(),
 +        });
-+        const tbody = document.getElementById('clientTable');
-+        tbody.innerHTML = '';
-+        state.clients.forEach((client, index) => {
-+          const tr = document.createElement('tr');
-+          tr.className = 'hover:bg-gray-50';
-+          tr.innerHTML = `
-+            <td class="py-3 pr-4">
-+              <p class="font-medium text-gray-900">${client.name || ''}</p>
-+              <p class="text-xs text-gray-500">${client.email || ''}</p>
-+            </td>
-+            <td class="py-3 pr-4 text-gray-600">${formatDate(client.dob)}</td>
-+            <td class="py-3 pr-4 text-gray-600">${client.claim || ''}</td>
-+            <td class="py-3 pr-4 text-gray-600">${formatDate(client.injuryDate)}</td>
-+            <td class="py-3 pr-4">
-+              <div class="flex gap-2">
-+                <button data-index="${index}" class="client-edit px-3 py-1 text-xs font-medium rounded-lg bg-amber-100 text-amber-800">Edit</button>
-+                <button data-index="${index}" class="client-delete px-3 py-1 text-xs font-medium rounded-lg bg-rose-100 text-rose-700">Delete</button>
-+              </div>
-+            </td>`;
-+          tbody.appendChild(tr);
++        this.save();
++      }
++
++      get users() {
++        return this.state.users;
++      }
++
++      set session(value) {
++        this.state.session = value;
++        this.save();
++      }
++
++      get session() {
++        return this.state.session;
++      }
++
++      upsertUser(user) {
++        const existing = this.state.users.find((entry) => entry.email === user.email);
++        if (existing) {
++          Object.assign(existing, user);
++        } else {
++          this.state.users.push(Object.assign({ id: randomId(), createdAt: new Date().toISOString() }, user));
++        }
++        this.save();
++      }
++
++      get clients() {
++        return this.state.clients;
++      }
++
++      set clients(value) {
++        this.state.clients = value;
++        this.save();
++      }
++
++      get providers() {
++        return this.state.providers;
++      }
++
++      set providers(value) {
++        this.state.providers = value;
++        this.save();
++      }
++
++      get templates() {
++        return this.state.templates;
++      }
++
++      set templates(value) {
++        this.state.templates = value;
++        this.save();
++      }
++
++      get settings() {
++        return this.state.settings;
++      }
++
++      set settings(value) {
++        this.state.settings = value;
++        this.save();
++      }
++    }
++
++    class ToastManager {
++      constructor(container) {
++        this.container = container;
++      }
++
++      show(title, message, timeout = 4000) {
++        const template = $('#toastTemplate');
++        const toast = template.content.firstElementChild.cloneNode(true);
++        $('.toast-title', toast).textContent = title;
++        $('.toast-body', toast).textContent = message;
++        this.container.appendChild(toast);
++        setTimeout(() => {
++          toast.classList.add('hide');
++          toast.addEventListener('transitionend', () => toast.remove(), { once: true });
++        }, timeout);
++      }
++    }
++
++    class ActivityRenderer {
++      constructor({ timelineFeed, activityFeed, packetActivity, securityActions, complianceChecklist, checklistItems }) {
++        this.timelineFeed = timelineFeed;
++        this.activityFeed = activityFeed;
++        this.packetActivity = packetActivity;
++        this.securityActions = securityActions;
++        this.complianceChecklist = complianceChecklist;
++        this.checklistItems = checklistItems;
++      }
++
++      renderTimeline(entries) {
++        this.timelineFeed.innerHTML = '';
++        const template = $('#timelineItemTemplate');
++        entries.slice(0, 8).forEach((entry) => {
++          const node = template.content.firstElementChild.cloneNode(true);
++          $('.timeline-title', node).textContent = entry.title;
++          $('.timeline-meta', node).textContent = new Date(entry.timestamp).toLocaleString();
++          $('.timeline-body', node).textContent = entry.body;
++          this.timelineFeed.appendChild(node);
 +        });
-+        updateGenerateState();
 +      }
 +
-+      function renderProviders() {
-+        const select = document.getElementById('dashProvider');
-+        select.innerHTML = '<option value="">Select provider</option>';
-+        state.providers.forEach((provider, index) => {
-+          const option = document.createElement('option');
-+          option.value = index;
-+          option.textContent = provider.name;
-+          select.appendChild(option);
-+        });
-+        const tbody = document.getElementById('providerTable');
-+        tbody.innerHTML = '';
-+        state.providers.forEach((provider, index) => {
-+          const tr = document.createElement('tr');
-+          tr.className = 'hover:bg-gray-50';
-+          tr.innerHTML = `
-+            <td class="py-3 pr-4">
-+              <p class="font-medium text-gray-900">${provider.name || ''}</p>
-+              <p class="text-xs text-gray-500">${provider.address || ''}</p>
-+            </td>
-+            <td class="py-3 pr-4 text-gray-600">${provider.contact || ''}</td>
-+            <td class="py-3 pr-4 text-gray-600">${provider.phone || ''}</td>
-+            <td class="py-3 pr-4 text-gray-600">${provider.fax || ''}</td>
-+            <td class="py-3 pr-4">
-+              <div class="flex gap-2">
-+                <button data-index="${index}" class="provider-edit px-3 py-1 text-xs font-medium rounded-lg bg-amber-100 text-amber-800">Edit</button>
-+                <button data-index="${index}" class="provider-delete px-3 py-1 text-xs font-medium rounded-lg bg-rose-100 text-rose-700">Delete</button>
-+              </div>
-+            </td>`;
-+          tbody.appendChild(tr);
-+        });
-+        updateGenerateState();
-+      }
-+
-+      function updateGenerateState() {
-+        const button = document.getElementById('generateBtn');
-+        const hasRecords = state.clients.length > 0 && state.providers.length > 0;
-+        button.disabled = !hasRecords;
-+        document.getElementById('generateStatus').textContent = hasRecords
-+          ? 'Select records and choose documents to generate.'
-+          : 'Add at least one client and provider to enable PDF generation.';
-+      }
-+
-+      function renderTemplates() {
-+        document.getElementById('hipaaTemplate').value = state.templates.hipaa || '';
-+        document.getElementById('letterTemplate').value = state.templates.letter || '';
-+      }
-+
-+      function renderAccounts() {
-+        const tbody = document.getElementById('accountTable');
-+        tbody.innerHTML = '';
-+        state.accounts.forEach(account => {
-+          const tr = document.createElement('tr');
-+          tr.innerHTML = `
-+            <td class="py-3 pr-4 text-gray-900 font-medium">${account.name} (${account.username})</td>
-+            <td class="py-3 pr-4 text-gray-600">${account.email}</td>
-+            <td class="py-3 pr-4 text-gray-600">${formatDate(account.createdAt)}</td>`;
-+          tbody.appendChild(tr);
++      renderActivity(entries) {
++        this.activityFeed.innerHTML = '';
++        const template = $('#activityEntryTemplate');
++        entries.forEach((entry) => {
++          const node = template.content.firstElementChild.cloneNode(true);
++          $('.activity-title', node).textContent = `${entry.title} — ${entry.actor}`;
++          $('.activity-meta', node).textContent = new Date(entry.timestamp).toLocaleString();
++          $('.activity-body', node).textContent = entry.body;
++          this.activityFeed.appendChild(node);
 +        });
 +      }
 +
-+      function toggleAuthOverlay(isAuthenticated) {
-+        document.getElementById('authOverlay').classList.toggle('hidden', isAuthenticated);
++      renderPacketActivity(entries) {
++        this.packetActivity.innerHTML = '';
++        entries
++          .filter((entry) => entry.title.includes('Packet'))
++          .slice(0, 10)
++          .forEach((entry) => {
++            const node = $('#activityEntryTemplate').content.firstElementChild.cloneNode(true);
++            $('.activity-title', node).textContent = entry.title;
++            $('.activity-meta', node).textContent = `${entry.actor} • ${new Date(entry.timestamp).toLocaleString()}`;
++            $('.activity-body', node).textContent = entry.body;
++            this.packetActivity.appendChild(node);
++          });
 +      }
 +
-+      function setupNavigation() {
-+        const buttons = document.querySelectorAll('.nav-button');
-+        buttons.forEach(button => {
++      renderSecurity(users) {
++        this.securityActions.innerHTML = '';
++        users.forEach((user) => {
++          const node = document.createElement('div');
++          node.className = 'activity-entry';
++          node.innerHTML = `<strong>${user.name}</strong><span>${user.email}</span><p>Role: ${user.role}</p>`;
++          this.securityActions.appendChild(node);
++        });
++      }
++
++      renderChecklist(items) {
++        this.complianceChecklist.innerHTML = '';
++        items.forEach((item) => {
++          const node = document.createElement('div');
++          node.className = 'activity-entry';
++          node.innerHTML = `<strong>${item.title}</strong><span>${item.description}</span>`;
++          this.complianceChecklist.appendChild(node);
++        });
++        this.checklistItems.innerHTML = '';
++        items.forEach((item) => {
++          const node = document.createElement('div');
++          node.className = 'activity-entry';
++          node.innerHTML = `<strong>${item.title}</strong><p>${item.description}</p>`;
++          this.checklistItems.appendChild(node);
++        });
++      }
++    }
++    class AuthController {
++      constructor(database, { overlay, tabs, forms, hint, nameTarget, emailTarget, avatarTarget }) {
++        this.database = database;
++        this.overlay = overlay;
++        this.tabs = tabs;
++        this.forms = forms;
++        this.hint = hint;
++        this.nameTarget = nameTarget;
++        this.emailTarget = emailTarget;
++        this.avatarTarget = avatarTarget;
++        this.activeTab = 'sign-in';
++        this.bindEvents();
++        this.prefill();
++      }
++
++      bindEvents() {
++        this.tabs.forEach((tab) => {
++          tab.addEventListener('click', () => this.switchTab(tab.dataset.authTab));
++        });
++
++        $('#signInForm').addEventListener('submit', (event) => {
++          event.preventDefault();
++          const email = $('#signInEmail').value.trim();
++          const password = $('#signInPassword').value;
++          const user = this.database.users.find((entry) => entry.email === email && entry.password === password);
++          if (user) {
++            this.database.session = {
++              userId: user.id,
++              signedInAt: new Date().toISOString(),
++            };
++            this.overlay.classList.add('hidden');
++            this.nameTarget.textContent = user.name;
++            this.emailTarget.textContent = user.email;
++            this.avatarTarget.textContent = user.name
++              .split(' ')
++              .map((part) => part[0] || '')
++              .join('')
++              .slice(0, 2)
++              .toUpperCase();
++            workspace.toast.show('Authenticated', 'Workspace unlocked. Welcome back!');
++            workspace.refresh();
++          } else {
++            workspace.toast.show('Authentication failed', 'Check your email and password, then try again.');
++          }
++        });
++
++        $('#createAccountForm').addEventListener('submit', (event) => {
++          event.preventDefault();
++          const name = $('#createFullName').value.trim();
++          const email = $('#createEmail').value.trim();
++          const password = $('#createPassword').value;
++          const confirm = $('#createConfirmPassword').value;
++          if (!name || !email || !password) {
++            workspace.toast.show('Missing fields', 'Complete all account fields to proceed.');
++            return;
++          }
++          if (password !== confirm) {
++            workspace.toast.show('Password mismatch', 'Ensure password and confirmation match.');
++            return;
++          }
++          if (password.length < 8 || !/[0-9]/.test(password) || !/[A-Za-z]/.test(password)) {
++            workspace.toast.show('Weak password', 'Include at least 8 characters with letters and numbers.');
++            return;
++          }
++          if (this.database.users.some((entry) => entry.email === email)) {
++            workspace.toast.show('Account exists', 'An account already exists for this email.');
++            return;
++          }
++          this.database.upsertUser({ name, email, password, role: 'Staff', createdAt: new Date().toISOString() });
++          this.database.log('Account created', name, `${name} established a new workspace account.`);
++          workspace.toast.show('Account created', 'Sign in with your new credentials.');
++          this.switchTab('sign-in');
++          $('#signInEmail').value = email;
++        });
++
++        $('#recoverPasswordForm').addEventListener('submit', (event) => {
++          event.preventDefault();
++          const email = $('#recoverEmail').value.trim();
++          const user = this.database.users.find((entry) => entry.email === email);
++          if (!user) {
++            workspace.toast.show('Not found', 'No account exists with that email.');
++            return;
++          }
++          const token = `RESET-${randomId().toUpperCase()}`;
++          this.database.log('Password reset issued', user.name, `Temporary token: ${token}`);
++          workspace.toast.show('Reset token generated', `Check the Activity Journal for token ${token}.`);
++          this.switchTab('sign-in');
++        });
++
++        $('#lookupUsernameForm').addEventListener('submit', (event) => {
++          event.preventDefault();
++          const name = $('#lookupName').value.trim().toLowerCase();
++          const user = this.database.users.find((entry) => entry.name.toLowerCase() === name);
++          if (!user) {
++            workspace.toast.show('No match', 'No username found for that name.');
++            return;
++          }
++          workspace.toast.show('Username located', `The email for ${user.name} is ${user.email}.`);
++          this.switchTab('sign-in');
++        });
++      }
++
++      switchTab(tab) {
++        this.activeTab = tab;
++        this.tabs.forEach((btn) => btn.classList.toggle('active', btn.dataset.authTab === tab));
++        this.forms.forEach((form) => form.classList.toggle('hidden', form.dataset.authPanel !== tab));
++      }
++
++      prefill() {
++        $('#signInEmail').value = 'admin@workspace.test';
++        $('#signInPassword').value = 'SecurePortal!24';
++      }
++    }
++
++    class ClientController {
++      constructor(database, templates) {
++        this.database = database;
++        this.templates = templates;
++        this.form = $('#clientForm');
++        this.table = $('#clientTable');
++        this.emptyState = $('#clientEmptyState');
++        this.searchInput = $('#clientSearch');
++        this.viewCount = $('#clientViewCount');
++        this.statusIndicator = $('#clientFormStatus');
++        this.bindEvents();
++        this.render();
++      }
++
++      bindEvents() {
++        this.form.addEventListener('submit', (event) => {
++          event.preventDefault();
++          const formData = new FormData(this.form);
++          const entry = Object.fromEntries(formData.entries());
++          const required = ['clientFirstName', 'clientLastName', 'clientEmail', 'clientPhone', 'clientDob', 'clientAddress'];
++          for (const field of required) {
++            if (!entry[field]) {
++              this.statusIndicator.textContent = 'Complete all required fields before saving.';
++              return;
++            }
++          }
++          const id = this.form.dataset.editing || randomId();
++          const client = {
++            id,
++            firstName: entry.clientFirstName.trim(),
++            lastName: entry.clientLastName.trim(),
++            email: entry.clientEmail.trim(),
++            phone: entry.clientPhone.trim(),
++            dob: entry.clientDob,
++            identifier: entry.clientIdentifier || '',
++            address: entry.clientAddress.trim(),
++            notes: entry.clientNotes || '',
++            authorizationDate: entry.clientAuthorizationDate || '',
++            authorizationScope: entry.clientAuthorizationScope || '',
++            attorney: entry.clientAttorney || '',
++            status: entry.clientStatus,
++            insurance: entry.clientInsurance || '',
++            policy: entry.clientPolicy || '',
++            injuryDate: entry.clientInjuryDate || '',
++            preferredContact: entry.clientPreferredContact,
++            createdAt: new Date().toISOString(),
++          };
++          const clients = this.database.clients.filter((item) => item.id !== id);
++          clients.push(client);
++          this.database.clients = clients;
++          this.database.log('Client saved', workspace.currentUserName(), `${client.firstName} ${client.lastName} profile saved.`);
++          workspace.toast.show('Client saved', `${client.firstName} ${client.lastName} is ready for requests.`);
++          this.form.reset();
++          delete this.form.dataset.editing;
++          this.statusIndicator.textContent = 'Client saved successfully.';
++          this.render();
++          workspace.refresh();
++        });
++
++        this.searchInput.addEventListener(
++          'input',
++          debounce(() => this.render())
++        );
++      }
++
++      render() {
++        const query = this.searchInput.value?.toLowerCase() || '';
++        const clients = this.database.clients
++          .slice()
++          .sort((a, b) => a.lastName.localeCompare(b.lastName))
++          .filter((client) => {
++            if (!query) return true;
++            const haystack = [
++              `${client.firstName} ${client.lastName}`,
++              client.email,
++              client.phone,
++              client.attorney,
++              client.status,
++            ]
++              .join(' ')
++              .toLowerCase();
++            return haystack.includes(query);
++          });
++        this.table.innerHTML = '';
++        const template = $('#clientRowTemplate');
++        clients.forEach((client) => {
++          const row = template.content.firstElementChild.cloneNode(true);
++          $('.client-name', row).textContent = `${client.firstName} ${client.lastName}`;
++          $('.client-contact', row).textContent = `${client.email} • ${formatPhone(client.phone)}`;
++          $('.client-status', row).textContent = client.status;
++          $('.client-attorney', row).textContent = client.attorney || '—';
++          $('.client-authorization', row).textContent = client.authorizationDate
++            ? `${formatDate(client.authorizationDate)} (${client.authorizationScope || 'General'})`
++            : 'Not on file';
++          $('.edit', row).addEventListener('click', () => this.edit(client.id));
++          $('.delete', row).addEventListener('click', () => this.remove(client.id));
++          this.table.appendChild(row);
++        });
++        this.emptyState.classList.toggle('hidden', clients.length > 0);
++        this.viewCount.textContent = `${clients.length} stored`;
++        $('#clientCount').textContent = `${clients.length} Clients`;
++        $('#clientProgress').style.width = `${Math.min(100, clients.length * 10)}%`;
++      }
++
++      edit(id) {
++        const client = this.database.clients.find((entry) => entry.id === id);
++        if (!client) return;
++        this.form.clientFirstName.value = client.firstName;
++        this.form.clientLastName.value = client.lastName;
++        this.form.clientEmail.value = client.email;
++        this.form.clientPhone.value = client.phone;
++        this.form.clientDob.value = client.dob;
++        this.form.clientIdentifier.value = client.identifier;
++        this.form.clientAddress.value = client.address;
++        this.form.clientNotes.value = client.notes;
++        this.form.clientAuthorizationDate.value = client.authorizationDate;
++        this.form.clientAuthorizationScope.value = client.authorizationScope;
++        this.form.clientAttorney.value = client.attorney;
++        this.form.clientStatus.value = client.status;
++        this.form.clientInsurance.value = client.insurance;
++        this.form.clientPolicy.value = client.policy;
++        this.form.clientInjuryDate.value = client.injuryDate;
++        this.form.clientPreferredContact.value = client.preferredContact;
++        this.form.dataset.editing = client.id;
++        this.statusIndicator.textContent = 'Editing existing client. Save to apply changes.';
++      }
++
++      remove(id) {
++        const client = this.database.clients.find((entry) => entry.id === id);
++        if (!client) return;
++        if (!confirm(`Remove client ${client.firstName} ${client.lastName}?`)) return;
++        this.database.clients = this.database.clients.filter((entry) => entry.id !== id);
++        this.database.log('Client removed', workspace.currentUserName(), `${client.firstName} ${client.lastName} removed.`);
++        workspace.toast.show('Client removed', `${client.firstName} ${client.lastName} deleted.`);
++        this.render();
++        workspace.refresh();
++      }
++    }
++
++    class ProviderController {
++      constructor(database) {
++        this.database = database;
++        this.form = $('#providerForm');
++        this.table = $('#providerTable');
++        this.emptyState = $('#providerEmptyState');
++        this.searchInput = $('#providerSearch');
++        this.viewCount = $('#providerViewCount');
++        this.statusIndicator = $('#providerFormStatus');
++        this.bindEvents();
++        this.render();
++      }
++
++      bindEvents() {
++        this.form.addEventListener('submit', (event) => {
++          event.preventDefault();
++          const formData = new FormData(this.form);
++          const entry = Object.fromEntries(formData.entries());
++          const required = ['providerName', 'providerAddress'];
++          for (const field of required) {
++            if (!entry[field]) {
++              this.statusIndicator.textContent = 'Name and address are required.';
++              return;
++            }
++          }
++          const id = this.form.dataset.editing || randomId();
++          const provider = {
++            id,
++            name: entry.providerName.trim(),
++            type: entry.providerType,
++            email: entry.providerEmail || '',
++            phone: entry.providerPhone || '',
++            fax: entry.providerFax || '',
++            address: entry.providerAddress.trim(),
++            attention: entry.providerAttention || '',
++            processingTime: Number(entry.providerProcessingTime) || 0,
++            requirements: entry.providerRequirements || '',
++            delivery: entry.providerDelivery,
++            status: entry.providerStatus,
++            portal: entry.providerPortal || '',
++            notes: entry.providerNotes || '',
++            createdAt: new Date().toISOString(),
++          };
++          const providers = this.database.providers.filter((item) => item.id !== id);
++          providers.push(provider);
++          this.database.providers = providers;
++          this.database.log('Provider saved', workspace.currentUserName(), `${provider.name} profile saved.`);
++          workspace.toast.show('Provider saved', `${provider.name} is ready for requests.`);
++          this.form.reset();
++          delete this.form.dataset.editing;
++          this.statusIndicator.textContent = 'Provider saved successfully.';
++          this.render();
++          workspace.refresh();
++        });
++
++        this.searchInput.addEventListener(
++          'input',
++          debounce(() => this.render())
++        );
++      }
++
++      render() {
++        const query = this.searchInput.value?.toLowerCase() || '';
++        const providers = this.database.providers
++          .slice()
++          .sort((a, b) => a.name.localeCompare(b.name))
++          .filter((provider) => {
++            if (!query) return true;
++            const haystack = [
++              provider.name,
++              provider.email,
++              provider.fax,
++              provider.delivery,
++              provider.status,
++              provider.requirements,
++            ]
++              .join(' ')
++              .toLowerCase();
++            return haystack.includes(query);
++          });
++        this.table.innerHTML = '';
++        const template = $('#providerRowTemplate');
++        providers.forEach((provider) => {
++          const row = template.content.firstElementChild.cloneNode(true);
++          $('.provider-name', row).textContent = provider.name;
++          const contacts = [provider.email, formatPhone(provider.phone), provider.fax ? `Fax: ${provider.fax}` : '']
++            .filter(Boolean)
++            .join(' • ');
++          $('.provider-contact', row).textContent = contacts || '—';
++          $('.provider-delivery', row).textContent = provider.delivery;
++          $('.provider-processing', row).textContent = provider.processingTime ? `${provider.processingTime} days` : '—';
++          $('.provider-status', row).textContent = provider.status;
++          $('.edit', row).addEventListener('click', () => this.edit(provider.id));
++          $('.delete', row).addEventListener('click', () => this.remove(provider.id));
++          this.table.appendChild(row);
++        });
++        this.emptyState.classList.toggle('hidden', providers.length > 0);
++        this.viewCount.textContent = `${providers.length} stored`;
++        $('#providerCount').textContent = `${providers.length} Providers`;
++        $('#providerProgress').style.width = `${Math.min(100, providers.length * 10)}%`;
++      }
++
++      edit(id) {
++        const provider = this.database.providers.find((entry) => entry.id === id);
++        if (!provider) return;
++        this.form.providerName.value = provider.name;
++        this.form.providerType.value = provider.type;
++        this.form.providerEmail.value = provider.email;
++        this.form.providerPhone.value = provider.phone;
++        this.form.providerFax.value = provider.fax;
++        this.form.providerAddress.value = provider.address;
++        this.form.providerAttention.value = provider.attention;
++        this.form.providerProcessingTime.value = provider.processingTime;
++        this.form.providerRequirements.value = provider.requirements;
++        this.form.providerDelivery.value = provider.delivery;
++        this.form.providerStatus.value = provider.status;
++        this.form.providerPortal.value = provider.portal;
++        this.form.providerNotes.value = provider.notes;
++        this.form.dataset.editing = provider.id;
++        this.statusIndicator.textContent = 'Editing existing provider. Save to apply changes.';
++      }
++
++      remove(id) {
++        const provider = this.database.providers.find((entry) => entry.id === id);
++        if (!provider) return;
++        if (!confirm(`Remove provider ${provider.name}?`)) return;
++        this.database.providers = this.database.providers.filter((entry) => entry.id !== id);
++        this.database.log('Provider removed', workspace.currentUserName(), `${provider.name} removed.`);
++        workspace.toast.show('Provider removed', `${provider.name} deleted.`);
++        this.render();
++        workspace.refresh();
++      }
++    }
++    class TemplateController {
++      constructor(database) {
++        this.database = database;
++        this.form = $('#templateForm');
++        this.list = $('#templateList');
++        this.emptyState = $('#templateEmptyState');
++        this.searchInput = $('#templateSearch');
++        this.viewCount = $('#templateViewCount');
++        this.statusIndicator = $('#templateFormStatus');
++        this.toolbarButtons = $$('.editor-toolbar button');
++        this.resetButton = $('#resetTemplate');
++        this.bindEvents();
++        this.render();
++        this.seedDefaults();
++      }
++
++      bindEvents() {
++        this.toolbarButtons.forEach((button) => {
 +          button.addEventListener('click', () => {
-+            const page = button.dataset.page;
-+            showPage(page);
++            const insert = button.dataset.insert;
++            const textarea = $('#templateBody');
++            const start = textarea.selectionStart;
++            const end = textarea.selectionEnd;
++            const value = textarea.value;
++            textarea.value = value.slice(0, start) + insert + value.slice(end);
++            textarea.focus();
++            textarea.selectionStart = textarea.selectionEnd = start + insert.length;
++            this.statusIndicator.textContent = `Inserted placeholder ${insert}.`;
 +          });
 +        });
-+        showPage('dashboard');
-+        document.getElementById('logoutBtn').addEventListener('click', () => {
-+          state.activeUser = null;
-+          localStorage.removeItem(STORAGE_KEYS.activeUser);
-+          renderUser();
-+          toggleAuthOverlay(false);
-+          document.querySelector('.tab[data-auth="signIn"]').click();
-+          document.getElementById('loginId').value = DEFAULT_ADMIN.username;
-+          document.getElementById('loginPassword').value = DEFAULT_ADMIN.password;
++
++        this.resetButton.addEventListener('click', () => {
++          this.form.reset();
++          this.statusIndicator.textContent = 'Template form cleared.';
 +        });
++
++        this.form.addEventListener('submit', (event) => {
++          event.preventDefault();
++          const formData = new FormData(this.form);
++          const entry = Object.fromEntries(formData.entries());
++          if (!entry.templateName || !entry.templateBody) {
++            this.statusIndicator.textContent = 'Template name and body required.';
++            return;
++          }
++          const id = this.form.dataset.editing || randomId();
++          const template = {
++            id,
++            name: entry.templateName.trim(),
++            category: entry.templateCategory,
++            body: entry.templateBody,
++            updatedAt: new Date().toISOString(),
++          };
++          const templates = this.database.templates.filter((item) => item.id !== id);
++          templates.push(template);
++          this.database.templates = templates;
++          this.database.log('Template saved', workspace.currentUserName(), `${template.name} updated.`);
++          workspace.toast.show('Template saved', `${template.name} ready for merging.`);
++          this.form.reset();
++          delete this.form.dataset.editing;
++          this.render();
++          workspace.refresh();
++        });
++
++        this.searchInput.addEventListener(
++          'input',
++          debounce(() => this.render())
++        );
 +      }
 +
-+      function showPage(page) {
-+        document.querySelectorAll('.page').forEach(section => {
-+          section.classList.toggle('hidden', section.id !== `page-${page}`);
++      seedDefaults() {
++        if (this.database.templates.length) return;
++        const defaults = [
++          {
++            name: 'HIPAA Authorization',
++            category: 'HIPAA',
++            body: `HIPAA AUTHORIZATION\n\nPatient: {{client.fullName}}\nDate of Birth: {{client.dob}}\nAuthorization Date: {{client.authorizationDate}}\n\nI, {{client.fullName}}, authorize {{workspace.organization}} to request medical records from {{provider.name}} for the period defined as {{client.authorizationScope}}.\n\nSignature:\n{{client.fullName}}\n{{today}}\n\n{{workspace.signature}}`,
++          },
++          {
++            name: 'Medical Records Request',
++            category: 'Medical Request',
++            body: `{{today}}\n\n{{provider.name}}\n{{provider.address}}\n\nAttention: {{provider.attention}}\n\nRe: {{client.fullName}} (DOB: {{client.dob}})\n\nPlease provide a complete copy of medical records for the above patient covering {{client.authorizationScope}}. Records may be delivered via {{provider.delivery}}.\n\nAttached: HIPAA authorization signed {{client.authorizationDate}}.\n\n{{workspace.signature}}`,
++          },
++        ];
++        defaults.forEach((entry) => {
++          this.database.templates.push({
++            id: randomId(),
++            name: entry.name,
++            category: entry.category,
++            body: entry.body,
++            updatedAt: new Date().toISOString(),
++          });
 +        });
-+        document.querySelectorAll('.nav-button').forEach(button => {
-+          button.classList.toggle('active', button.dataset.page === page);
-+        });
++        this.database.save();
++        this.render();
 +      }
 +
-+      function bindAuth() {
-+        const tabs = document.querySelectorAll('.tab');
-+        const forms = {
-+          signIn: document.getElementById('signInForm'),
-+          signUp: document.getElementById('signUpForm'),
-+          recover: document.getElementById('recoverForm')
++      render() {
++        const query = this.searchInput.value?.toLowerCase() || '';
++        const templates = this.database.templates
++          .slice()
++          .sort((a, b) => a.name.localeCompare(b.name))
++          .filter((template) => {
++            if (!query) return true;
++            const haystack = [template.name, template.category, template.body].join(' ').toLowerCase();
++            return haystack.includes(query);
++          });
++        this.list.innerHTML = '';
++        const templateEl = $('#templateCardTemplate');
++        templates.forEach((template) => {
++          const node = templateEl.content.firstElementChild.cloneNode(true);
++          $('.template-name', node).textContent = template.name;
++          $('.template-category', node).textContent = template.category;
++          $('.template-updated', node).textContent = `Updated ${formatDate(template.updatedAt)}`;
++          $('.template-preview', node).textContent = template.body.slice(0, 240) + (template.body.length > 240 ? '…' : '');
++          $('.edit', node).addEventListener('click', () => this.edit(template.id));
++          $('.delete', node).addEventListener('click', () => this.remove(template.id));
++          this.list.appendChild(node);
++        });
++        this.emptyState.classList.toggle('hidden', templates.length > 0);
++        this.viewCount.textContent = `${templates.length} stored`;
++        $('#templateCount').textContent = `${templates.length} Templates`;
++        $('#templateProgress').style.width = `${Math.min(100, templates.length * 20)}%`;
++      }
++
++      edit(id) {
++        const template = this.database.templates.find((entry) => entry.id === id);
++        if (!template) return;
++        this.form.templateName.value = template.name;
++        this.form.templateCategory.value = template.category;
++        this.form.templateBody.value = template.body;
++        this.form.dataset.editing = template.id;
++        this.statusIndicator.textContent = 'Editing template. Save to apply changes.';
++      }
++
++      remove(id) {
++        const template = this.database.templates.find((entry) => entry.id === id);
++        if (!template) return;
++        if (!confirm(`Delete template ${template.name}?`)) return;
++        this.database.templates = this.database.templates.filter((entry) => entry.id !== id);
++        this.database.log('Template removed', workspace.currentUserName(), `${template.name} deleted.`);
++        workspace.toast.show('Template removed', `${template.name} deleted.`);
++        this.render();
++        workspace.refresh();
++      }
++    }
++
++    class GeneratorController {
++      constructor(database) {
++        this.database = database;
++        this.clientSelect = $('#generatorClient');
++        this.providerSelect = $('#generatorProvider');
++        this.templatesSelect = $('#generatorTemplates');
++        this.notesInput = $('#generatorNotes');
++        this.preview = $('#mergePreview');
++        this.previewStatus = $('#previewStatus');
++        this.downloadButton = $('#downloadPacket');
++        this.generateButton = $('#generatePacket');
++        this.statusIndicator = $('#generatorFormStatus');
++        this.loadingIndicator = $('#generatorLoading');
++        this.activityLog = $('#packetActivity');
++        this.bindEvents();
++        this.render();
++      }
++
++      bindEvents() {
++        this.generateButton.addEventListener('click', () => this.generate());
++        this.downloadButton.addEventListener('click', () => this.download());
++        [this.clientSelect, this.providerSelect, this.templatesSelect].forEach((element) => {
++          element.addEventListener('change', () => this.updatePreview());
++        });
++        this.notesInput.addEventListener('input', debounce(() => this.updatePreview()));
++      }
++
++      render() {
++        this.clientSelect.innerHTML = '<option value="">Select a client</option>';
++        this.database.clients
++          .slice()
++          .sort((a, b) => a.lastName.localeCompare(b.lastName))
++          .forEach((client) => {
++            const option = document.createElement('option');
++            option.value = client.id;
++            option.textContent = `${client.firstName} ${client.lastName}`;
++            this.clientSelect.appendChild(option);
++          });
++
++        this.providerSelect.innerHTML = '<option value="">Select a provider</option>';
++        this.database.providers
++          .slice()
++          .sort((a, b) => a.name.localeCompare(b.name))
++          .forEach((provider) => {
++            const option = document.createElement('option');
++            option.value = provider.id;
++            option.textContent = provider.name;
++            this.providerSelect.appendChild(option);
++          });
++
++        this.templatesSelect.innerHTML = '';
++        this.database.templates
++          .slice()
++          .sort((a, b) => a.name.localeCompare(b.name))
++          .forEach((template) => {
++            const option = document.createElement('option');
++            option.value = template.id;
++            option.textContent = `${template.name} (${template.category})`;
++            this.templatesSelect.appendChild(option);
++          });
++        this.updatePreview();
++      }
++
++      getSelectedClient() {
++        const id = this.clientSelect.value;
++        return this.database.clients.find((entry) => entry.id === id) || null;
++      }
++
++      getSelectedProvider() {
++        const id = this.providerSelect.value;
++        return this.database.providers.find((entry) => entry.id === id) || null;
++      }
++
++      getSelectedTemplates() {
++        return Array.from(this.templatesSelect.selectedOptions)
++          .map((option) => this.database.templates.find((template) => template.id === option.value))
++          .filter(Boolean);
++      }
++
++      merge(template, client, provider) {
++        const [open, close] = this.database.settings.placeholderDelimiter;
++        const placeholders = {
++          '{{client.fullName}}': `${client.firstName} ${client.lastName}`,
++          '{{client.address}}': client.address,
++          '{{client.authorizationDate}}': formatDate(client.authorizationDate),
++          '{{client.authorizationScope}}': client.authorizationScope || 'Complete medical history',
++          '{{client.dob}}': formatDate(client.dob),
++          '{{client.identifier}}': client.identifier || 'N/A',
++          '{{client.attorney}}': client.attorney || this.database.settings.organization,
++          '{{provider.name}}': provider.name,
++          '{{provider.address}}': provider.address,
++          '{{provider.attention}}': provider.attention || 'Medical Records Department',
++          '{{provider.delivery}}': provider.delivery,
++          '{{provider.processingTime}}': provider.processingTime ? `${provider.processingTime} days` : 'Varies',
++          '{{workspace.user}}': workspace.currentUserName(),
++          '{{workspace.organization}}': this.database.settings.organization,
++          '{{workspace.signature}}': this.database.settings.signature,
++          '{{today}}': formatDate(new Date()),
 +        };
++        let body = template.body;
++        Object.entries(placeholders).forEach(([key, value]) => {
++          const pattern = new RegExp(key.replace(/[{}]/g, (char) => `\\${char}`), 'g');
++          body = body.replace(pattern, value);
++        });
++        if (open !== '{{' || close !== '}}') {
++          const dynamicPattern = new RegExp(`${open}\s*(.*?)\s*${close}`, 'g');
++          body = body.replace(dynamicPattern, (_, token) => placeholders[`{{${token}}}`] || '');
++        }
++        return body;
++      }
 +
-+        tabs.forEach(tab => {
++      updatePreview() {
++        const client = this.getSelectedClient();
++        const provider = this.getSelectedProvider();
++        const templates = this.getSelectedTemplates();
++        if (!client || !provider || !templates.length) {
++          this.preview.textContent = 'Select a client, provider, and at least one template to preview.';
++          this.previewStatus.textContent = 'Awaiting packet configuration.';
++          this.downloadButton.disabled = true;
++          $('#generatorStatus').textContent = 'Waiting';
++          return;
++        }
++        const merged = templates
++          .map((template) => `=== ${template.name} (${template.category}) ===\n\n${this.merge(template, client, provider)}`)
++          .join('\n\n\f\n\n');
++        const notes = this.notesInput.value.trim();
++        this.preview.textContent = merged + (notes ? `\n\nNotes:\n${notes}` : '');
++        this.previewStatus.textContent = `${templates.length} template(s) merged.`;
++        this.downloadButton.disabled = false;
++        $('#generatorStatus').textContent = 'Ready';
++      }
++
++      async generate() {
++        const client = this.getSelectedClient();
++        const provider = this.getSelectedProvider();
++        const templates = this.getSelectedTemplates();
++        if (!client || !provider || !templates.length) {
++          this.statusIndicator.textContent = 'Provide client, provider, and template selections.';
++          workspace.toast.show('Selection required', 'Choose the data to build a packet.');
++          return;
++        }
++        this.loadingIndicator.classList.add('active');
++        this.generateButton.disabled = true;
++        try {
++          const { PDFDocument, StandardFonts } = PDFLib;
++          const pdfDoc = await PDFDocument.create();
++          const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
++          const pageMargin = 50;
++          const width = 612;
++          const height = 792;
++          const addPageWithText = (title, content) => {
++            const page = pdfDoc.addPage([width, height]);
++            const text = `${title}\n\n${content}`;
++            const lines = wrapText(text, 70);
++            let y = height - pageMargin;
++            lines.forEach((line) => {
++              if (y < pageMargin) {
++                y = height - pageMargin;
++              }
++              page.drawText(line, {
++                x: pageMargin,
++                y,
++                size: 12,
++                font,
++                color: PDFLib.rgb(0.1, 0.16, 0.28),
++              });
++              y -= 18;
++            });
++          };
++          templates.forEach((template) => {
++            const merged = this.merge(template, client, provider);
++            addPageWithText(template.name, merged);
++          });
++          if (this.notesInput.value.trim()) {
++            addPageWithText('Packet Notes', this.notesInput.value.trim());
++          }
++          const bytes = await pdfDoc.save();
++          this.generatedBlob = new Blob([bytes], { type: 'application/pdf' });
++          this.previewStatus.textContent = 'Packet ready for download.';
++          workspace.toast.show('Packet created', `${templates.length} documents compiled for ${client.firstName}.`);
++          workspace.database.log('Packet generated', workspace.currentUserName(), `${templates.length} documents merged for ${client.firstName} ${client.lastName}.`);
++          workspace.refreshActivity();
++          this.downloadButton.disabled = false;
++        } catch (error) {
++          console.error(error);
++          workspace.toast.show('Generation failed', 'Check console for error details.');
++        } finally {
++          this.loadingIndicator.classList.remove('active');
++          this.generateButton.disabled = false;
++        }
++      }
++
++      download() {
++        if (!this.generatedBlob) {
++          workspace.toast.show('Nothing to download', 'Generate a packet first.');
++          return;
++        }
++        const url = URL.createObjectURL(this.generatedBlob);
++        const link = document.createElement('a');
++        link.href = url;
++        const client = this.getSelectedClient();
++        const provider = this.getSelectedProvider();
++        link.download = `Packet_${client.lastName}_${provider.name.replace(/[^a-z0-9]/gi, '_')}.pdf`;
++        document.body.appendChild(link);
++        link.click();
++        document.body.removeChild(link);
++        URL.revokeObjectURL(url);
++        workspace.toast.show('Packet downloaded', 'PDF saved locally.');
++      }
++    }
++    const wrapText = (text, maxChars) => {
++      const words = text.split(/\s+/);
++      const lines = [];
++      let current = '';
++      words.forEach((word) => {
++        if ((current + ' ' + word).trim().length > maxChars) {
++          lines.push(current.trim());
++          current = word;
++        } else {
++          current += ' ' + word;
++        }
++      });
++      if (current.trim()) lines.push(current.trim());
++      return lines;
++    };
++
++    class DashboardController {
++      constructor(database) {
++        this.database = database;
++        this.dailyReadiness = $('#dailyReadiness');
++        this.upcomingDeadlines = $('#upcomingDeadlines');
++        this.packetHealth = $('#packetHealth');
++        this.complianceTasks = $('#complianceTasks');
++        this.clientMilestones = $('#clientMilestones');
++        this.providerCommunications = $('#providerCommunications');
++        this.operationsKanban = $('#operationsKanban');
++        this.snapshotDate = $('#snapshotDate');
++        this.timelineFeed = $('#timelineFeed');
++        this.tabs = $$('#dashboardTabs button');
++        this.panels = $$('[data-tab-panel]');
++        this.bindEvents();
++        this.render();
++      }
++
++      bindEvents() {
++        this.tabs.forEach((tab) => {
 +          tab.addEventListener('click', () => {
-+            tabs.forEach(t => t.classList.remove('active'));
-+            tab.classList.add('active');
-+            Object.entries(forms).forEach(([key, form]) => {
-+              form.classList.toggle('hidden', key !== tab.dataset.auth);
++            this.tabs.forEach((button) => button.classList.toggle('active', button === tab));
++            this.panels.forEach((panel) => panel.classList.toggle('hidden', panel.dataset.tabPanel !== tab.dataset.tab));
++          });
++        });
++      }
++
++      render() {
++        this.snapshotDate.textContent = new Date().toLocaleDateString();
++        this.renderTags();
++        this.renderDeadlines();
++        this.renderHealth();
++        this.renderCompliance();
++        this.renderMilestones();
++        this.renderCommunications();
++        this.renderKanban();
++      }
++
++      renderTags() {
++        this.dailyReadiness.innerHTML = '';
++        const metrics = [
++          { label: 'Clients ready', value: this.database.clients.filter((client) => client.status === 'Ready for Request').length },
++          { label: 'Authorizations expiring soon', value: this.database.clients.filter((client) => {
++            if (!client.authorizationDate) return false;
++            const expiry = new Date(client.authorizationDate);
++            expiry.setMonth(expiry.getMonth() + 12);
++            const diff = expiry - Date.now();
++            return diff > 0 && diff < 1000 * 60 * 60 * 24 * 30;
++          }).length },
++          { label: 'Providers requiring follow-up', value: this.database.providers.filter((provider) => provider.status === 'Pending').length },
++        ];
++        metrics.forEach((metric) => {
++          const pill = document.createElement('span');
++          pill.textContent = `${metric.label}: ${metric.value}`;
++          pill.className = 'data-chip';
++          this.dailyReadiness.appendChild(pill);
++        });
++      }
++
++      renderDeadlines() {
++        this.upcomingDeadlines.innerHTML = '';
++        const deadlines = this.database.clients
++          .filter((client) => client.authorizationDate)
++          .map((client) => {
++            const expiry = new Date(client.authorizationDate);
++            expiry.setMonth(expiry.getMonth() + 12);
++            return {
++              title: `${client.firstName} ${client.lastName}`,
++              date: expiry,
++              description: `Authorization expires ${formatDate(expiry)}.`,
++            };
++          })
++          .sort((a, b) => a.date - b.date)
++          .slice(0, 5);
++        deadlines.forEach((deadline) => {
++          const node = document.createElement('div');
++          node.className = 'activity-entry';
++          node.innerHTML = `<strong>${deadline.title}</strong><span>${deadline.description}</span>`;
++          this.upcomingDeadlines.appendChild(node);
++        });
++      }
++
++      renderHealth() {
++        this.packetHealth.innerHTML = '';
++        const segments = [
++          { label: 'Intake', count: this.database.clients.filter((client) => client.status === 'Intake').length },
++          { label: 'Awaiting Authorization', count: this.database.clients.filter((client) => client.status === 'Awaiting Authorization').length },
++          { label: 'Ready', count: this.database.clients.filter((client) => client.status === 'Ready for Request').length },
++          { label: 'Submitted', count: this.database.clients.filter((client) => client.status === 'Request Submitted').length },
++          { label: 'Received', count: this.database.clients.filter((client) => client.status === 'Records Received').length },
++        ];
++        segments.forEach((segment) => {
++          const badge = document.createElement('span');
++          badge.textContent = `${segment.label}: ${segment.count}`;
++          this.packetHealth.appendChild(badge);
++        });
++      }
++
++      renderCompliance() {
++        this.complianceTasks.innerHTML = '';
++        const tasks = [
++          'Verify HIPAA forms signed within the last 12 months.',
++          'Confirm provider fees and payment instructions.',
++          'Ensure contact details match provider requirements.',
++          'Log follow-up attempts for outstanding requests.',
++        ];
++        tasks.forEach((task) => {
++          const node = document.createElement('div');
++          node.className = 'activity-entry';
++          node.innerHTML = `<strong>${task}</strong>`;
++          this.complianceTasks.appendChild(node);
++        });
++      }
++
++      renderMilestones() {
++        this.clientMilestones.innerHTML = '';
++        this.database.clients.forEach((client) => {
++          const node = document.createElement('div');
++          node.className = 'activity-entry';
++          node.innerHTML = `<strong>${client.firstName} ${client.lastName}</strong><span>Status: ${client.status}</span><p>${client.notes || 'No notes recorded.'}</p>`;
++          this.clientMilestones.appendChild(node);
++        });
++      }
++
++      renderCommunications() {
++        this.providerCommunications.innerHTML = '';
++        this.database.providers.forEach((provider) => {
++          const node = document.createElement('div');
++          node.className = 'activity-entry';
++          node.innerHTML = `<strong>${provider.name}</strong><span>Preferred delivery: ${provider.delivery}</span><p>${provider.requirements || 'No special requirements.'}</p>`;
++          this.providerCommunications.appendChild(node);
++        });
++      }
++
++      renderKanban() {
++        this.operationsKanban.innerHTML = '';
++        const columns = [
++          { label: 'Backlog', filter: (client) => client.status === 'Intake' },
++          { label: 'In Progress', filter: (client) => ['Awaiting Authorization', 'Ready for Request'].includes(client.status) },
++          { label: 'Done', filter: (client) => ['Request Submitted', 'Records Received'].includes(client.status) },
++        ];
++        columns.forEach((column) => {
++          const section = document.createElement('div');
++          section.className = 'activity-entry';
++          const items = this.database.clients.filter(column.filter);
++          section.innerHTML = `<strong>${column.label}</strong><span>${items.length} items</span>`;
++          const list = document.createElement('ul');
++          list.style.margin = '0';
++          list.style.paddingLeft = '20px';
++          items.forEach((item) => {
++            const li = document.createElement('li');
++            li.textContent = `${item.firstName} ${item.lastName} (${item.status})`;
++            list.appendChild(li);
++          });
++          section.appendChild(list);
++          this.operationsKanban.appendChild(section);
++        });
++      }
++    }
++
++    class QuickAddController {
++      constructor(database) {
++        this.database = database;
++        this.dialog = $('#quickAddDialog');
++        this.clientForm = $('#quickAddClient');
++        this.providerForm = $('#quickAddProvider');
++        this.status = $('#quickAddStatus');
++        $('#quickAdd').addEventListener('click', () => this.open());
++        $('#cancelQuickAdd').addEventListener('click', () => this.close());
++        $('#saveQuickAdd').addEventListener('click', () => this.save());
++      }
++
++      open() {
++        this.dialog.showModal();
++      }
++
++      close() {
++        this.clientForm.reset();
++        this.providerForm.reset();
++        this.dialog.close();
++      }
++
++      save() {
++        const clientName = $('#quickClientName').value.trim();
++        const clientEmail = $('#quickClientEmail').value.trim();
++        const clientPhone = $('#quickClientPhone').value.trim();
++        const providerName = $('#quickProviderName').value.trim();
++        const providerAddress = $('#quickProviderAddress').value.trim();
++        if (!clientName || !clientEmail || !clientPhone || !providerName || !providerAddress) {
++          this.status.textContent = 'Complete all highlighted fields to save both records.';
++          return;
++        }
++        const [firstName, ...rest] = clientName.split(' ');
++        const lastName = rest.join(' ') || 'Client';
++        this.database.clients.push({
++          id: randomId(),
++          firstName,
++          lastName,
++          email: clientEmail,
++          phone: clientPhone,
++          dob: new Date().toISOString().slice(0, 10),
++          identifier: '',
++          address: 'Address pending',
++          notes: '',
++          authorizationDate: $('#quickClientAuthorization').value || '',
++          authorizationScope: 'Full records',
++          attorney: '',
++          status: 'Intake',
++          insurance: '',
++          policy: '',
++          injuryDate: '',
++          preferredContact: 'Email',
++          createdAt: new Date().toISOString(),
++        });
++        this.database.providers.push({
++          id: randomId(),
++          name: providerName,
++          type: 'Clinic',
++          email: '',
++          phone: '',
++          fax: $('#quickProviderFax').value || '',
++          address: providerAddress,
++          attention: 'Medical Records',
++          processingTime: 14,
++          requirements: '',
++          delivery: 'Fax',
++          status: 'Active',
++          portal: '',
++          notes: '',
++          createdAt: new Date().toISOString(),
++        });
++        this.database.save();
++        this.database.log('Quick add completed', workspace.currentUserName(), `Client ${clientName} and provider ${providerName} created via quick add.`);
++        workspace.toast.show('Quick add saved', 'Client and provider added.');
++        workspace.refresh();
++        this.close();
++      }
++    }
++
++    class ChecklistController {
++      constructor(database) {
++        this.database = database;
++        this.dialog = $('#checklistDialog');
++        this.openButton = $('#openChecklist');
++        this.closeButton = $('#closeChecklist');
++        this.viewButton = $('#viewChecklist');
++        this.items = [
++          { title: 'Verify identity', description: 'Confirm client identity matches authorization signature.' },
++          { title: 'Confirm authorization dates', description: 'Ensure HIPAA release is current and signed.' },
++          { title: 'Attach provider requirements', description: 'Include cover letter or payment forms if required.' },
++          { title: 'Log follow-up', description: 'Document follow-up attempts in the activity journal.' },
++        ];
++        this.bindEvents();
++      }
++
++      bindEvents() {
++        this.openButton.addEventListener('click', () => this.open());
++        this.closeButton.addEventListener('click', () => this.close());
++        this.viewButton.addEventListener('click', () => this.open());
++      }
++
++      open() {
++        this.dialog.showModal();
++        workspace.activityRenderer.renderChecklist(this.items);
++      }
++
++      close() {
++        this.dialog.close();
++      }
++    }
++
++    class WorkspaceApp {
++      constructor() {
++        this.database = new LocalDatabase('medical-correspondence-workspace');
++        this.toast = new ToastManager($('#toastContainer'));
++        this.activityRenderer = new ActivityRenderer({
++          timelineFeed: $('#timelineFeed'),
++          activityFeed: $('#activityFeed'),
++          packetActivity: $('#packetActivity'),
++          securityActions: $('#securityActions'),
++          complianceChecklist: $('#complianceChecklist'),
++          checklistItems: $('#checklistItems'),
++        });
++        this.auth = new AuthController(this.database, {
++          overlay: $('#authOverlay'),
++          tabs: $$('.auth-tabs button'),
++          forms: $$('.auth-form'),
++          hint: $('#signInHint'),
++          nameTarget: $('#userName'),
++          emailTarget: $('#userEmail'),
++          avatarTarget: $('#userAvatar'),
++        });
++        this.clients = new ClientController(this.database);
++        this.providers = new ProviderController(this.database);
++        this.templates = new TemplateController(this.database);
++        this.generator = new GeneratorController(this.database);
++        this.dashboard = new DashboardController(this.database);
++        this.quickAdd = new QuickAddController(this.database);
++        this.checklist = new ChecklistController(this.database);
++        this.sidebar = $('#sidebar');
++        this.navButtons = $$('#sidebarNav button');
++        this.views = {
++          dashboard: $('#dashboardView'),
++          clients: $('#clientsView'),
++          providers: $('#providersView'),
++          templates: $('#templatesView'),
++          generator: $('#generatorView'),
++          settings: $('#settingsView'),
++          activity: $('#activityView'),
++        };
++        this.bindNavigation();
++        this.bindSettings();
++        this.bindGlobal();
++        this.refresh();
++        this.refreshActivity();
++      }
++
++      bindNavigation() {
++        this.navButtons.forEach((button) => {
++          button.addEventListener('click', () => {
++            this.navButtons.forEach((btn) => btn.classList.toggle('active', btn === button));
++            Object.entries(this.views).forEach(([key, section]) => {
++              section.classList.toggle('hidden', key !== button.dataset.view);
 +            });
 +          });
 +        });
-+        tabs[0].click();
-+        document.getElementById('loginId').value = DEFAULT_ADMIN.username;
-+        document.getElementById('loginPassword').value = DEFAULT_ADMIN.password;
-+
-+        forms.signIn.addEventListener('submit', event => {
-+          event.preventDefault();
-+          const id = document.getElementById('loginId').value.trim().toLowerCase();
-+          const password = document.getElementById('loginPassword').value;
-+          const account = state.accounts.find(acc => acc.username.toLowerCase() === id || acc.email.toLowerCase() === id);
-+          if (!account || account.password !== password) {
-+            alert('Invalid credentials. Please try again.');
-+            return;
-+          }
-+          state.activeUser = account;
-+          localStorage.setItem(STORAGE_KEYS.activeUser, JSON.stringify(account));
-+          toggleAuthOverlay(true);
-+          renderUser();
-+          showPage('dashboard');
-+        });
-+
-+        forms.signUp.addEventListener('submit', event => {
-+          event.preventDefault();
-+          const newAccount = {
-+            name: document.getElementById('signupName').value.trim(),
-+            username: document.getElementById('signupUsername').value.trim(),
-+            email: document.getElementById('signupEmail').value.trim(),
-+            password: document.getElementById('signupPassword').value,
-+            securityQuestion: document.getElementById('signupQuestion').value.trim(),
-+            securityAnswer: document.getElementById('signupAnswer').value.trim(),
-+            createdAt: new Date().toISOString()
-+          };
-+          if (state.accounts.some(acc => acc.username.toLowerCase() === newAccount.username.toLowerCase())) {
-+            alert('Username already exists. Choose a different one.');
-+            return;
-+          }
-+          if (state.accounts.some(acc => acc.email.toLowerCase() === newAccount.email.toLowerCase())) {
-+            alert('Email already registered.');
-+            return;
-+          }
-+          state.accounts.push(newAccount);
-+          persist(STORAGE_KEYS.accounts, state.accounts);
-+          renderAccounts();
-+          alert('Account created. You can now sign in.');
-+          document.querySelector('.tab[data-auth="signIn"]').click();
-+        });
-+
-+        const recoverForm = forms.recover;
-+        recoverForm.addEventListener('submit', event => {
-+          event.preventDefault();
-+          const id = document.getElementById('recoverId').value.trim().toLowerCase();
-+          const account = state.accounts.find(acc => acc.username.toLowerCase() === id || acc.email.toLowerCase() === id);
-+          const recoveryStep = document.getElementById('recoveryStep');
-+          const status = document.getElementById('recoveryStatus');
-+          if (!account) {
-+            status.textContent = 'No account found with that username or email.';
-+            recoveryStep.classList.add('hidden');
-+            return;
-+          }
-+          if (recoveryStep.classList.contains('hidden')) {
-+            document.getElementById('recoveryQuestion').textContent = account.securityQuestion;
-+            recoveryStep.dataset.username = account.username;
-+            recoveryStep.classList.remove('hidden');
-+            status.textContent = 'Answer the security question to set a new password.';
-+            return;
-+          }
-+          const answer = document.getElementById('recoveryAnswer').value.trim();
-+          const newPassword = document.getElementById('recoveryPassword').value;
-+          if (!answer || !newPassword) {
-+            status.textContent = 'Provide the answer and a new password.';
-+            return;
-+          }
-+          if (answer.toLowerCase() !== account.securityAnswer.toLowerCase()) {
-+            status.textContent = 'Security answer does not match.';
-+            return;
-+          }
-+          account.password = newPassword;
-+          persist(STORAGE_KEYS.accounts, state.accounts);
-+          status.textContent = 'Password reset successfully. You may now sign in.';
-+          document.getElementById('recoveryAnswer').value = '';
-+          document.getElementById('recoveryPassword').value = '';
-+          recoveryStep.classList.add('hidden');
++        $('#toggleSidebar').addEventListener('click', () => {
++          this.sidebar.classList.toggle('open');
 +        });
 +      }
 +
-+      function bindClientForm() {
-+        const form = document.getElementById('clientForm');
-+        const cancelBtn = document.getElementById('cancelClient');
-+        const newBtn = document.getElementById('newClientBtn');
-+        newBtn.addEventListener('click', () => {
-+          form.reset();
-+          document.getElementById('clientIndex').value = '';
-+          form.classList.remove('hidden');
-+        });
-+        cancelBtn.addEventListener('click', () => {
-+          form.classList.add('hidden');
-+          form.reset();
-+        });
-+        form.addEventListener('submit', event => {
-+          event.preventDefault();
-+          const index = document.getElementById('clientIndex').value;
-+          const client = {
-+            name: document.getElementById('clientName').value.trim(),
-+            dob: document.getElementById('clientDob').value,
-+            phone: document.getElementById('clientPhone').value.trim(),
-+            email: document.getElementById('clientEmail').value.trim(),
-+            address: document.getElementById('clientAddress').value.trim(),
-+            claim: document.getElementById('clientClaim').value.trim(),
-+            injuryDate: document.getElementById('clientInjury').value
-+          };
-+          if (!client.name) {
-+            alert('Client name is required.');
-+            return;
-+          }
-+          if (index) {
-+            state.clients[Number(index)] = client;
-+          } else {
-+            state.clients.push(client);
-+          }
-+          persist(STORAGE_KEYS.clients, state.clients);
-+          renderClients();
-+          updateCounts();
-+          form.classList.add('hidden');
-+          form.reset();
-+          updatePreview();
-+        });
-+        document.getElementById('clientTable').addEventListener('click', event => {
-+          const index = event.target.dataset.index;
-+          if (event.target.classList.contains('client-edit')) {
-+            const client = state.clients[index];
-+            document.getElementById('clientIndex').value = index;
-+            document.getElementById('clientName').value = client.name || '';
-+            document.getElementById('clientDob').value = client.dob || '';
-+            document.getElementById('clientPhone').value = client.phone || '';
-+            document.getElementById('clientEmail').value = client.email || '';
-+            document.getElementById('clientAddress').value = client.address || '';
-+            document.getElementById('clientClaim').value = client.claim || '';
-+            document.getElementById('clientInjury').value = client.injuryDate || '';
-+            form.classList.remove('hidden');
-+          }
-+          if (event.target.classList.contains('client-delete')) {
-+            if (confirm('Remove this client profile?')) {
-+              state.clients.splice(index, 1);
-+              persist(STORAGE_KEYS.clients, state.clients);
-+              renderClients();
-+              updateCounts();
-+              updatePreview();
-+            }
-+          }
-+        });
-+      }
-+
-+      function bindProviderForm() {
-+        const form = document.getElementById('providerForm');
-+        const cancelBtn = document.getElementById('cancelProvider');
-+        const newBtn = document.getElementById('newProviderBtn');
-+        newBtn.addEventListener('click', () => {
-+          form.reset();
-+          document.getElementById('providerIndex').value = '';
-+          form.classList.remove('hidden');
-+        });
-+        cancelBtn.addEventListener('click', () => {
-+          form.classList.add('hidden');
-+          form.reset();
-+        });
-+        form.addEventListener('submit', event => {
-+          event.preventDefault();
-+          const index = document.getElementById('providerIndex').value;
-+          const provider = {
-+            name: document.getElementById('providerName').value.trim(),
-+            contact: document.getElementById('providerContact').value.trim(),
-+            phone: document.getElementById('providerPhone').value.trim(),
-+            fax: document.getElementById('providerFax').value.trim(),
-+            address: document.getElementById('providerAddress').value.trim(),
-+            notes: document.getElementById('providerNotes').value.trim()
-+          };
-+          if (!provider.name) {
-+            alert('Provider name is required.');
-+            return;
-+          }
-+          if (index) {
-+            state.providers[Number(index)] = provider;
-+          } else {
-+            state.providers.push(provider);
-+          }
-+          persist(STORAGE_KEYS.providers, state.providers);
-+          renderProviders();
-+          updateCounts();
-+          form.classList.add('hidden');
-+          form.reset();
-+          updatePreview();
-+        });
-+        document.getElementById('providerTable').addEventListener('click', event => {
-+          const index = event.target.dataset.index;
-+          if (event.target.classList.contains('provider-edit')) {
-+            const provider = state.providers[index];
-+            document.getElementById('providerIndex').value = index;
-+            document.getElementById('providerName').value = provider.name || '';
-+            document.getElementById('providerContact').value = provider.contact || '';
-+            document.getElementById('providerPhone').value = provider.phone || '';
-+            document.getElementById('providerFax').value = provider.fax || '';
-+            document.getElementById('providerAddress').value = provider.address || '';
-+            document.getElementById('providerNotes').value = provider.notes || '';
-+            form.classList.remove('hidden');
-+          }
-+          if (event.target.classList.contains('provider-delete')) {
-+            if (confirm('Remove this provider profile?')) {
-+              state.providers.splice(index, 1);
-+              persist(STORAGE_KEYS.providers, state.providers);
-+              renderProviders();
-+              updateCounts();
-+              updatePreview();
-+            }
-+          }
-+        });
-+      }
-+
-+      function bindTemplateHandlers() {
-+        const hipaaTextarea = document.getElementById('hipaaTemplate');
-+        const letterTextarea = document.getElementById('letterTemplate');
-+        hipaaTextarea.addEventListener('input', () => {
-+          state.templates.hipaa = hipaaTextarea.value;
-+          persist(STORAGE_KEYS.templates, state.templates);
-+          updatePreview();
-+          updateCounts();
-+        });
-+        letterTextarea.addEventListener('input', () => {
-+          state.templates.letter = letterTextarea.value;
-+          persist(STORAGE_KEYS.templates, state.templates);
-+          updatePreview();
-+          updateCounts();
-+        });
-+        document.querySelectorAll('.reset-template').forEach(button => {
-+          button.addEventListener('click', () => {
-+            const key = button.dataset.template;
-+            state.templates[key] = DEFAULT_TEMPLATES[key];
-+            persist(STORAGE_KEYS.templates, state.templates);
-+            renderTemplates();
-+            updatePreview();
-+            updateCounts();
++      bindSettings() {
++        $('#saveIdentity').addEventListener('click', () => {
++          this.database.settings = Object.assign({}, this.database.settings, {
++            organization: $('#workspaceName').value || this.database.settings.organization,
++            signature: $('#workspaceSignature').value || this.database.settings.signature,
 +          });
++          this.database.log('Identity updated', this.currentUserName(), 'Workspace organization details updated.');
++          this.toast.show('Identity saved', 'Workspace identity updated.');
++          this.refresh();
 +        });
-+      }
 +
-+      function bindDashboard() {
-+        ['dashClient', 'dashProvider', 'includeHipaa', 'includeLetter'].forEach(id => {
-+          document.getElementById(id).addEventListener('change', updatePreview);
++        $('#resetIdentity').addEventListener('click', () => {
++          $('#workspaceName').value = this.database.settings.organization;
++          $('#workspaceSignature').value = this.database.settings.signature;
++          this.toast.show('Identity reset', 'Reverted to stored workspace identity.');
 +        });
-+        document.getElementById('generateBtn').addEventListener('click', async () => {
-+          const clientIndex = document.getElementById('dashClient').value;
-+          const providerIndex = document.getElementById('dashProvider').value;
-+          const includeHipaa = document.getElementById('includeHipaa').checked;
-+          const includeLetter = document.getElementById('includeLetter').checked;
-+          if (!clientIndex || !providerIndex) {
-+            alert('Select both a client and provider.');
++
++        $('#saveAutomation').addEventListener('click', () => {
++          const delimiter = $('#placeholderDelimiter').value.trim();
++          const parts = delimiter.split(' ');
++          if (parts.length < 2) {
++            this.toast.show('Delimiter format', 'Provide opening and closing tokens separated by a space.');
 +            return;
 +          }
-+          if (!includeHipaa && !includeLetter) {
-+            alert('Choose at least one document to generate.');
-+            return;
-+          }
-+          const client = state.clients[clientIndex];
-+          const provider = state.providers[providerIndex];
-+          const status = document.getElementById('generateStatus');
-+          status.textContent = 'Preparing PDF package…';
-+          try {
-+            const pdfBytes = await buildPdf({ client, provider, includeHipaa, includeLetter });
-+            const filename = `${client.name.replace(/[^a-z0-9]+/gi, '_')}_${provider.name.replace(/[^a-z0-9]+/gi, '_')}_records.pdf`;
-+            saveAs(new Blob([pdfBytes], { type: 'application/pdf' }), filename);
-+            status.textContent = 'Download ready. Check your browser downloads.';
-+          } catch (error) {
-+            console.error(error);
-+            status.textContent = 'Unable to generate PDF. Check templates and try again.';
-+          }
-+        });
-+      }
-+
-+      function updatePreview() {
-+        const clientIndex = document.getElementById('dashClient').value;
-+        const providerIndex = document.getElementById('dashProvider').value;
-+        const includeHipaa = document.getElementById('includeHipaa').checked;
-+        const includeLetter = document.getElementById('includeLetter').checked;
-+        const client = clientIndex ? state.clients[clientIndex] : null;
-+        const provider = providerIndex ? state.providers[providerIndex] : null;
-+        let preview = '';
-+        if (includeHipaa) {
-+          preview += '--- HIPAA AUTHORIZATION ---\n';
-+          preview += mergeTemplate(state.templates.hipaa, client, provider);
-+          preview += '\n\n';
-+        }
-+        if (includeLetter) {
-+          preview += '--- MEDICAL RECORDS REQUEST ---\n';
-+          preview += mergeTemplate(state.templates.letter, client, provider);
-+        }
-+        const rendered = preview.trim();
-+        document.getElementById('letterPreview').textContent = rendered || 'Select a client and provider to preview correspondence.';
-+      }
-+
-+      function mergeTemplate(template, client, provider) {
-+        const data = {
-+          client: {
-+            name: client?.name || '[Client Name]',
-+            dob: formatDate(client?.dob),
-+            phone: client?.phone || '',
-+            email: client?.email || '',
-+            address: client?.address || '',
-+            claim: client?.claim || '',
-+            injuryDate: formatDate(client?.injuryDate)
-+          },
-+          provider: {
-+            name: provider?.name || '[Provider Name]',
-+            contact: provider?.contact || '',
-+            phone: provider?.phone || '',
-+            fax: provider?.fax || '',
-+            address: provider?.address || '',
-+            notes: provider?.notes || ''
-+          },
-+          today: formatDate(new Date().toISOString()),
-+          ...FIRM_PROFILE
-+        };
-+        return template.replace(/{{\s*([a-zA-Z0-9_.]+)\s*}}/g, (_, path) => {
-+          const value = path.split('.').reduce((acc, key) => acc?.[key], data);
-+          return value ?? '';
-+        });
-+      }
-+
-+      async function buildPdf({ client, provider, includeHipaa, includeLetter }) {
-+        const pdfDoc = await PDFLib.PDFDocument.create();
-+        const font = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
-+        const documents = [];
-+        if (includeHipaa) {
-+          documents.push({ title: 'HIPAA Authorization', body: mergeTemplate(state.templates.hipaa, client, provider) });
-+        }
-+        if (includeLetter) {
-+          documents.push({ title: 'Medical Records Request', body: mergeTemplate(state.templates.letter, client, provider) });
-+        }
-+        documents.forEach(doc => {
-+          let page = pdfDoc.addPage([612, 792]);
-+          let { height } = page.getSize();
-+          const margin = 48;
-+          let y = height - margin;
-+          page.drawText(doc.title, {
-+            x: margin,
-+            y,
-+            size: 18,
-+            font,
-+            color: PDFLib.rgb(0.35, 0.1, 0.1)
++          this.database.settings = Object.assign({}, this.database.settings, {
++            placeholderDelimiter: parts,
++            activityRetention: Number($('#activityRetention').value) || this.database.settings.activityRetention,
 +          });
-+          y -= 28;
-+          const wrapped = wrapText(doc.body, 612 - margin * 2, font, 12);
-+          wrapped.forEach(line => {
-+            if (y < margin) {
-+              page = pdfDoc.addPage([612, 792]);
-+              ({ height } = page.getSize());
-+              y = height - margin;
-+            }
-+            page.drawText(line, { x: margin, y, size: 12, font });
-+            y -= 16;
-+          });
++          this.database.log('Automation updated', this.currentUserName(), 'Placeholder delimiter updated.');
++          this.toast.show('Automation saved', 'Merge preferences updated.');
 +        });
-+        return pdfDoc.save();
++
++        $('#resetAutomation').addEventListener('click', () => {
++          this.database.settings = Object.assign({}, this.database.settings, {
++            placeholderDelimiter: ['{{', '}}'],
++            activityRetention: 90,
++          });
++          $('#placeholderDelimiter').value = '{{ }}';
++          $('#activityRetention').value = 90;
++          this.toast.show('Automation reset', 'Reverted to default automation settings.');
++        });
++
++        $('#logoutButton').addEventListener('click', () => {
++          this.database.session = null;
++          $('#authOverlay').classList.remove('hidden');
++          this.toast.show('Logged out', 'Session ended.');
++        });
++
++        $('#clearWorkspace').addEventListener('click', () => {
++          if (!confirm('Clear all local data? This cannot be undone.')) return;
++          localStorage.removeItem(this.database.namespace);
++          location.reload();
++        });
++
++        $('#exportWorkspace').addEventListener('click', () => this.exportData());
 +      }
 +
-+      function wrapText(text, maxWidth, font, size) {
-+        const lines = [];
-+        const paragraphs = text.split(/\n/);
-+        paragraphs.forEach(paragraph => {
-+          if (!paragraph) {
-+            lines.push('');
-+            return;
++      bindGlobal() {
++        window.addEventListener('resize', debounce(() => {
++          if (window.innerWidth > 960) {
++            this.sidebar.classList.remove('open');
 +          }
-+          let words = paragraph.split(/\s+/);
-+          let current = '';
-+          words.forEach(word => {
-+            const tentative = current ? `${current} ${word}` : word;
-+            const width = font.widthOfTextAtSize(tentative, size);
-+            if (width > maxWidth) {
-+              if (current) lines.push(current);
-+              current = word;
-+            } else {
-+              current = tentative;
-+            }
-+          });
-+          if (current) lines.push(current);
-+        });
-+        return lines;
++        }, 200));
 +      }
 +
-+      function formatDate(value) {
-+        if (!value) return '';
-+        const date = value instanceof Date ? value : new Date(value);
-+        if (Number.isNaN(date.getTime())) return '';
-+        return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
++      exportData() {
++        const payload = JSON.stringify(this.database.state, null, 2);
++        const blob = new Blob([payload], { type: 'application/json' });
++        const url = URL.createObjectURL(blob);
++        const link = document.createElement('a');
++        link.href = url;
++        link.download = `workspace-export-${Date.now()}.json`;
++        document.body.appendChild(link);
++        link.click();
++        document.body.removeChild(link);
++        URL.revokeObjectURL(url);
++        this.toast.show('Export complete', 'Workspace data exported.');
 +      }
-+    </script>
-+  </body>
++
++      refresh() {
++        $('#workspaceName').value = this.database.settings.organization;
++        $('#workspaceSignature').value = this.database.settings.signature;
++        $('#placeholderDelimiter').value = `${this.database.settings.placeholderDelimiter[0]} ${this.database.settings.placeholderDelimiter[1]}`;
++        $('#activityRetention').value = this.database.settings.activityRetention;
++        this.clients.render();
++        this.providers.render();
++        this.templates.render();
++        this.generator.render();
++        this.dashboard.render();
++        $('#clientViewCount').textContent = `${this.database.clients.length} stored`;
++        $('#providerViewCount').textContent = `${this.database.providers.length} stored`;
++        $('#templateViewCount').textContent = `${this.database.templates.length} stored`;
++      }
++
++      refreshActivity() {
++        const retention = this.database.settings.activityRetention;
++        const cutoff = Date.now() - retention * 24 * 60 * 60 * 1000;
++        this.database.state.activity = this.database.state.activity.filter((entry) => new Date(entry.timestamp).getTime() >= cutoff);
++        this.database.save();
++        this.activityRenderer.renderTimeline(this.database.state.activity);
++        this.activityRenderer.renderActivity(this.database.state.activity.slice(0, 20));
++        this.activityRenderer.renderPacketActivity(this.database.state.activity);
++        this.activityRenderer.renderSecurity(this.database.users);
++      }
++
++      currentUserName() {
++        const session = this.database.session;
++        if (!session) return 'Guest';
++        const user = this.database.users.find((entry) => entry.id === session.userId);
++        return user ? user.name : 'User';
++      }
++    }
++
++    const workspace = new WorkspaceApp();
++  </script>
+ </body>
  </html>
