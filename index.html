@@ -1,11 +1,11 @@
 diff --git a/index.html b/index.html
-index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..5bef8e480585b74f25876c37d7f99e4b2da79973 100644
+index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..34fddc782e2008fa314d13069fc0852fa8028b08 100644
 --- a/index.html
 +++ b/index.html
-@@ -1,338 +1,1055 @@
+@@ -1,338 +1,1064 @@
  <!DOCTYPE html>
  <html lang="en">
- <head>
+-<head>
 -<meta charset="UTF-8" />
 -<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 -<title>Blaszkow Legal PLLC – Records Request Portal</title>
@@ -24,63 +24,9 @@ index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..5bef8e480585b74f25876c37d7f99e4b
 -  .brand-gray { background-color:#f3f4f6; }
 -  .nav-btn { @apply text-white hover:bg-red-700 px-3 py-2 rounded-md cursor-pointer; }
 -</style>
-+  <meta charset="UTF-8" />
-+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-+  <title>Blaszkow Legal PLLC – Records Request Portal</title>
-+
-+  <!-- Tailwind CSS -->
-+  <script src="https://cdn.tailwindcss.com"></script>
-+
-+  <!-- PDF Libraries -->
-+  <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-+  <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
-+
-+  <style>
-+    body { font-family: ui-sans-serif, system-ui, -apple-system; }
-+    .brand-red { color: #b91c1c; }
-+    .brand-bg { background-color: #b91c1c; }
-+    .brand-gray { background-color: #f3f4f6; }
-+    .nav-btn {
-+      display: block;
-+      width: 100%;
-+      text-align: left;
-+      color: #ffffff;
-+      background-color: rgba(255, 255, 255, 0.1);
-+      padding: 0.5rem 0.75rem;
-+      border-radius: 0.375rem;
-+      transition: background-color 0.2s ease, transform 0.1s ease;
-+    }
-+    .nav-btn:hover {
-+      background-color: rgba(255, 255, 255, 0.25);
-+      transform: translateX(4px);
-+    }
-+    .nav-btn.active {
-+      background-color: rgba(255, 255, 255, 0.4);
-+      color: #1f2937;
-+      font-weight: 600;
-+    }
-+    .form-label { font-weight: 600; color: #374151; }
-+    .auth-tab {
-+      flex: 1;
-+      padding: 0.5rem 0.75rem;
-+      border-radius: 0.5rem;
-+      border: 1px solid rgba(185, 28, 28, 0.25);
-+      font-weight: 600;
-+      color: #b91c1c;
-+      transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-+    }
-+    .auth-tab:hover {
-+      background-color: rgba(185, 28, 28, 0.08);
-+    }
-+    .auth-tab.active {
-+      background-color: #b91c1c;
-+      color: #ffffff;
-+      border-color: #b91c1c;
-+    }
-+  </style>
- </head>
- <body class="min-h-screen flex flex-col brand-gray">
- 
+-</head>
+-<body class="min-h-screen flex flex-col brand-gray">
+-
 -<!-- ===== HEADER ===== -->
 -<header class="brand-bg text-white p-4 flex justify-between items-center">
 -  <h1 class="text-xl font-bold tracking-wide">
@@ -111,189 +57,314 @@ index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..5bef8e480585b74f25876c37d7f99e4b
 -      </p>
 -
 -      <div class="grid grid-cols-2 gap-4 mb-4">
-+  <!-- ===== HEADER ===== -->
-+  <header class="brand-bg text-white p-4 flex justify-between items-center shadow-md">
-+    <div>
-+      <h1 class="text-xl font-bold tracking-wide">Blaszkow Legal PLLC</h1>
-+      <p class="text-sm text-red-100">Medical Correspondence Automation</p>
-+    </div>
-+    <div id="userArea" class="text-sm"></div>
-+  </header>
-+
-+  <!-- ===== MAIN LAYOUT ===== -->
-+  <main class="flex flex-1">
-+    <!-- SIDEBAR -->
-+    <nav class="bg-gray-800 w-60 text-white flex flex-col space-y-2 p-4">
-+      <button class="nav-btn" data-target="dashboard">Dashboard</button>
-+      <button class="nav-btn" data-target="clients">Clients</button>
-+      <button class="nav-btn" data-target="providers">Providers</button>
-+      <button class="nav-btn" data-target="templates">Templates</button>
-+      <button class="nav-btn" data-target="settings">Settings</button>
-+    </nav>
-+
-+    <!-- CONTENT AREA -->
-+    <section id="content" class="flex-1 p-6 overflow-y-auto bg-white">
-+
-+      <!-- DASHBOARD -->
-+      <div id="dashboard" class="page space-y-4">
-+        <div class="flex items-center justify-between">
-+          <h2 class="text-2xl font-bold brand-red">Generate Correspondence</h2>
-+          <span id="recordCount" class="text-sm text-gray-500"></span>
-+        </div>
-+        <p class="text-gray-700">
-+          Select a client and provider, choose the correspondence options, then click
-+          <strong>Generate Combined PDF</strong>.
-+        </p>
-+
-+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-red-50 border border-red-100 rounded p-4">
-+          <div>
-+            <label class="form-label">Client</label>
-+            <select id="dashClient" class="border p-2 w-full rounded"></select>
-+          </div>
-+          <div>
-+            <label class="form-label">Provider</label>
-+            <select id="dashProvider" class="border p-2 w-full rounded"></select>
-+          </div>
-+          <div class="md:col-span-2 flex flex-wrap items-center gap-4">
-+            <label class="inline-flex items-center">
-+              <input type="checkbox" id="includeHipaa" class="mr-2" checked />
-+              Include HIPAA Release
-+            </label>
-+            <label class="inline-flex items-center">
-+              <input type="checkbox" id="includeLetter" class="mr-2" checked />
-+              Include Medical Request Letter
-+            </label>
-+          </div>
-+        </div>
-+
-+        <div class="bg-gray-50 border rounded p-4 space-y-2">
-+          <h3 class="text-lg font-semibold text-gray-700">Letter Preview</h3>
-+          <pre id="letterPreview" class="bg-white border rounded p-3 text-sm whitespace-pre-wrap text-gray-700"></pre>
-+        </div>
-+
-+        <button id="generateBtn"
-+          class="brand-bg text-white px-6 py-3 rounded shadow hover:bg-red-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
-+          Generate Combined PDF
-+        </button>
-+      </div>
-+
-+      <!-- CLIENTS PAGE -->
-+      <div id="clients" class="page hidden space-y-6">
++  <head>
++    <meta charset="UTF-8" />
++    <meta name="viewport" content="width=device-width, initial-scale=1" />
++    <title>Blaszkow Legal PLLC | Medical Records Portal</title>
++    <script src="https://cdn.tailwindcss.com"></script>
++    <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
++    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
++    <style>
++      :root {
++        color-scheme: light;
++      }
++      body {
++        font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont;
++        background-color: #f5f6fa;
++      }
++      .app-shell {
++        min-height: 100vh;
++      }
++      .nav-button.active {
++        background: rgba(255, 255, 255, 0.9);
++        color: #7f1d1d;
++        font-weight: 600;
++      }
++      .nav-button:hover {
++        background: rgba(255, 255, 255, 0.7);
++      }
++      .glass-panel {
++        background: rgba(255, 255, 255, 0.88);
++        backdrop-filter: blur(12px);
++      }
++      .badge {
++        background: rgba(127, 29, 29, 0.1);
++        color: #7f1d1d;
++      }
++      .tab.active {
++        border-color: #7f1d1d;
++        color: #7f1d1d;
++        background: rgba(127, 29, 29, 0.08);
++        font-weight: 600;
++      }
++      .table-scroll {
++        max-height: 24rem;
++        overflow: auto;
++      }
++      textarea {
++        font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
++      }
++    </style>
++  </head>
++  <body class="app-shell">
++    <div class="flex h-full">
++      <aside class="hidden lg:flex flex-col w-72 bg-[#7f1d1d] text-white px-6 py-8 space-y-10 shadow-xl">
          <div>
 -          <label class="block text-sm font-medium text-gray-700">Client</label>
 -          <select id="dashClient" class="border p-2 w-full rounded"></select>
-+          <h2 class="text-2xl font-bold mb-2 brand-red">Client Profiles</h2>
-+          <p class="text-gray-600">Store demographic details, injury dates, and identifiers for each client.</p>
++          <p class="text-sm uppercase tracking-[0.3em] text-red-100">Blaszkow Legal PLLC</p>
++          <h1 class="text-2xl font-semibold leading-tight mt-1">Medical Records Portal</h1>
          </div>
-+
-+        <form id="clientForm" class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 border rounded p-4">
-+          <input type="hidden" id="clientIndex" />
-+          <div>
-+            <label class="form-label" for="cName">Full Name</label>
-+            <input type="text" id="cName" class="border p-2 w-full rounded" placeholder="Jane Doe" />
-+          </div>
-+          <div>
-+            <label class="form-label" for="cDOB">Date of Birth</label>
-+            <input type="date" id="cDOB" class="border p-2 w-full rounded" />
-+          </div>
-+          <div>
-+            <label class="form-label" for="cSSN">SSN / Identifier</label>
-+            <input type="text" id="cSSN" class="border p-2 w-full rounded" placeholder="XXX-XX-1234" />
-+          </div>
-+          <div>
-+            <label class="form-label" for="cInjury">Date of Injury</label>
-+            <input type="date" id="cInjury" class="border p-2 w-full rounded" />
-+          </div>
-+          <div class="md:col-span-2 flex gap-3">
-+            <button type="submit" class="brand-bg text-white px-4 py-2 rounded">
-+              <span id="clientSubmitLabel">Save Client</span>
-+            </button>
-+            <button type="button" id="cancelClientEdit" class="hidden px-4 py-2 rounded border border-gray-300 text-gray-600">
-+              Cancel
-+            </button>
-+          </div>
-+        </form>
-+
-+        <div class="overflow-x-auto bg-white border rounded shadow">
-+          <table class="min-w-full text-sm">
-+            <thead class="bg-gray-100 text-left">
-+              <tr>
-+                <th class="px-4 py-2">Name</th>
-+                <th class="px-4 py-2">DOB</th>
-+                <th class="px-4 py-2">SSN / ID</th>
-+                <th class="px-4 py-2">Injury Date</th>
-+                <th class="px-4 py-2">Actions</th>
-+              </tr>
-+            </thead>
-+            <tbody id="clientTable" class="divide-y"></tbody>
-+          </table>
-+        </div>
-+      </div>
-+
-+      <!-- PROVIDERS PAGE -->
-+      <div id="providers" class="page hidden space-y-6">
-         <div>
+-        <div>
 -          <label class="block text-sm font-medium text-gray-700">Provider</label>
 -          <select id="dashProvider" class="border p-2 w-full rounded"></select>
-+          <h2 class="text-2xl font-bold mb-2 brand-red">Provider Profiles</h2>
-+          <p class="text-gray-600">Capture contact information for physicians, hospitals, and records departments.</p>
-+        </div>
-+
-+        <form id="providerForm" class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 border rounded p-4">
-+          <input type="hidden" id="providerIndex" />
-+          <div class="md:col-span-2">
-+            <label class="form-label" for="pName">Provider Name</label>
-+            <input type="text" id="pName" class="border p-2 w-full rounded" placeholder="Inova Fairfax Hospital" />
-+          </div>
-+          <div class="md:col-span-2">
-+            <label class="form-label" for="pAddress">Address</label>
-+            <textarea id="pAddress" class="border p-2 w-full rounded" rows="3" placeholder="Street, City, State ZIP"></textarea>
-+          </div>
-+          <div>
-+            <label class="form-label" for="pFax">Fax</label>
-+            <input type="text" id="pFax" class="border p-2 w-full rounded" placeholder="(555) 123-4567" />
-+          </div>
-+          <div>
-+            <label class="form-label" for="pEmail">Email</label>
-+            <input type="email" id="pEmail" class="border p-2 w-full rounded" placeholder="records@example.com" />
-+          </div>
-+          <div class="md:col-span-2 flex gap-3">
-+            <button type="submit" class="brand-bg text-white px-4 py-2 rounded">
-+              <span id="providerSubmitLabel">Save Provider</span>
-+            </button>
-+            <button type="button" id="cancelProviderEdit" class="hidden px-4 py-2 rounded border border-gray-300 text-gray-600">
-+              Cancel
-+            </button>
-+          </div>
-+        </form>
-+
-+        <div class="overflow-x-auto bg-white border rounded shadow">
-+          <table class="min-w-full text-sm">
-+            <thead class="bg-gray-100 text-left">
-+              <tr>
-+                <th class="px-4 py-2">Name</th>
-+                <th class="px-4 py-2">Fax</th>
-+                <th class="px-4 py-2">Email</th>
-+                <th class="px-4 py-2">Address</th>
-+                <th class="px-4 py-2">Actions</th>
-+              </tr>
-+            </thead>
-+            <tbody id="providerTable" class="divide-y"></tbody>
-+          </table>
++        <nav class="space-y-2" id="sidebarNav">
++          <button class="nav-button w-full text-left px-4 py-3 rounded-lg transition" data-page="dashboard">Dashboard</button>
++          <button class="nav-button w-full text-left px-4 py-3 rounded-lg transition" data-page="clients">Client Profiles</button>
++          <button class="nav-button w-full text-left px-4 py-3 rounded-lg transition" data-page="providers">Provider Directory</button>
++          <button class="nav-button w-full text-left px-4 py-3 rounded-lg transition" data-page="templates">Template Library</button>
++          <button class="nav-button w-full text-left px-4 py-3 rounded-lg transition" data-page="accounts">Account Admin</button>
++        </nav>
++        <div class="mt-auto space-y-2 text-sm text-red-100">
++          <p>Need help? Email <span class="font-semibold">records@blaszkowlegal.com</span></p>
++          <button id="logoutBtn" class="w-full px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition">Log Out</button>
          </div>
-       </div>
+-      </div>
++      </aside>
  
 -      <button id="generateBtn"
 -        class="brand-bg text-white px-4 py-2 rounded shadow hover:bg-red-700 transition">
 -        Generate Combined PDF
 -      </button>
--    </div>
-+      <!-- ===== TEMPLATES PAGE ===== -->
-+      <div id="templates" class="page hidden space-y-6">
-+        <div>
-+          <h2 class="text-2xl font-bold mb-2 brand-red">Templates</h2>
-+          <p class="text-gray-600">Upload your HIPAA PDF and author the medical records request letter using dynamic placeholders.</p>
-+        </div>
++      <main class="flex-1 flex flex-col">
++        <header class="glass-panel border-b border-gray-200 px-6 py-4 flex items-center justify-between">
++          <div>
++            <h2 class="text-xl font-semibold text-gray-800">Correspondence Automation Workspace</h2>
++            <p class="text-sm text-gray-500">Generate HIPAA releases and medical records requests from verified profiles.</p>
++          </div>
++          <div class="flex items-center gap-6">
++            <div class="hidden lg:block text-right text-sm">
++              <p class="text-gray-600">Signed in as</p>
++              <p id="activeUser" class="font-medium text-gray-900"></p>
++            </div>
++            <div class="flex items-center gap-3 text-sm" id="recordSummary">
++              <span class="badge px-3 py-1 rounded-full">Clients: <strong id="clientCount">0</strong></span>
++              <span class="badge px-3 py-1 rounded-full">Providers: <strong id="providerCount">0</strong></span>
++              <span class="badge px-3 py-1 rounded-full">Templates: <strong id="templateCount">0</strong></span>
++            </div>
++          </div>
++        </header>
++
++        <section class="flex-1 overflow-y-auto p-6">
++          <div id="page-dashboard" class="page hidden space-y-6">
++            <div class="grid gap-4 md:grid-cols-2">
++              <div class="glass-panel rounded-xl border border-gray-200 p-6 space-y-4">
++                <div>
++                  <h3 class="text-lg font-semibold text-gray-800">1. Select Client &amp; Provider</h3>
++                  <p class="text-sm text-gray-500">Pick a client and provider to populate the correspondence.</p>
++                </div>
++                <label class="block text-sm font-medium text-gray-700">Client</label>
++                <select id="dashClient" class="w-full border border-gray-300 rounded-lg px-3 py-2"></select>
++                <label class="block text-sm font-medium text-gray-700">Provider</label>
++                <select id="dashProvider" class="w-full border border-gray-300 rounded-lg px-3 py-2"></select>
++                <div class="flex flex-wrap gap-4 pt-2">
++                  <label class="inline-flex items-center gap-2 text-sm font-medium text-gray-700">
++                    <input type="checkbox" id="includeHipaa" class="rounded border-gray-300 text-[#7f1d1d] focus:ring-[#7f1d1d]" checked />
++                    Include HIPAA Release
++                  </label>
++                  <label class="inline-flex items-center gap-2 text-sm font-medium text-gray-700">
++                    <input type="checkbox" id="includeLetter" class="rounded border-gray-300 text-[#7f1d1d] focus:ring-[#7f1d1d]" checked />
++                    Include Medical Request Letter
++                  </label>
++                </div>
++              </div>
++              <div class="glass-panel rounded-xl border border-gray-200 p-6 space-y-4">
++                <div>
++                  <h3 class="text-lg font-semibold text-gray-800">2. Preview Correspondence</h3>
++                  <p class="text-sm text-gray-500">Templates resolve placeholders in real time as you make selections.</p>
++                </div>
++                <div class="border border-gray-200 rounded-lg bg-white p-4 max-h-72 overflow-auto">
++                  <pre id="letterPreview" class="text-xs leading-5 whitespace-pre-wrap text-gray-700"></pre>
++                </div>
++              </div>
++            </div>
++            <div class="glass-panel border border-gray-200 rounded-xl p-6 space-y-4">
++              <h3 class="text-lg font-semibold text-gray-800">3. Generate Combined PDF</h3>
++              <p class="text-sm text-gray-500">The HIPAA authorization and medical request will be merged into a single download.</p>
++              <button id="generateBtn" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-[#7f1d1d] text-white font-semibold hover:bg-[#661313] transition disabled:opacity-40 disabled:cursor-not-allowed">
++                <span>Create PDF Package</span>
++              </button>
++              <p id="generateStatus" class="text-sm text-gray-500"></p>
++            </div>
++          </div>
++
++          <div id="page-clients" class="page hidden space-y-6">
++            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
++              <div>
++                <h3 class="text-xl font-semibold text-gray-800">Client Profiles</h3>
++                <p class="text-sm text-gray-500">Maintain demographic and claim details for each client.</p>
++              </div>
++              <button id="newClientBtn" class="px-4 py-2 rounded-lg bg-[#7f1d1d] text-white text-sm font-semibold hover:bg-[#661313] transition">Add Client</button>
++            </div>
++            <div class="glass-panel border border-gray-200 rounded-xl p-6">
++              <form id="clientForm" class="grid gap-4 md:grid-cols-2 hidden">
++                <input type="hidden" id="clientIndex" />
++                <div>
++                  <label class="block text-sm font-medium text-gray-700">Full Name</label>
++                  <input id="clientName" type="text" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" required />
++                </div>
++                <div>
++                  <label class="block text-sm font-medium text-gray-700">Date of Birth</label>
++                  <input id="clientDob" type="date" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" />
++                </div>
++                <div>
++                  <label class="block text-sm font-medium text-gray-700">Phone</label>
++                  <input id="clientPhone" type="tel" placeholder="(555) 000-0000" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" />
++                </div>
++                <div>
++                  <label class="block text-sm font-medium text-gray-700">Email</label>
++                  <input id="clientEmail" type="email" placeholder="client@example.com" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" />
++                </div>
++                <div class="md:col-span-2">
++                  <label class="block text-sm font-medium text-gray-700">Mailing Address</label>
++                  <input id="clientAddress" type="text" placeholder="123 Main St, City, State" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" />
++                </div>
++                <div>
++                  <label class="block text-sm font-medium text-gray-700">Claim / Matter #</label>
++                  <input id="clientClaim" type="text" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" />
++                </div>
++                <div>
++                  <label class="block text-sm font-medium text-gray-700">Date of Injury</label>
++                  <input id="clientInjury" type="date" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" />
++                </div>
++                <div class="md:col-span-2 flex items-center gap-3">
++                  <button type="submit" class="px-4 py-2 rounded-lg bg-[#7f1d1d] text-white text-sm font-semibold hover:bg-[#661313] transition">Save Client</button>
++                  <button type="button" id="cancelClient" class="px-4 py-2 rounded-lg border border-gray-300 text-sm text-gray-600">Cancel</button>
++                </div>
++              </form>
++              <div class="table-scroll mt-4">
++                <table class="w-full text-sm text-left">
++                  <thead class="text-xs uppercase text-gray-500">
++                    <tr class="border-b border-gray-200">
++                      <th class="py-3 pr-4">Client</th>
++                      <th class="py-3 pr-4">DOB</th>
++                      <th class="py-3 pr-4">Claim #</th>
++                      <th class="py-3 pr-4">Injury</th>
++                      <th class="py-3 pr-4">Actions</th>
++                    </tr>
++                  </thead>
++                  <tbody id="clientTable" class="divide-y divide-gray-100"></tbody>
++                </table>
++              </div>
++            </div>
++          </div>
++
++          <div id="page-providers" class="page hidden space-y-6">
++            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
++              <div>
++                <h3 class="text-xl font-semibold text-gray-800">Provider Directory</h3>
++                <p class="text-sm text-gray-500">Track facilities, contacts, and delivery preferences.</p>
++              </div>
++              <button id="newProviderBtn" class="px-4 py-2 rounded-lg bg-[#7f1d1d] text-white text-sm font-semibold hover:bg-[#661313] transition">Add Provider</button>
++            </div>
++            <div class="glass-panel border border-gray-200 rounded-xl p-6">
++              <form id="providerForm" class="grid gap-4 md:grid-cols-2 hidden">
++                <input type="hidden" id="providerIndex" />
++                <div>
++                  <label class="block text-sm font-medium text-gray-700">Facility / Provider Name</label>
++                  <input id="providerName" type="text" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" required />
++                </div>
++                <div>
++                  <label class="block text-sm font-medium text-gray-700">Attention To</label>
++                  <input id="providerContact" type="text" placeholder="Medical Records Dept." class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" />
++                </div>
++                <div>
++                  <label class="block text-sm font-medium text-gray-700">Phone</label>
++                  <input id="providerPhone" type="tel" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" />
++                </div>
++                <div>
++                  <label class="block text-sm font-medium text-gray-700">Fax</label>
++                  <input id="providerFax" type="text" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" />
++                </div>
++                <div class="md:col-span-2">
++                  <label class="block text-sm font-medium text-gray-700">Address</label>
++                  <input id="providerAddress" type="text" placeholder="456 Health Ave, City, State" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" />
++                </div>
++                <div class="md:col-span-2">
++                  <label class="block text-sm font-medium text-gray-700">Delivery Instructions</label>
++                  <textarea id="providerNotes" rows="3" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2"></textarea>
++                </div>
++                <div class="md:col-span-2 flex items-center gap-3">
++                  <button type="submit" class="px-4 py-2 rounded-lg bg-[#7f1d1d] text-white text-sm font-semibold hover:bg-[#661313] transition">Save Provider</button>
++                  <button type="button" id="cancelProvider" class="px-4 py-2 rounded-lg border border-gray-300 text-sm text-gray-600">Cancel</button>
++                </div>
++              </form>
++              <div class="table-scroll mt-4">
++                <table class="w-full text-sm text-left">
++                  <thead class="text-xs uppercase text-gray-500">
++                    <tr class="border-b border-gray-200">
++                      <th class="py-3 pr-4">Facility</th>
++                      <th class="py-3 pr-4">Contact</th>
++                      <th class="py-3 pr-4">Phone</th>
++                      <th class="py-3 pr-4">Fax</th>
++                      <th class="py-3 pr-4">Actions</th>
++                    </tr>
++                  </thead>
++                  <tbody id="providerTable" class="divide-y divide-gray-100"></tbody>
++                </table>
++              </div>
++            </div>
++          </div>
++
++          <div id="page-templates" class="page hidden space-y-6">
++            <div>
++              <h3 class="text-xl font-semibold text-gray-800">Template Library</h3>
++              <p class="text-sm text-gray-500">Customize the HIPAA release and medical request letter. Use placeholders to insert client/provider data.</p>
++            </div>
++            <div class="grid gap-6 lg:grid-cols-2">
++              <div class="glass-panel border border-gray-200 rounded-xl p-6 space-y-4">
++                <div class="flex items-center justify-between">
++                  <h4 class="text-lg font-semibold text-gray-800">HIPAA Authorization Template</h4>
++                  <button data-template="hipaa" class="reset-template text-sm text-[#7f1d1d] font-medium">Reset</button>
++                </div>
++                <textarea id="hipaaTemplate" rows="16" class="w-full border border-gray-300 rounded-lg px-3 py-2"></textarea>
++                <p class="text-xs text-gray-500">Suggested placeholders: {{client.name}}, {{client.dob}}, {{client.address}}, {{client.claim}}, {{provider.name}}, {{provider.address}}</p>
++              </div>
++              <div class="glass-panel border border-gray-200 rounded-xl p-6 space-y-4">
++                <div class="flex items-center justify-between">
++                  <h4 class="text-lg font-semibold text-gray-800">Medical Records Request Template</h4>
++                  <button data-template="letter" class="reset-template text-sm text-[#7f1d1d] font-medium">Reset</button>
++                </div>
++                <textarea id="letterTemplate" rows="16" class="w-full border border-gray-300 rounded-lg px-3 py-2"></textarea>
++                <p class="text-xs text-gray-500">Additional placeholders: {{client.injuryDate}}, {{client.phone}}, {{provider.contact}}, {{provider.fax}}, {{today}}</p>
++              </div>
++            </div>
++          </div>
++
++          <div id="page-accounts" class="page hidden space-y-6">
++            <div>
++              <h3 class="text-xl font-semibold text-gray-800">Account Administration</h3>
++              <p class="text-sm text-gray-500">Manage internal portal accounts. Password resets require the security question answer.</p>
++            </div>
++            <div class="glass-panel border border-gray-200 rounded-xl p-6 space-y-4">
++              <table class="w-full text-sm">
++                <thead class="text-xs uppercase text-gray-500 border-b border-gray-200">
++                  <tr>
++                    <th class="py-3 pr-4 text-left">User</th>
++                    <th class="py-3 pr-4 text-left">Email</th>
++                    <th class="py-3 pr-4 text-left">Created</th>
++                  </tr>
++                </thead>
++                <tbody id="accountTable" class="divide-y divide-gray-100"></tbody>
++              </table>
++            </div>
++            <div class="text-sm text-gray-500">
++              <p><strong>Security reminder:</strong> Accounts are stored locally within this browser. Export profiles periodically for safekeeping.</p>
++            </div>
++          </div>
++        </section>
++      </main>
+     </div>
  
 -    <!-- CLIENTS PAGE -->
 -    <div id="clients" class="page hidden">
@@ -307,72 +378,23 @@ index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..5bef8e480585b74f25876c37d7f99e4b
 -          class="brand-bg text-white px-4 py-2 rounded">Save Client</button>
 -      </form>
 -      <ul id="clientList" class="list-disc pl-6 text-gray-700"></ul>
--    </div>
-+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-+          <div class="bg-gray-50 border rounded p-4 space-y-3">
-+            <h3 class="text-lg font-semibold text-gray-700">HIPAA Release PDF</h3>
-+            <p class="text-sm text-gray-600">A fillable or static PDF will be merged ahead of the request letter.</p>
-+            <input type="file" id="hipaaFile" accept=".pdf" class="border p-2 w-full rounded" />
-+            <p class="text-xs text-gray-500" id="hipaaStatus"></p>
-+          </div>
-+
-+          <div class="bg-gray-50 border rounded p-4 space-y-3">
-+            <h3 class="text-lg font-semibold text-gray-700">Letter Template</h3>
-+            <p class="text-sm text-gray-600">
-+              Use placeholders like <code>{{client.name}}</code>, <code>{{client.dob}}</code>, <code>{{provider.name}}</code>,
-+              <code>{{today}}</code>, and more shown below. They will be replaced when generating the PDF.
-+            </p>
-+            <textarea id="letterTemplate" rows="14" class="border p-3 w-full rounded text-sm font-mono"></textarea>
-+          </div>
-+        </div>
-+
-+        <div class="bg-white border rounded p-4">
-+          <h4 class="text-md font-semibold text-gray-700 mb-3">Available placeholders</h4>
-+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-+            <div class="border border-red-100 rounded-lg p-3 bg-red-50/60">
-+              <p class="font-semibold text-red-700"><code>{{client.name}}</code></p>
-+              <p class="text-gray-600">Full client name</p>
-+            </div>
-+            <div class="border border-red-100 rounded-lg p-3 bg-red-50/60">
-+              <p class="font-semibold text-red-700"><code>{{client.dob}}</code></p>
-+              <p class="text-gray-600">Client date of birth</p>
-+            </div>
-+            <div class="border border-red-100 rounded-lg p-3 bg-red-50/60">
-+              <p class="font-semibold text-red-700"><code>{{client.ssn}}</code></p>
-+              <p class="text-gray-600">Client SSN / identifier</p>
-+            </div>
-+            <div class="border border-red-100 rounded-lg p-3 bg-red-50/60">
-+              <p class="font-semibold text-red-700"><code>{{client.injuryDate}}</code></p>
-+              <p class="text-gray-600">Date of injury</p>
-+            </div>
-+            <div class="border border-red-100 rounded-lg p-3 bg-red-50/60">
-+              <p class="font-semibold text-red-700"><code>{{provider.name}}</code></p>
-+              <p class="text-gray-600">Provider name</p>
-+            </div>
-+            <div class="border border-red-100 rounded-lg p-3 bg-red-50/60">
-+              <p class="font-semibold text-red-700"><code>{{provider.address}}</code></p>
-+              <p class="text-gray-600">Provider address</p>
-+            </div>
-+            <div class="border border-red-100 rounded-lg p-3 bg-red-50/60">
-+              <p class="font-semibold text-red-700"><code>{{provider.fax}}</code></p>
-+              <p class="text-gray-600">Provider fax</p>
-+            </div>
-+            <div class="border border-red-100 rounded-lg p-3 bg-red-50/60">
-+              <p class="font-semibold text-red-700"><code>{{provider.email}}</code></p>
-+              <p class="text-gray-600">Provider email</p>
-+            </div>
-+            <div class="border border-red-100 rounded-lg p-3 bg-red-50/60 md:col-span-2">
-+              <p class="font-semibold text-red-700"><code>{{today}}</code></p>
-+              <p class="text-gray-600">Today&apos;s date</p>
-+            </div>
-+          </div>
-+        </div>
-+
-+        <div class="flex gap-3">
-+          <button type="button" onclick="saveTemplates()" class="brand-bg text-white px-4 py-2 rounded">Save Templates</button>
-+          <button type="button" onclick="resetLetterTemplate()" class="px-4 py-2 rounded border border-gray-300 text-gray-600">Reset Letter Template</button>
-+        </div>
-+      </div>
++    <div id="mobileNav" class="lg:hidden fixed bottom-0 inset-x-0 bg-white border-t border-gray-200 shadow-lg flex justify-around py-3">
++      <button class="nav-button flex flex-col items-center text-xs font-medium text-gray-600" data-page="dashboard">
++        <span>Dashboard</span>
++      </button>
++      <button class="nav-button flex flex-col items-center text-xs font-medium text-gray-600" data-page="clients">
++        <span>Clients</span>
++      </button>
++      <button class="nav-button flex flex-col items-center text-xs font-medium text-gray-600" data-page="providers">
++        <span>Providers</span>
++      </button>
++      <button class="nav-button flex flex-col items-center text-xs font-medium text-gray-600" data-page="templates">
++        <span>Templates</span>
++      </button>
++      <button class="nav-button flex flex-col items-center text-xs font-medium text-gray-600" data-page="accounts">
++        <span>Accounts</span>
++      </button>
+     </div>
  
 -    <!-- PROVIDERS PAGE -->
 -    <div id="providers" class="page hidden">
@@ -396,18 +418,102 @@ index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..5bef8e480585b74f25876c37d7f99e4b
 -        <input type="file" id="letterFile" accept=".doc,.docx,.wpd,.pdf" class="border p-2 w-full rounded" />
 -        <button type="button" onclick="saveTemplates()"
 -          class="brand-bg text-white px-4 py-2 rounded">Save Templates</button>
-+      <!-- ===== SETTINGS PAGE ===== -->
-+      <div id="settings" class="page hidden space-y-4">
-+        <h2 class="text-2xl font-bold brand-red">Settings &amp; Account</h2>
-+        <p class="text-gray-700">Manage authentication and clear local browser storage.</p>
-+        <div class="space-y-2">
-+          <button class="brand-bg text-white px-4 py-2 rounded" onclick="logout()">Log Out</button>
-+          <button class="bg-gray-600 text-white px-4 py-2 rounded" onclick="clearAll()">Clear All Local Data</button>
++    <div id="authOverlay" class="fixed inset-0 bg-gray-900/70 backdrop-blur-sm flex items-center justify-center px-4">
++      <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full grid lg:grid-cols-2 overflow-hidden">
++        <div class="hidden lg:flex flex-col justify-between bg-[#7f1d1d] text-white p-8 space-y-6">
++          <div>
++            <p class="text-sm uppercase tracking-[0.3em] text-red-100">Secure Portal</p>
++            <h2 class="text-2xl font-semibold mt-2">Welcome to the Records Automation Workspace</h2>
++            <p class="text-sm text-red-100 mt-4 leading-relaxed">
++              Use the seeded administrator credentials on your first visit:<br />
++              <span class="font-semibold">Username:</span> admin<br />
++              <span class="font-semibold">Password:</span> SecurePortal!23
++            </p>
++          </div>
++          <div class="space-y-2 text-sm text-red-100">
++            <p class="font-semibold">Portal Capabilities</p>
++            <ul class="space-y-1 list-disc list-inside">
++              <li>Centralize client &amp; provider profiles</li>
++              <li>Manage HIPAA and request templates</li>
++              <li>Generate merged correspondence PDFs in seconds</li>
++            </ul>
++          </div>
++        </div>
++        <div class="p-6 sm:p-8">
++          <div class="flex rounded-xl border border-gray-200 overflow-hidden mb-6">
++            <button class="tab flex-1 px-4 py-2 text-sm" data-auth="signIn">Sign In</button>
++            <button class="tab flex-1 px-4 py-2 text-sm" data-auth="signUp">Create Account</button>
++            <button class="tab flex-1 px-4 py-2 text-sm" data-auth="recover">Recover Access</button>
++          </div>
++
++          <form id="signInForm" class="space-y-4">
++            <div>
++              <label class="block text-sm font-medium text-gray-700">Username or Email</label>
++              <input id="loginId" type="text" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" required />
++            </div>
++            <div>
++              <label class="block text-sm font-medium text-gray-700">Password</label>
++              <input id="loginPassword" type="password" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" required />
++            </div>
++            <button type="submit" class="w-full py-2 rounded-lg bg-[#7f1d1d] text-white font-semibold hover:bg-[#661313] transition">Access Portal</button>
++          </form>
++
++          <form id="signUpForm" class="space-y-4 hidden">
++            <div class="grid gap-4 md:grid-cols-2">
++              <div>
++                <label class="block text-sm font-medium text-gray-700">Full Name</label>
++                <input id="signupName" type="text" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" required />
++              </div>
++              <div>
++                <label class="block text-sm font-medium text-gray-700">Username</label>
++                <input id="signupUsername" type="text" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" required />
++              </div>
++              <div>
++                <label class="block text-sm font-medium text-gray-700">Email</label>
++                <input id="signupEmail" type="email" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" required />
++              </div>
++              <div>
++                <label class="block text-sm font-medium text-gray-700">Password</label>
++                <input id="signupPassword" type="password" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" required />
++              </div>
++            </div>
++            <div>
++              <label class="block text-sm font-medium text-gray-700">Security Question</label>
++              <input id="signupQuestion" type="text" placeholder="e.g., What is our case code?" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" required />
++            </div>
++            <div>
++              <label class="block text-sm font-medium text-gray-700">Security Answer</label>
++              <input id="signupAnswer" type="text" class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2" required />
++            </div>
++            <button type="submit" class="w-full py-2 rounded-lg bg-[#7f1d1d] text-white font-semibold hover:bg-[#661313] transition">Create Secure Account</button>
++          </form>
++
++          <form id="recoverForm" class="space-y-6 hidden">
++            <div class="space-y-3">
++              <label class="block text-sm font-medium text-gray-700">Username or Email</label>
++              <input id="recoverId" type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2" required />
++            </div>
++            <div id="recoveryStep" class="space-y-4 hidden">
++              <p class="text-sm text-gray-600">Answer the security question to reset the password.</p>
++              <div>
++                <label class="block text-sm font-medium text-gray-700">Security Question</label>
++                <p id="recoveryQuestion" class="mt-1 text-sm text-gray-900 font-medium"></p>
++              </div>
++              <div>
++                <label class="block text-sm font-medium text-gray-700">Security Answer</label>
++                <input id="recoveryAnswer" type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2" />
++              </div>
++              <div>
++                <label class="block text-sm font-medium text-gray-700">New Password</label>
++                <input id="recoveryPassword" type="password" class="w-full border border-gray-300 rounded-lg px-3 py-2" />
++              </div>
++            </div>
++            <button type="submit" class="w-full py-2 rounded-lg bg-[#7f1d1d] text-white font-semibold hover:bg-[#661313] transition">Continue</button>
++            <p id="recoveryStatus" class="text-sm text-gray-600"></p>
++          </form>
 +        </div>
        </div>
--    </div>
-+    </section>
-+  </main>
+     </div>
  
 -    <!-- ===== SETTINGS PAGE ===== -->
 -    <div id="settings" class="page hidden">
@@ -416,79 +522,12 @@ index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..5bef8e480585b74f25876c37d7f99e4b
 -      <div class="space-y-2">
 -        <button class="brand-bg text-white px-4 py-2 rounded" onclick="logout()">Log Out</button>
 -        <button class="bg-gray-600 text-white px-4 py-2 rounded" onclick="clearAll()">Clear All Local Data</button>
-+  <!-- ===== LOGIN / SIGNUP OVERLAY ===== -->
-+  <div id="authOverlay" class="fixed inset-0 bg-gray-900/70 backdrop-blur flex items-center justify-center z-50">
-+    <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md border border-gray-200 space-y-6">
-+      <header class="space-y-4">
-+        <div class="text-center space-y-2">
-+          <h2 id="authTitle" class="text-2xl font-semibold brand-red">Secure Portal Access</h2>
-+          <p id="authSubtitle" class="text-sm text-gray-600">
-+            Use the default administrator account below or create a new user to begin.
-+          </p>
-+        </div>
-+        <div class="grid grid-cols-2 gap-2 text-sm" role="tablist">
-+          <button type="button" class="auth-tab" data-mode="login">Sign In</button>
-+          <button type="button" class="auth-tab" data-mode="signup">Sign Up</button>
-+          <button type="button" class="auth-tab" data-mode="reset">Reset Password</button>
-+          <button type="button" class="auth-tab" data-mode="lookup">Find Username</button>
-+        </div>
-+        <p class="text-xs text-gray-500 text-center">
-+          Default admin: <strong>admin@blaszkowlegal.com</strong> / <strong>Admin123!</strong>
-+        </p>
-+      </header>
-+
-+      <form id="loginForm" class="space-y-3">
-+        <div>
-+          <label class="form-label" for="loginEmail">Email</label>
-+          <input type="email" id="loginEmail" class="border p-2 w-full rounded" autocomplete="username" required />
-+        </div>
-+        <div>
-+          <label class="form-label" for="loginPassword">Password</label>
-+          <input type="password" id="loginPassword" class="border p-2 w-full rounded" autocomplete="current-password" required />
-+        </div>
-+        <button type="submit" class="brand-bg text-white px-4 py-2 rounded w-full">Sign In</button>
-+      </form>
-+
-+      <form id="signupForm" class="space-y-3 hidden">
-+        <div class="grid grid-cols-1 gap-3">
-+          <div>
-+            <label class="form-label" for="signupEmail">Email</label>
-+            <input type="email" id="signupEmail" class="border p-2 w-full rounded" autocomplete="email" required />
-+          </div>
-+          <div>
-+            <label class="form-label" for="signupPassword">Password</label>
-+            <input type="password" id="signupPassword" class="border p-2 w-full rounded" autocomplete="new-password" required />
-+          </div>
-+          <div>
-+            <label class="form-label" for="signupConfirm">Confirm Password</label>
-+            <input type="password" id="signupConfirm" class="border p-2 w-full rounded" autocomplete="new-password" required />
-+          </div>
-+        </div>
-+        <button type="submit" class="brand-bg text-white px-4 py-2 rounded w-full">Create Account</button>
-+      </form>
-+
-+      <form id="resetForm" class="space-y-3 hidden">
-+        <div>
-+          <label class="form-label" for="resetEmail">Account Email</label>
-+          <input type="email" id="resetEmail" class="border p-2 w-full rounded" autocomplete="email" required />
-+        </div>
-+        <div>
-+          <label class="form-label" for="resetPassword">New Password</label>
-+          <input type="password" id="resetPassword" class="border p-2 w-full rounded" autocomplete="new-password" required />
-+        </div>
-+        <button type="submit" class="brand-bg text-white px-4 py-2 rounded w-full">Reset Password</button>
-+      </form>
-+
-+      <div id="lookupPanel" class="space-y-3 hidden">
-+        <p class="text-sm text-gray-700">
-+          These are the usernames (emails) currently saved in this browser for the portal. Use one to sign in or reset your
-+          password.
-+        </p>
-+        <ul id="lookupList" class="border border-gray-200 rounded divide-y bg-gray-50 text-sm"></ul>
++    <template id="rowActions">
++      <div class="flex gap-2">
++        <button class="edit px-3 py-1 text-xs font-medium rounded-lg bg-amber-100 text-amber-800">Edit</button>
++        <button class="delete px-3 py-1 text-xs font-medium rounded-lg bg-rose-100 text-rose-700">Delete</button>
        </div>
-+
-+      <p class="text-center text-xs text-gray-500">All accounts are stored in your browser for quick testing.</p>
-     </div>
+-    </div>
 -  </section>
 -</main>
 -
@@ -500,7 +539,7 @@ index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..5bef8e480585b74f25876c37d7f99e4b
 -    <input type="password" id="authPass" placeholder="Password" class="border p-2 w-full mb-2 rounded" />
 -    <button onclick="authAction()" class="brand-bg text-white px-4 py-2 rounded w-full">Login</button>
 -    <p id="authToggle" class="text-center text-red-700 text-sm mt-3 cursor-pointer" onclick="toggleAuth()">Need an account? Sign up</p>
-   </div>
+-  </div>
 -</div>
 -
 -<!-- ===== JAVASCRIPT LOGIC ===== -->
@@ -590,399 +629,7 @@ index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..5bef8e480585b74f25876c37d7f99e4b
 -      const opt = document.createElement('option');
 -      opt.value = i; opt.textContent = c.name;
 -      select.appendChild(opt);
-+
-+  <!-- ===== JAVASCRIPT LOGIC ===== -->
-+  <script>
-+    const STORAGE_KEYS = {
-+      users: 'mrc_users',
-+      currentUser: 'mrc_current_user',
-+      clients: 'mrc_clients',
-+      providers: 'mrc_providers',
-+      templates: 'mrc_templates'
-+    };
-+
-+    const defaultLetterTemplate = `{{today}}
-+
-+{{provider.name}}
-+{{provider.address}}
-+Fax: {{provider.fax}}
-+Email: {{provider.email}}
-+
-+Re: {{client.name}} (DOB: {{client.dob}} | SSN: {{client.ssn}})
-+
-+To whom it may concern,
-+
-+Please accept the attached HIPAA release as authorization to disclose a complete and certified copy of all medical records, diagnostic imaging, and billing materials pertaining to our client listed above for treatment surrounding the injury date of {{client.injuryDate}}.
-+
-+Kindly transmit the records to Blaszkow Legal PLLC at your earliest convenience. If fees apply, please fax an invoice so we may remit payment promptly.
-+
-+Thank you for your cooperation.
-+
-+Sincerely,
-+Blaszkow Legal PLLC
-+Records Department`;
-+
-+    const navButtons = Array.from(document.querySelectorAll('.nav-btn'));
-+    const userArea = document.getElementById('userArea');
-+    const recordCount = document.getElementById('recordCount');
-+    const dashClient = document.getElementById('dashClient');
-+    const dashProvider = document.getElementById('dashProvider');
-+    const letterPreview = document.getElementById('letterPreview');
-+    const clientForm = document.getElementById('clientForm');
-+    const cName = document.getElementById('cName');
-+    const cDOB = document.getElementById('cDOB');
-+    const cSSN = document.getElementById('cSSN');
-+    const cInjury = document.getElementById('cInjury');
-+    const clientIndex = document.getElementById('clientIndex');
-+    const clientSubmitLabel = document.getElementById('clientSubmitLabel');
-+    const cancelClientEdit = document.getElementById('cancelClientEdit');
-+    const clientTable = document.getElementById('clientTable');
-+    const providerForm = document.getElementById('providerForm');
-+    const pName = document.getElementById('pName');
-+    const pAddress = document.getElementById('pAddress');
-+    const pFax = document.getElementById('pFax');
-+    const pEmail = document.getElementById('pEmail');
-+    const providerIndex = document.getElementById('providerIndex');
-+    const providerSubmitLabel = document.getElementById('providerSubmitLabel');
-+    const cancelProviderEdit = document.getElementById('cancelProviderEdit');
-+    const providerTable = document.getElementById('providerTable');
-+    const hipaaFile = document.getElementById('hipaaFile');
-+    const hipaaStatus = document.getElementById('hipaaStatus');
-+    const letterTemplate = document.getElementById('letterTemplate');
-+    const generateBtn = document.getElementById('generateBtn');
-+    navButtons.forEach(btn => btn.addEventListener('click', () => showPage(btn.dataset.target)));
-+
-+    function readJSON(key, fallback) {
-+      try {
-+        const raw = localStorage.getItem(key);
-+        return raw ? JSON.parse(raw) : fallback;
-+      } catch (err) {
-+        console.error('Failed to parse localStorage', key, err);
-+        return fallback;
-+      }
-+    }
-+
-+    function writeJSON(key, value) {
-+      localStorage.setItem(key, JSON.stringify(value));
-+    }
-+
-+    function formatDate(value) {
-+      if (!value) return '';
-+      const date = new Date(value);
-+      if (Number.isNaN(date.getTime())) return value;
-+      return date.toLocaleDateString();
-+    }
-+
-+    /* ---------- AUTH ---------- */
-+    const authOverlay = document.getElementById('authOverlay');
-+    const loginForm = document.getElementById('loginForm');
-+    const signupForm = document.getElementById('signupForm');
-+    const resetForm = document.getElementById('resetForm');
-+    const authTitle = document.getElementById('authTitle');
-+    const authSubtitle = document.getElementById('authSubtitle');
-+    const authTabs = Array.from(document.querySelectorAll('.auth-tab'));
-+    const loginEmailInput = document.getElementById('loginEmail');
-+    const loginPasswordInput = document.getElementById('loginPassword');
-+    const signupEmailInput = document.getElementById('signupEmail');
-+    const signupPasswordInput = document.getElementById('signupPassword');
-+    const signupConfirmInput = document.getElementById('signupConfirm');
-+    const resetEmailInput = document.getElementById('resetEmail');
-+    const resetPasswordInput = document.getElementById('resetPassword');
-+    const lookupPanel = document.getElementById('lookupPanel');
-+    const lookupList = document.getElementById('lookupList');
-+
-+    const DEFAULT_ADMIN = {
-+      email: 'admin@blaszkowlegal.com',
-+      password: 'Admin123!',
-+      role: 'admin'
-+    };
-+
-+    function ensureDefaultAdmin() {
-+      const users = readJSON(STORAGE_KEYS.users, {});
-+      if (!users[DEFAULT_ADMIN.email]) {
-+        users[DEFAULT_ADMIN.email] = { password: DEFAULT_ADMIN.password, role: DEFAULT_ADMIN.role };
-+        writeJSON(STORAGE_KEYS.users, users);
-+      }
-+    }
-+
-+    const AUTH_MODES = {
-+      login: {
-+        title: 'Secure Portal Access',
-+        subtitle: 'Use your credentials to access the records automation workspace.'
-+      },
-+      signup: {
-+        title: 'Create a Team Account',
-+        subtitle: 'Set up an additional user for staff or co-counsel access.'
-+      },
-+      reset: {
-+        title: 'Reset Your Password',
-+        subtitle: 'Enter your email and a new password to regain access.'
-+      },
-+      lookup: {
-+        title: 'Look Up Your Username',
-+        subtitle: 'Reference the saved account emails for this browser session.'
-+      }
-+    };
-+
-+    let currentAuthMode = 'login';
-+
-+    function setAuthMode(mode) {
-+      currentAuthMode = mode;
-+      loginForm.classList.toggle('hidden', mode !== 'login');
-+      signupForm.classList.toggle('hidden', mode !== 'signup');
-+      resetForm.classList.toggle('hidden', mode !== 'reset');
-+      lookupPanel.classList.toggle('hidden', mode !== 'lookup');
-+      authTitle.innerText = AUTH_MODES[mode].title;
-+      authSubtitle.innerText = AUTH_MODES[mode].subtitle;
-+      authTabs.forEach(btn => {
-+        btn.classList.toggle('active', btn.dataset.mode === mode);
-+      });
-+      if (mode === 'lookup') {
-+        populateLookup();
-+      }
-+    }
-+
-+    function populateLookup() {
-+      const users = readJSON(STORAGE_KEYS.users, {});
-+      const accounts = Object.keys(users).sort();
-+      lookupList.innerHTML = '';
-+      if (!accounts.length) {
-+        const empty = document.createElement('li');
-+        empty.className = 'px-3 py-2 text-gray-500';
-+        empty.innerText = 'No usernames stored yet. Create an account to get started.';
-+        lookupList.appendChild(empty);
-+        return;
-+      }
-+      accounts.forEach(email => {
-+        const item = document.createElement('li');
-+        item.className = 'px-3 py-2 flex items-center justify-between';
-+        item.innerHTML = `<span>${email}</span><span class="text-xs uppercase tracking-wide text-gray-400">${(users[email].role || 'user')}</span>`;
-+        lookupList.appendChild(item);
-+      });
-+    }
-+
-+    authTabs.forEach(btn => {
-+      btn.addEventListener('click', () => setAuthMode(btn.dataset.mode));
-+    });
-+
-+    loginForm.addEventListener('submit', event => {
-+      event.preventDefault();
-+      const email = loginEmailInput.value.trim().toLowerCase();
-+      const password = loginPasswordInput.value.trim();
-+      if (!email || !password) return alert('Enter email and password.');
-+
-+      const users = readJSON(STORAGE_KEYS.users, {});
-+      const user = users[email];
-+      if (!user || user.password !== password) {
-+        alert('Invalid email or password.');
-+        return;
-+      }
-+      writeJSON(STORAGE_KEYS.currentUser, email);
-+      authOverlay.classList.add('hidden');
-+      userArea.innerText = email;
-+      setAuthMode('login');
-+      loginForm.reset();
-+    });
-+
-+    signupForm.addEventListener('submit', event => {
-+      event.preventDefault();
-+      const email = signupEmailInput.value.trim().toLowerCase();
-+      const password = signupPasswordInput.value.trim();
-+      const confirm = signupConfirmInput.value.trim();
-+      if (!email || !password || !confirm) {
-+        alert('Complete all fields.');
-+        return;
-+      }
-+      if (password.length < 8) {
-+        alert('Choose a password with at least 8 characters.');
-+        return;
-+      }
-+      if (password !== confirm) {
-+        alert('Passwords do not match.');
-+        return;
-+      }
-+      const users = readJSON(STORAGE_KEYS.users, {});
-+      if (users[email]) {
-+        alert('An account with this email already exists.');
-+        return;
-+      }
-+      users[email] = { password, role: 'staff' };
-+      writeJSON(STORAGE_KEYS.users, users);
-+      alert('Account created. You can sign in now.');
-+      signupForm.reset();
-+      setAuthMode('login');
-+    });
-+
-+    resetForm.addEventListener('submit', event => {
-+      event.preventDefault();
-+      const email = resetEmailInput.value.trim().toLowerCase();
-+      const password = resetPasswordInput.value.trim();
-+      if (!email || !password) {
-+        alert('Enter your account email and a new password.');
-+        return;
-+      }
-+      const users = readJSON(STORAGE_KEYS.users, {});
-+      if (!users[email]) {
-+        alert('No account found with that email.');
-+        return;
-+      }
-+      users[email].password = password;
-+      writeJSON(STORAGE_KEYS.users, users);
-+      alert('Password updated. Sign in with your new credentials.');
-+      resetForm.reset();
-+      setAuthMode('login');
-+    });
-+
-+    function logout() {
-+      localStorage.removeItem(STORAGE_KEYS.currentUser);
-+      userArea.innerText = '';
-+      setAuthMode('login');
-+      authOverlay.classList.remove('hidden');
-+    }
-+
-+    /* ---------- NAVIGATION ---------- */
-+    function showPage(id) {
-+      document.querySelectorAll('.page').forEach(p => p.classList.toggle('hidden', p.id !== id));
-+      navButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.target === id));
-+      if (id === 'dashboard') {
-+        updateLetterPreview();
-+      }
-+    }
-+
-+    /* ---------- CLIENTS ---------- */
-+    function getClients() {
-+      return readJSON(STORAGE_KEYS.clients, []);
-+    }
-+
-+    function saveClients(clients) {
-+      writeJSON(STORAGE_KEYS.clients, clients);
-+    }
-+
-+    function resetClientForm() {
-+      clientForm.reset();
-+      clientIndex.value = '';
-+      clientSubmitLabel.innerText = 'Save Client';
-+      cancelClientEdit.classList.add('hidden');
-+    }
-+
-+    clientForm.addEventListener('submit', event => {
-+      event.preventDefault();
-+      const payload = {
-+        name: cName.value.trim(),
-+        dob: cDOB.value,
-+        ssn: cSSN.value.trim(),
-+        injuryDate: cInjury.value
-+      };
-+      if (!payload.name) return alert('Enter client name');
-+
-+      const clients = getClients();
-+      const editIndex = clientIndex.value;
-+      if (editIndex) {
-+        clients[Number(editIndex)] = payload;
-+      } else {
-+        clients.push(payload);
-+      }
-+      saveClients(clients);
-+      resetClientForm();
-+      renderClients();
-+    });
-+
-+    cancelClientEdit.addEventListener('click', resetClientForm);
-+
-+    function renderClients() {
-+      const clients = getClients();
-+      clientTable.innerHTML = '';
-+      if (!clients.length) {
-+        clientTable.innerHTML = '<tr><td colspan="5" class="px-4 py-4 text-center text-gray-500">No clients saved yet.</td></tr>';
-+      } else {
-+        clients.forEach((client, index) => {
-+          const row = document.createElement('tr');
-+          row.innerHTML = `
-+            <td class="px-4 py-2">${client.name || ''}</td>
-+            <td class="px-4 py-2">${formatDate(client.dob)}</td>
-+            <td class="px-4 py-2">${client.ssn || ''}</td>
-+            <td class="px-4 py-2">${formatDate(client.injuryDate)}</td>
-+            <td class="px-4 py-2 space-x-2">
-+              <button class="text-red-600 hover:underline" data-action="edit" data-index="${index}">Edit</button>
-+              <button class="text-gray-600 hover:underline" data-action="delete" data-index="${index}">Delete</button>
-+            </td>`;
-+          clientTable.appendChild(row);
-+        });
-+      }
-+
-+      dashClient.innerHTML = '<option value="">Select Client</option>';
-+      clients.forEach((client, index) => {
-+        const opt = document.createElement('option');
-+        opt.value = index;
-+        opt.textContent = client.name;
-+        dashClient.appendChild(opt);
-+      });
-+      updateRecordCount();
-+      updateLetterPreview();
-+    }
-+
-+    clientTable.addEventListener('click', event => {
-+      const btn = event.target.closest('button[data-action]');
-+      if (!btn) return;
-+      const action = btn.dataset.action;
-+      const index = Number(btn.dataset.index);
-+      const clients = getClients();
-+      if (action === 'edit') {
-+        const client = clients[index];
-+        cName.value = client.name;
-+        cDOB.value = client.dob;
-+        cSSN.value = client.ssn;
-+        cInjury.value = client.injuryDate;
-+        clientIndex.value = index;
-+        clientSubmitLabel.innerText = 'Update Client';
-+        cancelClientEdit.classList.remove('hidden');
-+        showPage('clients');
-+      } else if (action === 'delete') {
-+        if (confirm('Remove this client?')) {
-+          clients.splice(index, 1);
-+          saveClients(clients);
-+          renderClients();
-+        }
-+      }
-+    });
-+
-+    /* ---------- PROVIDERS ---------- */
-+    function getProviders() {
-+      return readJSON(STORAGE_KEYS.providers, []);
-+    }
-+
-+    function saveProviders(providers) {
-+      writeJSON(STORAGE_KEYS.providers, providers);
-+    }
-+
-+    function resetProviderForm() {
-+      providerForm.reset();
-+      providerIndex.value = '';
-+      providerSubmitLabel.innerText = 'Save Provider';
-+      cancelProviderEdit.classList.add('hidden');
-+    }
-+
-+    providerForm.addEventListener('submit', event => {
-+      event.preventDefault();
-+      const payload = {
-+        name: pName.value.trim(),
-+        address: pAddress.value.trim(),
-+        fax: pFax.value.trim(),
-+        email: pEmail.value.trim()
-+      };
-+      if (!payload.name) return alert('Enter provider name');
-+
-+      const providers = getProviders();
-+      const editIndex = providerIndex.value;
-+      if (editIndex) {
-+        providers[Number(editIndex)] = payload;
-+      } else {
-+        providers.push(payload);
-+      }
-+      saveProviders(providers);
-+      resetProviderForm();
-+      renderProviders();
-     });
+-    });
 -  }
 -}
 -
@@ -1018,65 +665,7 @@ index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..5bef8e480585b74f25876c37d7f99e4b
 -      const opt = document.createElement('option');
 -      opt.value = i; opt.textContent = p.name;
 -      select.appendChild(opt);
-+
-+    cancelProviderEdit.addEventListener('click', resetProviderForm);
-+
-+    function renderProviders() {
-+      const providers = getProviders();
-+      providerTable.innerHTML = '';
-+      if (!providers.length) {
-+        providerTable.innerHTML = '<tr><td colspan="5" class="px-4 py-4 text-center text-gray-500">No providers saved yet.</td></tr>';
-+      } else {
-+        providers.forEach((provider, index) => {
-+          const row = document.createElement('tr');
-+          row.innerHTML = `
-+            <td class="px-4 py-2">${provider.name || ''}</td>
-+            <td class="px-4 py-2">${provider.fax || ''}</td>
-+            <td class="px-4 py-2">${provider.email || ''}</td>
-+            <td class="px-4 py-2">${provider.address || ''}</td>
-+            <td class="px-4 py-2 space-x-2">
-+              <button class="text-red-600 hover:underline" data-action="edit" data-index="${index}">Edit</button>
-+              <button class="text-gray-600 hover:underline" data-action="delete" data-index="${index}">Delete</button>
-+            </td>`;
-+          providerTable.appendChild(row);
-+        });
-+      }
-+
-+      dashProvider.innerHTML = '<option value="">Select Provider</option>';
-+      providers.forEach((provider, index) => {
-+        const opt = document.createElement('option');
-+        opt.value = index;
-+        opt.textContent = provider.name;
-+        dashProvider.appendChild(opt);
-+      });
-+      updateRecordCount();
-+      updateLetterPreview();
-+    }
-+
-+    providerTable.addEventListener('click', event => {
-+      const btn = event.target.closest('button[data-action]');
-+      if (!btn) return;
-+      const action = btn.dataset.action;
-+      const index = Number(btn.dataset.index);
-+      const providers = getProviders();
-+      if (action === 'edit') {
-+        const provider = providers[index];
-+        pName.value = provider.name;
-+        pAddress.value = provider.address;
-+        pFax.value = provider.fax;
-+        pEmail.value = provider.email;
-+        providerIndex.value = index;
-+        providerSubmitLabel.innerText = 'Update Provider';
-+        cancelProviderEdit.classList.remove('hidden');
-+        showPage('providers');
-+      } else if (action === 'delete') {
-+        if (confirm('Remove this provider?')) {
-+          providers.splice(index, 1);
-+          saveProviders(providers);
-+          renderProviders();
-+        }
-+      }
-     });
+-    });
 -  }
 -}
 -
@@ -1157,219 +746,647 @@ index 78d09f1e16d943f0e3e58b24e889796ad62a4b32..5bef8e480585b74f25876c37d7f99e4b
 -
 -generateBtn.addEventListener('click', generatePDF);
 -</script>
+-</body>
++    </template>
 +
-+    /* ---------- TEMPLATES ---------- */
-+    function getTemplates() {
-+      return readJSON(STORAGE_KEYS.templates, {});
-+    }
-+
-+    function setTemplateStatus() {
-+      const templates = getTemplates();
-+      hipaaStatus.textContent = templates.hipaaPdf ? `Stored file: ${templates.hipaaFileName || 'HIPAA.pdf'}` : 'No HIPAA PDF saved yet.';
-+      letterTemplate.value = templates.letterBody || defaultLetterTemplate;
-+      updateLetterPreview();
-+    }
-+
-+    async function fileToDataUrl(file) {
-+      return new Promise((resolve, reject) => {
-+        const reader = new FileReader();
-+        reader.onload = () => resolve(reader.result);
-+        reader.onerror = reject;
-+        reader.readAsDataURL(file);
-+      });
-+    }
-+
-+    async function saveTemplates() {
-+      const templates = getTemplates();
-+      const hipaa = hipaaFile.files[0];
-+      if (hipaa) {
-+        templates.hipaaPdf = await fileToDataUrl(hipaa);
-+        templates.hipaaFileName = hipaa.name;
-+        hipaaFile.value = '';
-+      }
-+      templates.letterBody = letterTemplate.value.trim() || defaultLetterTemplate;
-+      writeJSON(STORAGE_KEYS.templates, templates);
-+      setTemplateStatus();
-+      alert('Templates saved locally.');
-+    }
-+
-+    function resetLetterTemplate() {
-+      if (confirm('Reset the letter template to the default text?')) {
-+        letterTemplate.value = defaultLetterTemplate;
-+        saveTemplates();
-+      }
-+    }
-+
-+    /* ---------- LETTER PREVIEW ---------- */
-+    function buildLetterPreview() {
-+      const client = getClients()[dashClient.value] || {};
-+      const provider = getProviders()[dashProvider.value] || {};
-+      const body = (letterTemplate.value || defaultLetterTemplate).trim();
-+      return fillTemplate(body, client, provider);
-+    }
-+
-+    function updateLetterPreview() {
-+      const includeLetter = document.getElementById('includeLetter').checked;
-+      letterPreview.textContent = includeLetter ? buildLetterPreview() : 'Letter generation disabled.';
-+    }
-+
-+    letterTemplate.addEventListener('input', updateLetterPreview);
-+    dashClient.addEventListener('change', updateLetterPreview);
-+    dashProvider.addEventListener('change', updateLetterPreview);
-+    document.getElementById('includeLetter').addEventListener('change', updateLetterPreview);
-+
-+    function updateRecordCount() {
-+      const clients = getClients().length;
-+      const providers = getProviders().length;
-+      recordCount.textContent = `Clients: ${clients} | Providers: ${providers}`;
-+    }
-+
-+    /* ---------- CLEAR DATA ---------- */
-+    function clearAll() {
-+      if (confirm('Delete all local data?')) {
-+        localStorage.clear();
-+        location.reload();
-+      }
-+    }
-+
-+    /* ---------- TEMPLATE FILL HELPERS ---------- */
-+    function fillTemplate(template, client, provider) {
-+      const replacements = {
-+        '{{client.name}}': client.name || '',
-+        '{{client.dob}}': formatDate(client.dob),
-+        '{{client.ssn}}': client.ssn || '',
-+        '{{client.injuryDate}}': formatDate(client.injuryDate),
-+        '{{provider.name}}': provider.name || '',
-+        '{{provider.address}}': provider.address || '',
-+        '{{provider.fax}}': provider.fax || '',
-+        '{{provider.email}}': provider.email || '',
-+        '{{today}}': new Date().toLocaleDateString()
++    <script>
++      const STORAGE_KEYS = {
++        accounts: 'mrc_accounts',
++        activeUser: 'mrc_active_user',
++        clients: 'mrc_clients',
++        providers: 'mrc_providers',
++        templates: 'mrc_templates'
 +      };
-+      let output = template;
-+      Object.entries(replacements).forEach(([token, value]) => {
-+        output = output.split(token).join(value);
-+      });
-+      return output;
-+    }
 +
-+    function wrapLines(text, font, size, maxWidth) {
-+      const words = text.split(/\s+/);
-+      const lines = [];
-+      let current = '';
-+      words.forEach(word => {
-+        const testLine = current ? `${current} ${word}` : word;
-+        const width = font.widthOfTextAtSize(testLine, size);
-+        if (width <= maxWidth) {
-+          current = testLine;
-+        } else {
-+          if (current) lines.push(current);
-+          current = word;
++      const DEFAULT_ADMIN = {
++        username: 'admin',
++        name: 'Administrator',
++        email: 'admin@blaszkowlegal.com',
++        password: 'SecurePortal!23',
++        securityQuestion: 'What word unlocks the records workspace?',
++        securityAnswer: 'Blaszkow',
++        createdAt: new Date().toISOString()
++      };
++
++      const DEFAULT_TEMPLATES = {
++        hipaa: `HIPAA AUTHORIZATION\n\nI, {{client.name}}, born {{client.dob}}, authorize the release of my complete medical records to Blaszkow Legal PLLC.\n\nRecords Requested From:\n{{provider.name}}\n{{provider.address}}\nPhone: {{provider.phone}} | Fax: {{provider.fax}}\n\nPurpose: Legal representation regarding claim {{client.claim}} stemming from injuries on {{client.injuryDate}}.\n\nPlease forward certified copies of the requested records to:\nBlaszkow Legal PLLC\n{{lawFirmAddress}}\nFax: (703) 879-5155\n\nClient Signature: ____________________________    Date: __________________\n`,
++        letter: `{{today}}\n\n{{provider.name}}\n{{provider.address}}\nFax: {{provider.fax}}\n\nRE: {{client.name}} | DOB {{client.dob}} | Claim {{client.claim}}\n\nTo Whom It May Concern,\n\nPlease provide complete medical records, billing ledgers, imaging, and diagnostic studies for {{client.name}} related to the injuries sustained on {{client.injuryDate}}. Enclosed is a signed HIPAA authorization.\n\nDeliver the records to Blaszkow Legal PLLC, attention Records Department. For questions call {{lawFirmPhone}}.\n\nThank you for your prompt attention.\n\nSincerely,\nBlaszkow Legal PLLC\n{{lawFirmAddress}}\n{{lawFirmPhone}}
++`
++      };
++
++      const FIRM_PROFILE = {
++        lawFirmAddress: '700 N Fairfax St, Suite 201, Alexandria, VA 22314',
++        lawFirmPhone: '(703) 879-5910'
++      };
++
++      const state = {
++        accounts: [],
++        activeUser: null,
++        clients: [],
++        providers: [],
++        templates: { ...DEFAULT_TEMPLATES }
++      };
++
++      document.addEventListener('DOMContentLoaded', () => {
++        bootstrapStorage();
++        loadState();
++        setupNavigation();
++        bindAuth();
++        bindClientForm();
++        bindProviderForm();
++        bindTemplateHandlers();
++        bindDashboard();
++        renderAll();
++      });
++
++      function bootstrapStorage() {
++        const storedAccounts = JSON.parse(localStorage.getItem(STORAGE_KEYS.accounts) || '[]');
++        if (!storedAccounts.length) {
++          localStorage.setItem(STORAGE_KEYS.accounts, JSON.stringify([DEFAULT_ADMIN]));
 +        }
-+      });
-+      if (current) lines.push(current);
-+      return lines;
-+    }
-+
-+    function wrapParagraphs(text, font, size, maxWidth) {
-+      const paragraphs = text.split(/\n\s*\n/);
-+      const lines = [];
-+      paragraphs.forEach((para, index) => {
-+        const paraLines = wrapLines(para.replace(/\n/g, ' '), font, size, maxWidth);
-+        lines.push(...paraLines);
-+        if (index < paragraphs.length - 1) lines.push('');
-+      });
-+      return lines;
-+    }
-+
-+    /* ---------- PDF GENERATION ---------- */
-+    async function generatePDF() {
-+      const clients = getClients();
-+      const providers = getProviders();
-+      const cIndex = dashClient.value;
-+      const pIndex = dashProvider.value;
-+      if (cIndex === '' || pIndex === '') {
-+        alert('Select a client and provider');
-+        return;
++        const storedTemplates = JSON.parse(localStorage.getItem(STORAGE_KEYS.templates) || 'null');
++        if (!storedTemplates) {
++          localStorage.setItem(STORAGE_KEYS.templates, JSON.stringify(DEFAULT_TEMPLATES));
++        }
 +      }
 +
-+      const includeHipaa = document.getElementById('includeHipaa').checked;
-+      const includeLetter = document.getElementById('includeLetter').checked;
-+      if (!includeHipaa && !includeLetter) {
-+        alert('Select at least one document to generate.');
-+        return;
++      function loadState() {
++        state.accounts = JSON.parse(localStorage.getItem(STORAGE_KEYS.accounts) || '[]');
++        state.clients = JSON.parse(localStorage.getItem(STORAGE_KEYS.clients) || '[]');
++        state.providers = JSON.parse(localStorage.getItem(STORAGE_KEYS.providers) || '[]');
++        state.templates = {
++          ...DEFAULT_TEMPLATES,
++          ...JSON.parse(localStorage.getItem(STORAGE_KEYS.templates) || '{}')
++        };
++        const active = localStorage.getItem(STORAGE_KEYS.activeUser);
++        state.activeUser = active ? JSON.parse(active) : null;
 +      }
 +
-+      const client = clients[cIndex];
-+      const provider = providers[pIndex];
-+      const templates = getTemplates();
-+
-+      if (includeHipaa && !templates.hipaaPdf) {
-+        alert('Upload a HIPAA PDF template in the Templates tab first.');
-+        return;
++      function persist(key, value) {
++        localStorage.setItem(key, JSON.stringify(value));
 +      }
 +
-+      if (includeLetter && !(templates.letterBody || letterTemplate.value.trim())) {
-+        alert('Define a letter template first.');
-+        return;
++      function renderAll() {
++        updateCounts();
++        renderClients();
++        renderProviders();
++        renderTemplates();
++        renderAccounts();
++        renderUser();
++        showPage(state.activeUser ? 'dashboard' : 'dashboard');
++        updatePreview();
++        toggleAuthOverlay(Boolean(state.activeUser));
 +      }
 +
-+      const mergedPdf = await PDFLib.PDFDocument.create();
-+
-+      if (includeHipaa && templates.hipaaPdf) {
-+        const hipaaBytes = await fetch(templates.hipaaPdf).then(r => r.arrayBuffer());
-+        const hipaaPdf = await PDFLib.PDFDocument.load(hipaaBytes);
-+        const copiedPages = await mergedPdf.copyPages(hipaaPdf, hipaaPdf.getPageIndices());
-+        copiedPages.forEach(page => mergedPdf.addPage(page));
++      function updateCounts() {
++        document.getElementById('clientCount').textContent = state.clients.length;
++        document.getElementById('providerCount').textContent = state.providers.length;
++        document.getElementById('templateCount').textContent = Object.values(state.templates).filter(Boolean).length;
 +      }
 +
-+      if (includeLetter) {
-+        const letterText = fillTemplate((templates.letterBody || letterTemplate.value || defaultLetterTemplate).trim(), client, provider);
-+        const letterPage = mergedPdf.addPage([612, 792]);
-+        const { height } = letterPage.getSize();
-+        const font = await mergedPdf.embedFont(PDFLib.StandardFonts.TimesRoman);
-+        const fontSize = 12;
-+        const margin = 50;
-+        const maxWidth = 612 - margin * 2;
-+        const lines = wrapParagraphs(letterText, font, fontSize, maxWidth);
-+        let y = height - margin;
-+        lines.forEach(line => {
-+          if (line === '') {
-+            y -= fontSize * 1.5;
++      function renderUser() {
++        const active = state.activeUser;
++        document.getElementById('activeUser').textContent = active ? `${active.name} (${active.username})` : 'Not signed in';
++        document.getElementById('logoutBtn').classList.toggle('opacity-50', !active);
++        document.getElementById('logoutBtn').disabled = !active;
++      }
++
++      function renderClients() {
++        const select = document.getElementById('dashClient');
++        select.innerHTML = '<option value="">Select client</option>';
++        state.clients.forEach((client, index) => {
++          const option = document.createElement('option');
++          option.value = index;
++          option.textContent = `${client.name} (${client.claim || 'No claim'})`;
++          select.appendChild(option);
++        });
++        const tbody = document.getElementById('clientTable');
++        tbody.innerHTML = '';
++        state.clients.forEach((client, index) => {
++          const tr = document.createElement('tr');
++          tr.className = 'hover:bg-gray-50';
++          tr.innerHTML = `
++            <td class="py-3 pr-4">
++              <p class="font-medium text-gray-900">${client.name || ''}</p>
++              <p class="text-xs text-gray-500">${client.email || ''}</p>
++            </td>
++            <td class="py-3 pr-4 text-gray-600">${formatDate(client.dob)}</td>
++            <td class="py-3 pr-4 text-gray-600">${client.claim || ''}</td>
++            <td class="py-3 pr-4 text-gray-600">${formatDate(client.injuryDate)}</td>
++            <td class="py-3 pr-4">
++              <div class="flex gap-2">
++                <button data-index="${index}" class="client-edit px-3 py-1 text-xs font-medium rounded-lg bg-amber-100 text-amber-800">Edit</button>
++                <button data-index="${index}" class="client-delete px-3 py-1 text-xs font-medium rounded-lg bg-rose-100 text-rose-700">Delete</button>
++              </div>
++            </td>`;
++          tbody.appendChild(tr);
++        });
++        updateGenerateState();
++      }
++
++      function renderProviders() {
++        const select = document.getElementById('dashProvider');
++        select.innerHTML = '<option value="">Select provider</option>';
++        state.providers.forEach((provider, index) => {
++          const option = document.createElement('option');
++          option.value = index;
++          option.textContent = provider.name;
++          select.appendChild(option);
++        });
++        const tbody = document.getElementById('providerTable');
++        tbody.innerHTML = '';
++        state.providers.forEach((provider, index) => {
++          const tr = document.createElement('tr');
++          tr.className = 'hover:bg-gray-50';
++          tr.innerHTML = `
++            <td class="py-3 pr-4">
++              <p class="font-medium text-gray-900">${provider.name || ''}</p>
++              <p class="text-xs text-gray-500">${provider.address || ''}</p>
++            </td>
++            <td class="py-3 pr-4 text-gray-600">${provider.contact || ''}</td>
++            <td class="py-3 pr-4 text-gray-600">${provider.phone || ''}</td>
++            <td class="py-3 pr-4 text-gray-600">${provider.fax || ''}</td>
++            <td class="py-3 pr-4">
++              <div class="flex gap-2">
++                <button data-index="${index}" class="provider-edit px-3 py-1 text-xs font-medium rounded-lg bg-amber-100 text-amber-800">Edit</button>
++                <button data-index="${index}" class="provider-delete px-3 py-1 text-xs font-medium rounded-lg bg-rose-100 text-rose-700">Delete</button>
++              </div>
++            </td>`;
++          tbody.appendChild(tr);
++        });
++        updateGenerateState();
++      }
++
++      function updateGenerateState() {
++        const button = document.getElementById('generateBtn');
++        const hasRecords = state.clients.length > 0 && state.providers.length > 0;
++        button.disabled = !hasRecords;
++        document.getElementById('generateStatus').textContent = hasRecords
++          ? 'Select records and choose documents to generate.'
++          : 'Add at least one client and provider to enable PDF generation.';
++      }
++
++      function renderTemplates() {
++        document.getElementById('hipaaTemplate').value = state.templates.hipaa || '';
++        document.getElementById('letterTemplate').value = state.templates.letter || '';
++      }
++
++      function renderAccounts() {
++        const tbody = document.getElementById('accountTable');
++        tbody.innerHTML = '';
++        state.accounts.forEach(account => {
++          const tr = document.createElement('tr');
++          tr.innerHTML = `
++            <td class="py-3 pr-4 text-gray-900 font-medium">${account.name} (${account.username})</td>
++            <td class="py-3 pr-4 text-gray-600">${account.email}</td>
++            <td class="py-3 pr-4 text-gray-600">${formatDate(account.createdAt)}</td>`;
++          tbody.appendChild(tr);
++        });
++      }
++
++      function toggleAuthOverlay(isAuthenticated) {
++        document.getElementById('authOverlay').classList.toggle('hidden', isAuthenticated);
++      }
++
++      function setupNavigation() {
++        const buttons = document.querySelectorAll('.nav-button');
++        buttons.forEach(button => {
++          button.addEventListener('click', () => {
++            const page = button.dataset.page;
++            showPage(page);
++          });
++        });
++        showPage('dashboard');
++        document.getElementById('logoutBtn').addEventListener('click', () => {
++          state.activeUser = null;
++          localStorage.removeItem(STORAGE_KEYS.activeUser);
++          renderUser();
++          toggleAuthOverlay(false);
++          document.querySelector('.tab[data-auth="signIn"]').click();
++          document.getElementById('loginId').value = DEFAULT_ADMIN.username;
++          document.getElementById('loginPassword').value = DEFAULT_ADMIN.password;
++        });
++      }
++
++      function showPage(page) {
++        document.querySelectorAll('.page').forEach(section => {
++          section.classList.toggle('hidden', section.id !== `page-${page}`);
++        });
++        document.querySelectorAll('.nav-button').forEach(button => {
++          button.classList.toggle('active', button.dataset.page === page);
++        });
++      }
++
++      function bindAuth() {
++        const tabs = document.querySelectorAll('.tab');
++        const forms = {
++          signIn: document.getElementById('signInForm'),
++          signUp: document.getElementById('signUpForm'),
++          recover: document.getElementById('recoverForm')
++        };
++
++        tabs.forEach(tab => {
++          tab.addEventListener('click', () => {
++            tabs.forEach(t => t.classList.remove('active'));
++            tab.classList.add('active');
++            Object.entries(forms).forEach(([key, form]) => {
++              form.classList.toggle('hidden', key !== tab.dataset.auth);
++            });
++          });
++        });
++        tabs[0].click();
++        document.getElementById('loginId').value = DEFAULT_ADMIN.username;
++        document.getElementById('loginPassword').value = DEFAULT_ADMIN.password;
++
++        forms.signIn.addEventListener('submit', event => {
++          event.preventDefault();
++          const id = document.getElementById('loginId').value.trim().toLowerCase();
++          const password = document.getElementById('loginPassword').value;
++          const account = state.accounts.find(acc => acc.username.toLowerCase() === id || acc.email.toLowerCase() === id);
++          if (!account || account.password !== password) {
++            alert('Invalid credentials. Please try again.');
++            return;
++          }
++          state.activeUser = account;
++          localStorage.setItem(STORAGE_KEYS.activeUser, JSON.stringify(account));
++          toggleAuthOverlay(true);
++          renderUser();
++          showPage('dashboard');
++        });
++
++        forms.signUp.addEventListener('submit', event => {
++          event.preventDefault();
++          const newAccount = {
++            name: document.getElementById('signupName').value.trim(),
++            username: document.getElementById('signupUsername').value.trim(),
++            email: document.getElementById('signupEmail').value.trim(),
++            password: document.getElementById('signupPassword').value,
++            securityQuestion: document.getElementById('signupQuestion').value.trim(),
++            securityAnswer: document.getElementById('signupAnswer').value.trim(),
++            createdAt: new Date().toISOString()
++          };
++          if (state.accounts.some(acc => acc.username.toLowerCase() === newAccount.username.toLowerCase())) {
++            alert('Username already exists. Choose a different one.');
++            return;
++          }
++          if (state.accounts.some(acc => acc.email.toLowerCase() === newAccount.email.toLowerCase())) {
++            alert('Email already registered.');
++            return;
++          }
++          state.accounts.push(newAccount);
++          persist(STORAGE_KEYS.accounts, state.accounts);
++          renderAccounts();
++          alert('Account created. You can now sign in.');
++          document.querySelector('.tab[data-auth="signIn"]').click();
++        });
++
++        const recoverForm = forms.recover;
++        recoverForm.addEventListener('submit', event => {
++          event.preventDefault();
++          const id = document.getElementById('recoverId').value.trim().toLowerCase();
++          const account = state.accounts.find(acc => acc.username.toLowerCase() === id || acc.email.toLowerCase() === id);
++          const recoveryStep = document.getElementById('recoveryStep');
++          const status = document.getElementById('recoveryStatus');
++          if (!account) {
++            status.textContent = 'No account found with that username or email.';
++            recoveryStep.classList.add('hidden');
++            return;
++          }
++          if (recoveryStep.classList.contains('hidden')) {
++            document.getElementById('recoveryQuestion').textContent = account.securityQuestion;
++            recoveryStep.dataset.username = account.username;
++            recoveryStep.classList.remove('hidden');
++            status.textContent = 'Answer the security question to set a new password.';
++            return;
++          }
++          const answer = document.getElementById('recoveryAnswer').value.trim();
++          const newPassword = document.getElementById('recoveryPassword').value;
++          if (!answer || !newPassword) {
++            status.textContent = 'Provide the answer and a new password.';
++            return;
++          }
++          if (answer.toLowerCase() !== account.securityAnswer.toLowerCase()) {
++            status.textContent = 'Security answer does not match.';
++            return;
++          }
++          account.password = newPassword;
++          persist(STORAGE_KEYS.accounts, state.accounts);
++          status.textContent = 'Password reset successfully. You may now sign in.';
++          document.getElementById('recoveryAnswer').value = '';
++          document.getElementById('recoveryPassword').value = '';
++          recoveryStep.classList.add('hidden');
++        });
++      }
++
++      function bindClientForm() {
++        const form = document.getElementById('clientForm');
++        const cancelBtn = document.getElementById('cancelClient');
++        const newBtn = document.getElementById('newClientBtn');
++        newBtn.addEventListener('click', () => {
++          form.reset();
++          document.getElementById('clientIndex').value = '';
++          form.classList.remove('hidden');
++        });
++        cancelBtn.addEventListener('click', () => {
++          form.classList.add('hidden');
++          form.reset();
++        });
++        form.addEventListener('submit', event => {
++          event.preventDefault();
++          const index = document.getElementById('clientIndex').value;
++          const client = {
++            name: document.getElementById('clientName').value.trim(),
++            dob: document.getElementById('clientDob').value,
++            phone: document.getElementById('clientPhone').value.trim(),
++            email: document.getElementById('clientEmail').value.trim(),
++            address: document.getElementById('clientAddress').value.trim(),
++            claim: document.getElementById('clientClaim').value.trim(),
++            injuryDate: document.getElementById('clientInjury').value
++          };
++          if (!client.name) {
++            alert('Client name is required.');
++            return;
++          }
++          if (index) {
++            state.clients[Number(index)] = client;
 +          } else {
-+            letterPage.drawText(line, { x: margin, y, size: fontSize, font, color: PDFLib.rgb(0.2, 0.2, 0.2) });
-+            y -= fontSize * 1.3;
++            state.clients.push(client);
++          }
++          persist(STORAGE_KEYS.clients, state.clients);
++          renderClients();
++          updateCounts();
++          form.classList.add('hidden');
++          form.reset();
++          updatePreview();
++        });
++        document.getElementById('clientTable').addEventListener('click', event => {
++          const index = event.target.dataset.index;
++          if (event.target.classList.contains('client-edit')) {
++            const client = state.clients[index];
++            document.getElementById('clientIndex').value = index;
++            document.getElementById('clientName').value = client.name || '';
++            document.getElementById('clientDob').value = client.dob || '';
++            document.getElementById('clientPhone').value = client.phone || '';
++            document.getElementById('clientEmail').value = client.email || '';
++            document.getElementById('clientAddress').value = client.address || '';
++            document.getElementById('clientClaim').value = client.claim || '';
++            document.getElementById('clientInjury').value = client.injuryDate || '';
++            form.classList.remove('hidden');
++          }
++          if (event.target.classList.contains('client-delete')) {
++            if (confirm('Remove this client profile?')) {
++              state.clients.splice(index, 1);
++              persist(STORAGE_KEYS.clients, state.clients);
++              renderClients();
++              updateCounts();
++              updatePreview();
++            }
 +          }
 +        });
 +      }
 +
-+      if (mergedPdf.getPageCount() === 0) {
-+        alert('Nothing to generate.');
-+        return;
++      function bindProviderForm() {
++        const form = document.getElementById('providerForm');
++        const cancelBtn = document.getElementById('cancelProvider');
++        const newBtn = document.getElementById('newProviderBtn');
++        newBtn.addEventListener('click', () => {
++          form.reset();
++          document.getElementById('providerIndex').value = '';
++          form.classList.remove('hidden');
++        });
++        cancelBtn.addEventListener('click', () => {
++          form.classList.add('hidden');
++          form.reset();
++        });
++        form.addEventListener('submit', event => {
++          event.preventDefault();
++          const index = document.getElementById('providerIndex').value;
++          const provider = {
++            name: document.getElementById('providerName').value.trim(),
++            contact: document.getElementById('providerContact').value.trim(),
++            phone: document.getElementById('providerPhone').value.trim(),
++            fax: document.getElementById('providerFax').value.trim(),
++            address: document.getElementById('providerAddress').value.trim(),
++            notes: document.getElementById('providerNotes').value.trim()
++          };
++          if (!provider.name) {
++            alert('Provider name is required.');
++            return;
++          }
++          if (index) {
++            state.providers[Number(index)] = provider;
++          } else {
++            state.providers.push(provider);
++          }
++          persist(STORAGE_KEYS.providers, state.providers);
++          renderProviders();
++          updateCounts();
++          form.classList.add('hidden');
++          form.reset();
++          updatePreview();
++        });
++        document.getElementById('providerTable').addEventListener('click', event => {
++          const index = event.target.dataset.index;
++          if (event.target.classList.contains('provider-edit')) {
++            const provider = state.providers[index];
++            document.getElementById('providerIndex').value = index;
++            document.getElementById('providerName').value = provider.name || '';
++            document.getElementById('providerContact').value = provider.contact || '';
++            document.getElementById('providerPhone').value = provider.phone || '';
++            document.getElementById('providerFax').value = provider.fax || '';
++            document.getElementById('providerAddress').value = provider.address || '';
++            document.getElementById('providerNotes').value = provider.notes || '';
++            form.classList.remove('hidden');
++          }
++          if (event.target.classList.contains('provider-delete')) {
++            if (confirm('Remove this provider profile?')) {
++              state.providers.splice(index, 1);
++              persist(STORAGE_KEYS.providers, state.providers);
++              renderProviders();
++              updateCounts();
++              updatePreview();
++            }
++          }
++        });
 +      }
 +
-+      const pdfBytes = await mergedPdf.save();
-+      const filename = `${client.name.replace(/\s+/g, '_')}_${provider.name.replace(/\s+/g, '_')}_RecordsRequest.pdf`;
-+      saveAs(new Blob([pdfBytes], { type: 'application/pdf' }), filename);
-+    }
-+
-+    generateBtn.addEventListener('click', generatePDF);
-+
-+    /* ---------- INITIALIZATION ---------- */
-+    window.onload = () => {
-+      ensureDefaultAdmin();
-+      setAuthMode('login');
-+      loginEmailInput.value = DEFAULT_ADMIN.email;
-+      loginPasswordInput.value = DEFAULT_ADMIN.password;
-+      const currentUser = readJSON(STORAGE_KEYS.currentUser, null);
-+      if (currentUser) {
-+        authOverlay.classList.add('hidden');
-+        userArea.innerText = currentUser;
++      function bindTemplateHandlers() {
++        const hipaaTextarea = document.getElementById('hipaaTemplate');
++        const letterTextarea = document.getElementById('letterTemplate');
++        hipaaTextarea.addEventListener('input', () => {
++          state.templates.hipaa = hipaaTextarea.value;
++          persist(STORAGE_KEYS.templates, state.templates);
++          updatePreview();
++          updateCounts();
++        });
++        letterTextarea.addEventListener('input', () => {
++          state.templates.letter = letterTextarea.value;
++          persist(STORAGE_KEYS.templates, state.templates);
++          updatePreview();
++          updateCounts();
++        });
++        document.querySelectorAll('.reset-template').forEach(button => {
++          button.addEventListener('click', () => {
++            const key = button.dataset.template;
++            state.templates[key] = DEFAULT_TEMPLATES[key];
++            persist(STORAGE_KEYS.templates, state.templates);
++            renderTemplates();
++            updatePreview();
++            updateCounts();
++          });
++        });
 +      }
-+      renderClients();
-+      renderProviders();
-+      setTemplateStatus();
-+      showPage('dashboard');
-+    };
-+  </script>
- </body>
++
++      function bindDashboard() {
++        ['dashClient', 'dashProvider', 'includeHipaa', 'includeLetter'].forEach(id => {
++          document.getElementById(id).addEventListener('change', updatePreview);
++        });
++        document.getElementById('generateBtn').addEventListener('click', async () => {
++          const clientIndex = document.getElementById('dashClient').value;
++          const providerIndex = document.getElementById('dashProvider').value;
++          const includeHipaa = document.getElementById('includeHipaa').checked;
++          const includeLetter = document.getElementById('includeLetter').checked;
++          if (!clientIndex || !providerIndex) {
++            alert('Select both a client and provider.');
++            return;
++          }
++          if (!includeHipaa && !includeLetter) {
++            alert('Choose at least one document to generate.');
++            return;
++          }
++          const client = state.clients[clientIndex];
++          const provider = state.providers[providerIndex];
++          const status = document.getElementById('generateStatus');
++          status.textContent = 'Preparing PDF package…';
++          try {
++            const pdfBytes = await buildPdf({ client, provider, includeHipaa, includeLetter });
++            const filename = `${client.name.replace(/[^a-z0-9]+/gi, '_')}_${provider.name.replace(/[^a-z0-9]+/gi, '_')}_records.pdf`;
++            saveAs(new Blob([pdfBytes], { type: 'application/pdf' }), filename);
++            status.textContent = 'Download ready. Check your browser downloads.';
++          } catch (error) {
++            console.error(error);
++            status.textContent = 'Unable to generate PDF. Check templates and try again.';
++          }
++        });
++      }
++
++      function updatePreview() {
++        const clientIndex = document.getElementById('dashClient').value;
++        const providerIndex = document.getElementById('dashProvider').value;
++        const includeHipaa = document.getElementById('includeHipaa').checked;
++        const includeLetter = document.getElementById('includeLetter').checked;
++        const client = clientIndex ? state.clients[clientIndex] : null;
++        const provider = providerIndex ? state.providers[providerIndex] : null;
++        let preview = '';
++        if (includeHipaa) {
++          preview += '--- HIPAA AUTHORIZATION ---\n';
++          preview += mergeTemplate(state.templates.hipaa, client, provider);
++          preview += '\n\n';
++        }
++        if (includeLetter) {
++          preview += '--- MEDICAL RECORDS REQUEST ---\n';
++          preview += mergeTemplate(state.templates.letter, client, provider);
++        }
++        const rendered = preview.trim();
++        document.getElementById('letterPreview').textContent = rendered || 'Select a client and provider to preview correspondence.';
++      }
++
++      function mergeTemplate(template, client, provider) {
++        const data = {
++          client: {
++            name: client?.name || '[Client Name]',
++            dob: formatDate(client?.dob),
++            phone: client?.phone || '',
++            email: client?.email || '',
++            address: client?.address || '',
++            claim: client?.claim || '',
++            injuryDate: formatDate(client?.injuryDate)
++          },
++          provider: {
++            name: provider?.name || '[Provider Name]',
++            contact: provider?.contact || '',
++            phone: provider?.phone || '',
++            fax: provider?.fax || '',
++            address: provider?.address || '',
++            notes: provider?.notes || ''
++          },
++          today: formatDate(new Date().toISOString()),
++          ...FIRM_PROFILE
++        };
++        return template.replace(/{{\s*([a-zA-Z0-9_.]+)\s*}}/g, (_, path) => {
++          const value = path.split('.').reduce((acc, key) => acc?.[key], data);
++          return value ?? '';
++        });
++      }
++
++      async function buildPdf({ client, provider, includeHipaa, includeLetter }) {
++        const pdfDoc = await PDFLib.PDFDocument.create();
++        const font = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
++        const documents = [];
++        if (includeHipaa) {
++          documents.push({ title: 'HIPAA Authorization', body: mergeTemplate(state.templates.hipaa, client, provider) });
++        }
++        if (includeLetter) {
++          documents.push({ title: 'Medical Records Request', body: mergeTemplate(state.templates.letter, client, provider) });
++        }
++        documents.forEach(doc => {
++          let page = pdfDoc.addPage([612, 792]);
++          let { height } = page.getSize();
++          const margin = 48;
++          let y = height - margin;
++          page.drawText(doc.title, {
++            x: margin,
++            y,
++            size: 18,
++            font,
++            color: PDFLib.rgb(0.35, 0.1, 0.1)
++          });
++          y -= 28;
++          const wrapped = wrapText(doc.body, 612 - margin * 2, font, 12);
++          wrapped.forEach(line => {
++            if (y < margin) {
++              page = pdfDoc.addPage([612, 792]);
++              ({ height } = page.getSize());
++              y = height - margin;
++            }
++            page.drawText(line, { x: margin, y, size: 12, font });
++            y -= 16;
++          });
++        });
++        return pdfDoc.save();
++      }
++
++      function wrapText(text, maxWidth, font, size) {
++        const lines = [];
++        const paragraphs = text.split(/\n/);
++        paragraphs.forEach(paragraph => {
++          if (!paragraph) {
++            lines.push('');
++            return;
++          }
++          let words = paragraph.split(/\s+/);
++          let current = '';
++          words.forEach(word => {
++            const tentative = current ? `${current} ${word}` : word;
++            const width = font.widthOfTextAtSize(tentative, size);
++            if (width > maxWidth) {
++              if (current) lines.push(current);
++              current = word;
++            } else {
++              current = tentative;
++            }
++          });
++          if (current) lines.push(current);
++        });
++        return lines;
++      }
++
++      function formatDate(value) {
++        if (!value) return '';
++        const date = value instanceof Date ? value : new Date(value);
++        if (Number.isNaN(date.getTime())) return '';
++        return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
++      }
++    </script>
++  </body>
  </html>
