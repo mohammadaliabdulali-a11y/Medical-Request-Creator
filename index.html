@@ -1,334 +1,5210 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Medical Correspondence Creator</title>
-    <link
-      rel="preconnect"
-      href="https://fonts.googleapis.com"
-    />
-    <link
-      rel="preconnect"
-      href="https://fonts.gstatic.com"
-      crossorigin
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.13.5/cdn.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/@lottiefiles/lottie-player@1.5.7/dist/lottie-player.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/3.4.4/luxon.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" defer></script>
-    <style>
-      :root {
-        color-scheme: light;
-        --bg: #f6f8fb;
-        --surface: #ffffff;
-        --surface-muted: #f1f4f9;
-        --border: #d7deea;
-        --border-strong: #bbc7df;
-        --accent: #3b82f6;
-        --accent-soft: rgba(59, 130, 246, 0.14);
-        --accent-strong: #1d4ed8;
-        --accent-contrast: #ffffff;
-        --text: #1f2937;
-        --text-muted: #6b7280;
-        --text-soft: #94a3b8;
-        --danger: #ef4444;
-        --danger-soft: rgba(239, 68, 68, 0.12);
-        --success: #10b981;
-        --warning: #f59e0b;
-        --radius-lg: 18px;
-        --radius-md: 14px;
-        --radius-sm: 10px;
-        --shadow-sm: 0 10px 30px -18px rgba(15, 23, 42, 0.3);
-        --shadow-md: 0 22px 45px -25px rgba(15, 23, 42, 0.35);
-        --shadow-lg: 0 35px 60px -35px rgba(15, 23, 42, 0.4);
-        --sidebar-width: 320px;
-        --toolbar-height: 72px;
-        --transition: 160ms ease-in-out;
-      }
+<head>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Blaszkow Legal PLLC – Records Request Portal</title>
 
-      * {
-        box-sizing: border-box;
-      }
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
 
-      html,
-      body {
-        font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-          sans-serif;
-        margin: 0;
-        background: radial-gradient(circle at top, rgba(59, 130, 246, 0.09), transparent 60%),
-          var(--bg);
-        color: var(--text);
-        min-height: 100vh;
-        letter-spacing: -0.01em;
-      }
+<!-- PDF Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
 
-      body {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr);
-        grid-template-rows: minmax(0, 1fr);
-        overflow: hidden;
-      }
+<style>
+  body { font-family: ui-sans-serif, system-ui, -apple-system; }
+  .brand-red { color:#b91c1c; }
+  .brand-bg { background-color:#b91c1c; }
+  .brand-gray { background-color:#f3f4f6; }
+  .nav-btn { @apply text-white hover:bg-red-700 px-3 py-2 rounded-md cursor-pointer; }
+</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Medical Correspondence Workspace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <style>
+    :root {
+      --bg: #eff4f9;
+      --surface: #ffffff;
+      --ink: #102a43;
+      --muted: #6b7b8c;
+      --accent: #0f9d58;
+      --accent-dark: #0b7d46;
+      --nav: #1c3d5a;
+      --danger: #c81e4d;
+      --border: #d7e3f4;
+      --radius-lg: 22px;
+      --radius-md: 14px;
+      --radius-sm: 8px;
+      --shadow: 0 24px 60px rgba(16, 42, 67, 0.16);
+      font-size: 16px;
+    }
 
-      h1,
-      h2,
-      h3,
-      h4,
-      h5 {
-        margin: 0;
-        font-weight: 600;
-      }
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
 
-      p {
-        margin: 0;
-        line-height: 1.6;
-      }
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(12, 64, 98, 0.12), transparent 65%),
+        radial-gradient(circle at bottom right, rgba(15, 157, 88, 0.12), transparent 60%),
+        var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-      button {
-        font: inherit;
-        cursor: pointer;
-      }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: var(--nav);
+      font-weight: 600;
+      margin: 0;
+    }
 
-      a {
-        color: inherit;
-      }
+    p {
+      margin: 0;
+    }
 
-      .app {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        display: grid;
-        grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
-        grid-template-rows: 1fr;
-        background: linear-gradient(180deg, rgba(244, 247, 254, 0.6), rgba(244, 247, 254, 0));
-      }
+    a {
+      color: var(--accent);
+    }
 
+    button {
+      font-family: inherit;
+    }
+
+    .auth-overlay {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: rgba(9, 20, 35, 0.72);
+      backdrop-filter: blur(8px);
+      z-index: 10;
+      padding: 2rem;
+    }
+
+    .auth-overlay.hidden {
+      display: none;
+    }
+
+    .auth-modal {
+      width: min(900px, 96vw);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(255, 255, 255, 0.92));
+      border-radius: var(--radius-lg);
+      box-shadow: 0 40px 90px rgba(9, 20, 35, 0.35);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .auth-modal header {
+      padding: 2.6rem 3rem 2.2rem;
+      background: linear-gradient(140deg, rgba(28, 61, 90, 0.92), rgba(15, 157, 88, 0.85));
+      color: var(--surface);
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .auth-modal header h1 {
+      color: var(--surface);
+      font-size: 2rem;
+    }
+
+    .auth-modal header p {
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.55;
+      font-size: 1rem;
+      max-width: 540px;
+    }
+
+    .auth-intro-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.4rem;
+    }
+
+    .auth-intro-tags span {
+      background: rgba(255, 255, 255, 0.18);
+      color: #f8fbff;
+      padding: 0.35rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    .auth-body {
+      padding: 2.4rem 3rem 3rem;
+      display: grid;
+      gap: 1.8rem;
+    }
+
+    .tab-list {
+      display: flex;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-button {
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 999px;
+      font-weight: 600;
+      color: rgba(28, 61, 90, 0.78);
+      background: rgba(28, 61, 90, 0.08);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-button.active {
+      background: linear-gradient(135deg, var(--nav), var(--accent));
+      color: var(--surface);
+      box-shadow: 0 18px 32px rgba(15, 157, 88, 0.3);
+    }
+
+    .tab-panel {
+      display: none;
+      gap: 1.6rem;
+    }
+
+    .tab-panel.active {
+      display: grid;
+    }
+
+    .auth-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    label.field {
+      display: grid;
+      gap: 0.55rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    label.field span {
+      color: var(--ink);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    textarea,
+    select {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.7rem 0.8rem;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: inset 0 1px 2px rgba(16, 42, 67, 0.08);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(15, 157, 88, 0.18);
+    }
+
+    .auth-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 0.65rem 1.2rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, var(--nav), var(--accent));
+      color: var(--surface);
+      box-shadow: 0 20px 36px rgba(16, 42, 67, 0.25);
+    }
+
+    .btn.primary:hover,
+    .btn.primary:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 28px 44px rgba(16, 42, 67, 0.28);
+    }
+
+    .btn.ghost {
+      background: rgba(28, 61, 90, 0.08);
+      color: var(--nav);
+    }
+
+    .btn.ghost:hover,
+    .btn.ghost:focus {
+      background: rgba(15, 157, 88, 0.12);
+    }
+
+    .btn.secondary {
+      background: rgba(16, 42, 67, 0.12);
+      color: var(--nav);
+    }
+
+    .btn.secondary:hover,
+    .btn.secondary:focus {
+      background: rgba(16, 42, 67, 0.2);
+    }
+
+    .btn.danger {
+      background: rgba(200, 30, 77, 0.16);
+      color: var(--danger);
+    }
+
+    .btn.danger:hover,
+    .btn.danger:focus {
+      background: rgba(200, 30, 77, 0.24);
+    }
+
+    .auth-note {
+      font-size: 0.9rem;
+      color: rgba(28, 61, 90, 0.72);
+      line-height: 1.55;
+    }
+
+    .app-shell {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2rem;
+      padding: 2.5rem 3rem 3rem;
+    }
+
+    .app-shell.hidden {
+      display: none;
+    }
+
+    .sidebar {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sidebar header {
+      background: linear-gradient(135deg, rgba(28, 61, 90, 0.95), rgba(16, 42, 67, 0.92));
+      padding: 2.1rem 2rem 1.8rem;
+      color: rgba(255, 255, 255, 0.92);
+      display: grid;
+      gap: 0.4rem;
+    }
+
+    .sidebar header .logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.2);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .sidebar header h2 {
+      color: #f8fbff;
+      font-size: 1.35rem;
+    }
+
+    .nav-list {
+      display: grid;
+      gap: 0.25rem;
+      padding: 1.2rem 0;
+    }
+
+    .nav-button {
+      border: none;
+      background: transparent;
+      padding: 0.85rem 1.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      color: rgba(28, 61, 90, 0.7);
+      cursor: pointer;
+      font-weight: 600;
+      text-align: left;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-button span.icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: rgba(15, 157, 88, 0.14);
+      display: grid;
+      place-items: center;
+      font-size: 0.95rem;
+      color: var(--nav);
+    }
+
+    .nav-button:hover,
+    .nav-button:focus {
+      background: rgba(15, 157, 88, 0.14);
+      color: var(--nav);
+      outline: none;
+    }
+
+    .nav-button.active {
+      background: linear-gradient(135deg, rgba(15, 157, 88, 0.85), rgba(28, 61, 90, 0.9));
+      color: var(--surface);
+      box-shadow: 0 16px 28px rgba(15, 157, 88, 0.25);
+    }
+
+    .nav-button.active span.icon {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+
+    .sidebar footer {
+      margin-top: auto;
+      padding: 1.4rem 1.8rem 2.1rem;
+      display: grid;
+      gap: 0.6rem;
+      border-top: 1px solid rgba(28, 61, 90, 0.08);
+    }
+
+    .sidebar footer strong {
+      color: var(--nav);
+      font-size: 0.95rem;
+    }
+
+    .sidebar footer p {
+      color: rgba(28, 61, 90, 0.72);
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    .main-panel {
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      padding: 2.5rem;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 2rem;
+      min-height: 0;
+    }
+
+    .main-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1.4rem;
+    }
+
+    .main-header h1 {
+      font-size: 1.75rem;
+    }
+
+    .main-header span {
+      color: var(--muted);
+    }
+
+    .view-panel {
+      overflow: auto;
+      padding-right: 0.25rem;
+      display: grid;
+    }
+
+    .view-panel section {
+      display: none;
+      gap: 1.8rem;
+    }
+
+    .view-panel section.active {
+      display: grid;
+      animation: fade-in 0.25s ease;
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(28, 61, 90, 0.08);
+      box-shadow: 0 18px 38px rgba(15, 23, 42, 0.08);
+      padding: 1.8rem;
+      display: grid;
+      gap: 1.4rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .card-header h3 {
+      font-size: 1.25rem;
+    }
+
+    .card-header p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .card-header .actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .status-card {
+      padding: 1.4rem;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, rgba(15, 157, 88, 0.12), rgba(28, 61, 90, 0.12));
+      border: 1px solid rgba(28, 61, 90, 0.1);
+      display: grid;
+      gap: 0.45rem;
+    }
+
+    .status-card span.label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(28, 61, 90, 0.7);
+    }
+
+    .status-card strong.value {
+      font-size: 2rem;
+      color: var(--nav);
+    }
+
+    .status-card small.meta {
+      color: rgba(28, 61, 90, 0.65);
+      font-size: 0.82rem;
+    }
+
+    .grid-two {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .grid-three {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.1rem;
+    }
+
+    .table-shell {
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(28, 61, 90, 0.1);
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+
+    thead {
+      background: rgba(28, 61, 90, 0.08);
+      color: var(--nav);
+    }
+
+    th,
+    td {
+      padding: 0.8rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(28, 61, 90, 0.08);
+    }
+
+    tbody tr:hover {
+      background: rgba(15, 157, 88, 0.08);
+    }
+
+    .table-actions {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 2.2rem 1.2rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .empty-state strong {
+      display: block;
+      color: var(--nav);
+      margin-bottom: 0.4rem;
+    }
+
+    .tag {
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(15, 157, 88, 0.14);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--nav);
+      letter-spacing: 0.03em;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 1.1rem;
+    }
+
+    .timeline-entry {
+      border: 1px dashed rgba(15, 157, 88, 0.4);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.2rem;
+      background: rgba(15, 157, 88, 0.06);
+      display: grid;
+      gap: 0.4rem;
+    }
+
+    .timeline-entry span.when {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(28, 61, 90, 0.6);
+    }
+
+    .timeline-entry strong.title {
+      font-size: 1rem;
+      color: var(--nav);
+    }
+
+    .timeline-entry p.detail {
+      font-size: 0.92rem;
+      color: rgba(28, 61, 90, 0.72);
+    }
+
+    .history-list {
+      display: grid;
+      gap: 0.8rem;
+      max-height: 340px;
+      overflow: auto;
+    }
+
+    .history-item {
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(28, 61, 90, 0.1);
+      padding: 0.9rem 1.1rem;
+      display: grid;
+      gap: 0.35rem;
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    .history-item span.when {
+      font-size: 0.78rem;
+      color: rgba(28, 61, 90, 0.65);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .history-item strong.what {
+      color: var(--nav);
+      font-size: 0.95rem;
+    }
+
+    .history-item p.summary {
+      color: rgba(28, 61, 90, 0.75);
+      font-size: 0.88rem;
+      margin: 0;
+    }
+
+    .search-input {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      background: rgba(28, 61, 90, 0.08);
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      color: rgba(28, 61, 90, 0.72);
+    }
+
+    .search-input input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 0.9rem;
+      min-width: 160px;
+    }
+
+    .template-preview,
+    .request-preview {
+      border: 1px solid rgba(28, 61, 90, 0.14);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.96);
+      padding: 1.1rem;
+      font-family: 'Georgia', 'Times New Roman', serif;
+      line-height: 1.6;
+      font-size: 0.95rem;
+      color: #202c3c;
+      max-height: 360px;
+      overflow: auto;
+      box-shadow: inset 0 1px 2px rgba(15, 157, 88, 0.1);
+    }
+
+    .pill-group {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+      background: rgba(28, 61, 90, 0.08);
+      font-size: 0.78rem;
+      color: rgba(28, 61, 90, 0.72);
+      letter-spacing: 0.02em;
+      font-weight: 600;
+    }
+
+    .template-help {
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    .template-help code {
+      background: rgba(28, 61, 90, 0.1);
+      padding: 0.25rem 0.55rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      color: rgba(28, 61, 90, 0.85);
+    }
+
+    .template-help li {
+      margin-left: 1.2rem;
+      color: rgba(28, 61, 90, 0.72);
+      line-height: 1.55;
+    }
+
+    .request-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.4rem;
+    }
+
+    .request-panel {
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(28, 61, 90, 0.08);
+      background: rgba(255, 255, 255, 0.92);
+      padding: 1.4rem;
+      display: grid;
+      gap: 0.85rem;
+    }
+
+    .request-panel header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .request-panel header span {
+      font-size: 0.82rem;
+      color: rgba(28, 61, 90, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .toast-stack {
+      position: fixed;
+      bottom: 2.2rem;
+      right: 2.2rem;
+      display: grid;
+      gap: 0.75rem;
+      z-index: 8;
+    }
+
+    .toast {
+      min-width: 240px;
+      max-width: 340px;
+      padding: 0.95rem 1.15rem;
+      border-radius: var(--radius-md);
+      background: rgba(15, 157, 88, 0.92);
+      color: #f8fbff;
+      box-shadow: 0 18px 36px rgba(15, 157, 88, 0.28);
+      display: grid;
+      gap: 0.4rem;
+      animation: toast-in 0.25s ease;
+    }
+
+    @keyframes toast-in {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .toast span.title {
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .toast p.detail {
+      margin: 0;
+      font-size: 0.82rem;
+    }
+
+    @media (max-width: 1100px) {
+      .app-shell {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 1.5rem;
+      }
       .sidebar {
-        position: relative;
-        display: flex;
+        position: sticky;
+        top: 1.2rem;
+        z-index: 4;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .auth-body {
+        padding: 2rem;
+      }
+      .app-shell {
+        padding: 1rem;
+      }
+      .main-panel {
+        padding: 1.5rem;
+      }
+      .card {
+        padding: 1.2rem;
+      }
+      .card-header {
         flex-direction: column;
-        background: rgba(15, 23, 42, 0.94);
-        color: #f8fafc;
-        border-right: 1px solid rgba(148, 163, 184, 0.2);
-        padding: 28px 26px;
-        gap: 28px;
-        overflow: hidden auto;
-        box-shadow: var(--shadow-lg);
-        z-index: 3;
-      }
-
-      .sidebar::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(
-          200deg,
-          rgba(59, 130, 246, 0.16),
-          rgba(30, 64, 175, 0.4)
-        );
-        opacity: 0.85;
-        mix-blend-mode: screen;
-        pointer-events: none;
-      }
-
-      .sidebar > * {
-        position: relative;
-        z-index: 1;
-      }
-
-      .sidebar-header {
-        display: grid;
-        grid-template-columns: auto 1fr;
-        gap: 12px;
-        align-items: center;
-      }
-
-      .sidebar-logo {
-        width: 54px;
-        height: 54px;
-        border-radius: 15px;
-        background: rgba(248, 250, 252, 0.1);
-        border: 1px solid rgba(148, 163, 184, 0.35);
-        display: grid;
-        place-items: center;
-        font-weight: 700;
-        font-size: 18px;
-        letter-spacing: 0.04em;
-      }
-
-      .sidebar-title {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-      }
-
-      .sidebar-title span:first-child {
-        font-size: 15px;
-        text-transform: uppercase;
-        letter-spacing: 0.12em;
-        color: rgba(226, 232, 240, 0.8);
-        font-weight: 600;
-      }
-
-      .sidebar-title span:last-child {
-        font-size: 22px;
-        font-weight: 700;
-        letter-spacing: -0.02em;
-        color: #fff;
-      }
-
-      .sidebar-nav {
-        display: grid;
-        gap: 10px;
-      }
-
-      .nav-section-label {
-        text-transform: uppercase;
-        letter-spacing: 0.12em;
-        font-size: 11px;
-        color: rgba(226, 232, 240, 0.55);
-        font-weight: 600;
-        margin: 18px 0 8px;
-      }
-
-      .sidebar-nav button {
-        appearance: none;
-        border: 0;
-        background: transparent;
-        color: inherit;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 14px 16px;
-        border-radius: var(--radius-md);
-        transition: background var(--transition), transform var(--transition);
-        gap: 16px;
-      }
-
-      .sidebar-nav button:hover {
-        background: rgba(255, 255, 255, 0.08);
-        transform: translateX(4px);
-      }
-
-      .sidebar-nav button.active {
-        background: rgba(59, 130, 246, 0.16);
-        color: #fff;
-        box-shadow: inset 0 0 0 1px rgba(59, 130, 246, 0.45);
-      }
-
-      .nav-label-group {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
         align-items: flex-start;
       }
-
-      .nav-label-group span:first-child {
-        font-weight: 600;
-        font-size: 15px;
-      }
-
-      .nav-label-group span:last-child {
-        font-size: 12px;
-        opacity: 0.72;
-      }
-
-      .nav-badge {
-        font-size: 12px;
-        padding: 2px 8px;
-        border-radius: 999px;
-        background: rgba(241, 245, 249, 0.18);
-        color: rgba(241, 245, 249, 0.9);
-        font-weight: 600;
-      }
-
-      .sidebar-footer {
-        margin-top: auto;
-        display: grid;
-        gap: 14px;
-        border-top: 1px solid rgba(148, 163, 184, 0.2);
-        padding-top: 22px;
-      }
-
-      .workspace-badge {
-        background: rgba(59, 130, 246, 0.2);
-        color: rgba(255, 255, 255, 0.85);
-        border-radius: 12px;
-        padding: 12px 16px;
-        display: grid;
-        gap: 6px;
-      }
-
-      .workspace-badge span:first-child {
-        text-transform: uppercase;
-        font-size: 11px;
-        letter-spacing: 0.12em;
-        font-weight: 600;
-      }
-
-      .workspace-badge span:last-child {
-        font-size: 13px;
-        opacity: 0.8;
-      }
-
-      .main {
-        position: relative;
-        display: grid;
-        grid-template-rows: var(--toolbar-height) minmax(0, 1fr);
-        min-height: 100vh;
-        background: transparent;
-        overflow: hidden;
-      }
-
-      .toolbar {
-        display: grid;
-        grid-template-columns: auto 1fr auto;
-        align-items: center;
-        padding: 0 32px;
-        background: rgba(255, 255, 255, 0.85);
-        border-bottom: 1px solid var(--border);
-        backdrop-filter: blur(18px);
-        position: sticky;
-        top: 0;
-        z-index: 2;
-      }
-
-      .toolbar-left {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-      }
-
-      .toolbar-title {
-        display: flex;
+      .main-header {
         flex-direction: column;
-        gap: 6px;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-overlay" id="authOverlay">
+    <div class="auth-modal">
+      <header>
+        <div class="logo" style="width:54px;height:54px;border-radius:16px;display:grid;place-items:center;background:rgba(255,255,255,0.2);font-weight:700;font-size:1.2rem;">MC</div>
+        <h1>Medical Correspondence Workspace</h1>
+        <p>
+          Streamline HIPAA releases and medical records requests. Maintain client and provider profiles, merge them into
+          correspondence templates, and export PDF packets in a single secure console inspired by our lost wage
+          calculator workflow.
+        </p>
+        <div class="auth-intro-tags">
+          <span>Seeded admin: admin / admin</span>
+          <span>Local-only authentication</span>
+          <span>HIPAA-compliant placeholders</span>
+        </div>
+      </header>
+      <div class="auth-body">
+        <div class="tab-list" role="tablist">
+          <button class="tab-button active" data-tab="sign-in" id="tabSignIn" aria-controls="panelSignIn" role="tab">Sign In</button>
+          <button class="tab-button" data-tab="register" id="tabRegister" aria-controls="panelRegister" role="tab">Create Account</button>
+          <button class="tab-button" data-tab="recover" id="tabRecover" aria-controls="panelRecover" role="tab">Recover Access</button>
+        </div>
+        <section class="tab-panel active" id="panelSignIn" role="tabpanel" aria-labelledby="tabSignIn">
+          <p class="auth-note">
+            Enter your credentials. Accounts are stored locally. Use the seeded administrator to configure your firm,
+            then invite teammates using the Create Account tab.
+          </p>
+          <div class="auth-grid">
+            <label class="field">
+              <span>Username</span>
+              <input type="text" id="loginUsername" autocomplete="username" placeholder="case.manager" />
+            </label>
+            <label class="field">
+              <span>Password</span>
+              <input type="password" id="loginPassword" autocomplete="current-password" placeholder="••••••••" />
+            </label>
+          </div>
+          <div class="auth-actions">
+            <button class="btn primary" id="loginSubmit">Enter Workspace</button>
+            <button class="btn ghost" data-switch="register">Need an account?</button>
+            <button class="btn ghost" data-switch="recover">Forgot username or password?</button>
+          </div>
+          <div class="auth-note" id="loginMessage"></div>
+        </section>
+        <section class="tab-panel" id="panelRegister" role="tabpanel" aria-labelledby="tabRegister">
+          <p class="auth-note">
+            Accounts created here stay within this browser. Administrators can promote roles from the Settings tab.
+            Provide an email for easier local recovery.
+          </p>
+          <div class="auth-grid">
+            <label class="field">
+              <span>Username</span>
+              <input type="text" id="registerUsername" placeholder="jdoe" />
+            </label>
+            <label class="field">
+              <span>Password</span>
+              <input type="password" id="registerPassword" placeholder="Choose a password" />
+            </label>
+            <label class="field">
+              <span>Full name</span>
+              <input type="text" id="registerName" placeholder="Jordan Doe" />
+            </label>
+            <label class="field">
+              <span>Email</span>
+              <input type="email" id="registerEmail" placeholder="team@practice.com" />
+            </label>
+            <label class="field">
+              <span>Role</span>
+              <select id="registerRole">
+                <option value="staff">Staff</option>
+                <option value="manager">Manager</option>
+                <option value="admin">Administrator</option>
+              </select>
+            </label>
+          </div>
+          <div class="auth-actions">
+            <button class="btn primary" id="registerSubmit">Create Account</button>
+            <button class="btn secondary" data-switch="sign-in">Back to Sign In</button>
+          </div>
+          <div class="auth-note" id="registerMessage"></div>
+        </section>
+        <section class="tab-panel" id="panelRecover" role="tabpanel" aria-labelledby="tabRecover">
+          <p class="auth-note">
+            Enter the email used during registration to list usernames available in this browser. For password resets we
+            need both username and email.
+          </p>
+          <div class="auth-grid">
+            <label class="field">
+              <span>Email</span>
+              <input type="email" id="recoverEmail" placeholder="team@practice.com" />
+            </label>
+            <label class="field">
+              <span>Username</span>
+              <input type="text" id="recoverUsername" placeholder="case.manager" />
+            </label>
+          </div>
+          <div class="auth-actions">
+            <button class="btn primary" id="recoverPassword">Reset Password</button>
+            <button class="btn secondary" id="recoverUsernameBtn">Recover Username(s)</button>
+            <button class="btn ghost" data-switch="sign-in">Back to Sign In</button>
+          </div>
+          <div class="auth-note" id="recoverMessage"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-stack" id="toastStack"></div>
+
+  <main class="app-shell hidden" id="appShell">
+    <aside class="sidebar">
+      <header>
+        <div class="logo">MC</div>
+        <div>
+                 </div>
+      </header>
+      <div class="nav-list">
+        <button class="nav-button active" data-view="dashboardView"><span class="icon">🏠</span>Overview</button>
+        <button class="nav-button" data-view="clientsView"><span class="icon">🧑</span>Clients</button>
+        <button class="nav-button" data-view="providersView"><span class="icon">🏥</span>Providers</button>
+        <button class="nav-button" data-view="templatesView"><span class="icon">📝</span>Templates</button>
+        <button class="nav-button" data-view="generatorView"><span class="icon">📦</span>Generator</button>
+        <button class="nav-button" data-view="historyView"><span class="icon">🗂️</span>Audit Trail</button>
+        <button class="nav-button" data-view="settingsView"><span class="icon">⚙️</span>Settings</button>
+      </div>
+      <footer>
+        <strong>Workspace quick tips</strong>
+        <p>Use Templates to configure HIPAA and medical request documents. The Generator merges client/provider data into
+          ready-to-send packets.</p>
+        <button class="btn ghost" id="sidebarExport">Export data snapshot</button>
+      </footer>
+    </aside>
+    <div class="main-panel">
+      <div class="main-header">
+        <div>
+          <h1 id="viewTitle">Dashboard</h1>
+          <span id="viewSubtitle">Review status cards and latest activity.</span>
+        </div>
+        <button class="btn danger" id="logoutBtn">Sign Out</button>
+      </div>
+      <div class="view-panel">
+        <section id="dashboardView" class="active">
+          <div class="status-grid">
+            <div class="status-card">
+              <span class="label">Clients</span>
+              <strong class="value" id="statClients">0</strong>
+              <small class="meta">Profiles ready for HIPAA release generation.</small>
+            </div>
+            <div class="status-card">
+              <span class="label">Providers</span>
+              <strong class="value" id="statProviders">0</strong>
+              <small class="meta">Custodians, facilities, and contacts.</small>
+            </div>
+            <div class="status-card">
+              <span class="label">Templates</span>
+              <strong class="value" id="statTemplates">0</strong>
+              <small class="meta">HIPAA releases and medical requests.</small>
+            </div>
+            <div class="status-card">
+              <span class="label">Packets generated</span>
+              <strong class="value" id="statPackets">0</strong>
+              <small class="meta">Tracked locally for auditing.</small>
+            </div>
+          </div>
+          <div class="grid-two">
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3>Quick actions</h3>
+                  <p>Speed through intake tasks using single-click shortcuts.</p>
+                </div>
+              </div>
+              <div class="pill-group">
+                <button class="btn primary" id="quickClient">New client</button>
+                <button class="btn primary" id="quickProvider">New provider</button>
+                <button class="btn ghost" id="quickTemplate">New template</button>
+                <button class="btn ghost" id="quickGenerator">Generate packet</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3>Checklist</h3>
+                  <p>Reference our recommended flow to produce compliant packets.</p>
+                </div>
+              </div>
+              <div class="timeline">
+                <div class="timeline-entry">
+                  <span class="when">Step 1</span>
+                  <strong class="title">Collect client consent</strong>
+                  <p class="detail">Verify identity, gather DOB, and document authorization to release PHI.</p>
+                </div>
+                <div class="timeline-entry">
+                  <span class="when">Step 2</span>
+                  <strong class="title">Capture provider routing</strong>
+                  <p class="detail">Record custodians, fax numbers, and any account identifiers to match records.</p>
+                </div>
+                <div class="timeline-entry">
+                  <span class="when">Step 3</span>
+                  <strong class="title">Customize templates</strong>
+                  <p class="detail">Review letterhead, placeholder coverage, and firm signature details.</p>
+                </div>
+                <div class="timeline-entry">
+                  <span class="when">Step 4</span>
+                  <strong class="title">Generate and track</strong>
+                  <p class="detail">Merge data into HIPAA and request letters, then document delivery status.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="grid-two">
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3>Recent activity</h3>
+                  <p>Packet generations, profile edits, and template updates log here.</p>
+                </div>
+              </div>
+              <div class="history-list" id="activityList"></div>
+              <div class="empty-state" id="activityEmpty">No activity captured yet. Generate your first packet to seed
+                the log.</div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3>Placeholder reference</h3>
+                  <p>Use these merge tags in templates to insert client/provider data.</p>
+                </div>
+              </div>
+              <div class="history-list" id="placeholderGuide"></div>
+            </div>
+          </div>
+        </section>
+        <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Blaszkow Legal PLLC – Records Request Portal</title>
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- PDF Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+
+<style>
+  body { font-family: ui-sans-serif, system-ui, -apple-system; }
+  .brand-red { color:#b91c1c; }
+  .brand-bg { background-color:#b91c1c; }
+  .brand-gray { background-color:#f3f4f6; }
+  .nav-btn { @apply text-white hover:bg-red-700 px-3 py-2 rounded-md cursor-pointer; }
+</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Medical Correspondence Workspace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <style>
+    :root {
+      --bg: #eff4f9;
+      --surface: #ffffff;
+      --ink: #102a43;
+      --muted: #6b7b8c;
+      --accent: #0f9d58;
+      --accent-dark: #0b7d46;
+      --nav: #1c3d5a;
+      --danger: #c81e4d;
+      --border: #d7e3f4;
+      --radius-lg: 22px;
+      --radius-md: 14px;
+      --radius-sm: 8px;
+      --shadow: 0 24px 60px rgba(16, 42, 67, 0.16);
+      font-size: 16px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(12, 64, 98, 0.12), transparent 65%),
+        radial-gradient(circle at bottom right, rgba(15, 157, 88, 0.12), transparent 60%),
+        var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: var(--nav);
+      font-weight: 600;
+      margin: 0;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    a {
+      color: var(--accent);
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    .auth-overlay {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: rgba(9, 20, 35, 0.72);
+      backdrop-filter: blur(8px);
+      z-index: 10;
+      padding: 2rem;
+    }
+
+    .auth-overlay.hidden {
+      display: none;
+    }
+
+    .auth-modal {
+      width: min(900px, 96vw);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(255, 255, 255, 0.92));
+      border-radius: var(--radius-lg);
+      box-shadow: 0 40px 90px rgba(9, 20, 35, 0.35);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .auth-modal header {
+      padding: 2.6rem 3rem 2.2rem;
+      background: linear-gradient(140deg, rgba(28, 61, 90, 0.92), rgba(15, 157, 88, 0.85));
+      color: var(--surface);
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .auth-modal header h1 {
+      color: var(--surface);
+      font-size: 2rem;
+    }
+
+    .auth-modal header p {
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.55;
+      font-size: 1rem;
+      max-width: 540px;
+    }
+
+    .auth-intro-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.4rem;
+    }
+
+    .auth-intro-tags span {
+      background: rgba(255, 255, 255, 0.18);
+      color: #f8fbff;
+      padding: 0.35rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    .auth-body {
+      padding: 2.4rem 3rem 3rem;
+      display: grid;
+      gap: 1.8rem;
+    }
+
+    .tab-list {
+      display: flex;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-button {
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 999px;
+      font-weight: 600;
+      color: rgba(28, 61, 90, 0.78);
+      background: rgba(28, 61, 90, 0.08);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-button.active {
+      background: linear-gradient(135deg, var(--nav), var(--accent));
+      color: var(--surface);
+      box-shadow: 0 18px 32px rgba(15, 157, 88, 0.3);
+    }
+
+    .tab-panel {
+      display: none;
+      gap: 1.6rem;
+    }
+
+    .tab-panel.active {
+      display: grid;
+    }
+
+    .auth-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    label.field {
+      display: grid;
+      gap: 0.55rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    label.field span {
+      color: var(--ink);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    textarea,
+    select {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.7rem 0.8rem;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: inset 0 1px 2px rgba(16, 42, 67, 0.08);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(15, 157, 88, 0.18);
+    }
+
+    .auth-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 0.65rem 1.2rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, var(--nav), var(--accent));
+      color: var(--surface);
+      box-shadow: 0 20px 36px rgba(16, 42, 67, 0.25);
+    }
+
+    .btn.primary:hover,
+    .btn.primary:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 28px 44px rgba(16, 42, 67, 0.28);
+    }
+
+    .btn.ghost {
+      background: rgba(28, 61, 90, 0.08);
+      color: var(--nav);
+    }
+
+    .btn.ghost:hover,
+    .btn.ghost:focus {
+      background: rgba(15, 157, 88, 0.12);
+    }
+
+    .btn.secondary {
+      background: rgba(16, 42, 67, 0.12);
+      color: var(--nav);
+    }
+
+    .btn.secondary:hover,
+    .btn.secondary:focus {
+      background: rgba(16, 42, 67, 0.2);
+    }
+
+    .btn.danger {
+      background: rgba(200, 30, 77, 0.16);
+      color: var(--danger);
+    }
+
+    .btn.danger:hover,
+    .btn.danger:focus {
+      background: rgba(200, 30, 77, 0.24);
+    }
+
+    .auth-note {
+      font-size: 0.9rem;
+      color: rgba(28, 61, 90, 0.72);
+      line-height: 1.55;
+    }
+
+    .app-shell {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2rem;
+      padding: 2.5rem 3rem 3rem;
+    }
+
+    .app-shell.hidden {
+      display: none;
+    }
+
+    .sidebar {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sidebar header {
+      background: linear-gradient(135deg, rgba(28, 61, 90, 0.95), rgba(16, 42, 67, 0.92));
+      padding: 2.1rem 2rem 1.8rem;
+      color: rgba(255, 255, 255, 0.92);
+      display: grid;
+      gap: 0.4rem;
+    }
+
+    .sidebar header .logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.2);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .sidebar header h2 {
+      color: #f8fbff;
+      font-size: 1.35rem;
+    }
+
+    .nav-list {
+      display: grid;
+      gap: 0.25rem;
+      padding: 1.2rem 0;
+    }
+
+    .nav-button {
+      border: none;
+      background: transparent;
+      padding: 0.85rem 1.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      color: rgba(28, 61, 90, 0.7);
+      cursor: pointer;
+      font-weight: 600;
+      text-align: left;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-button span.icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: rgba(15, 157, 88, 0.14);
+      display: grid;
+      place-items: center;
+      font-size: 0.95rem;
+      color: var(--nav);
+    }
+
+    .nav-button:hover,
+    .nav-button:focus {
+      background: rgba(15, 157, 88, 0.14);
+      color: var(--nav);
+      outline: none;
+    }
+
+    .nav-button.active {
+      background: linear-gradient(135deg, rgba(15, 157, 88, 0.85), rgba(28, 61, 90, 0.9));
+      color: var(--surface);
+      box-shadow: 0 16px 28px rgba(15, 157, 88, 0.25);
+    }
+
+    .nav-button.active span.icon {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+
+    .sidebar footer {
+      margin-top: auto;
+      padding: 1.4rem 1.8rem 2.1rem;
+      display: grid;
+      gap: 0.6rem;
+      border-top: 1px solid rgba(28, 61, 90, 0.08);
+    }
+
+    .sidebar footer strong {
+      color: var(--nav);
+      font-size: 0.95rem;
+    }
+
+    .sidebar footer p {
+      color: rgba(28, 61, 90, 0.72);
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    .main-panel {
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      padding: 2.5rem;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 2rem;
+      min-height: 0;
+    }
+
+    .main-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1.4rem;
+    }
+
+    .main-header h1 {
+      font-size: 1.75rem;
+    }
+
+    .main-header span {
+      color: var(--muted);
+    }
+
+    .view-panel {
+      overflow: auto;
+      padding-right: 0.25rem;
+      display: grid;
+    }
+
+    .view-panel section {
+      display: none;
+      gap: 1.8rem;
+    }
+
+    .view-panel section.active {
+      display: grid;
+      animation: fade-in 0.25s ease;
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(28, 61, 90, 0.08);
+      box-shadow: 0 18px 38px rgba(15, 23, 42, 0.08);
+      padding: 1.8rem;
+      display: grid;
+      gap: 1.4rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .card-header h3 {
+      font-size: 1.25rem;
+    }
+
+    .card-header p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .card-header .actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .status-card {
+      padding: 1.4rem;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, rgba(15, 157, 88, 0.12), rgba(28, 61, 90, 0.12));
+      border: 1px solid rgba(28, 61, 90, 0.1);
+      display: grid;
+      gap: 0.45rem;
+    }
+
+    .status-card span.label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(28, 61, 90, 0.7);
+    }
+
+    .status-card strong.value {
+      font-size: 2rem;
+      color: var(--nav);
+    }
+
+    .status-card small.meta {
+      color: rgba(28, 61, 90, 0.65);
+      font-size: 0.82rem;
+    }
+
+    .grid-two {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .grid-three {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.1rem;
+    }
+
+    .table-shell {
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(28, 61, 90, 0.1);
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+
+    thead {
+      background: rgba(28, 61, 90, 0.08);
+      color: var(--nav);
+    }
+
+    th,
+    td {
+      padding: 0.8rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(28, 61, 90, 0.08);
+    }
+
+    tbody tr:hover {
+      background: rgba(15, 157, 88, 0.08);
+    }
+
+    .table-actions {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 2.2rem 1.2rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .empty-state strong {
+      display: block;
+      color: var(--nav);
+      margin-bottom: 0.4rem;
+    }
+
+    .tag {
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(15, 157, 88, 0.14);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--nav);
+      letter-spacing: 0.03em;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 1.1rem;
+    }
+
+    .timeline-entry {
+      border: 1px dashed rgba(15, 157, 88, 0.4);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.2rem;
+      background: rgba(15, 157, 88, 0.06);
+      display: grid;
+      gap: 0.4rem;
+    }
+
+    .timeline-entry span.when {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(28, 61, 90, 0.6);
+    }
+
+    .timeline-entry strong.title {
+      font-size: 1rem;
+      color: var(--nav);
+    }
+
+    .timeline-entry p.detail {
+      font-size: 0.92rem;
+      color: rgba(28, 61, 90, 0.72);
+    }
+
+    .history-list {
+      display: grid;
+      gap: 0.8rem;
+      max-height: 340px;
+      overflow: auto;
+    }
+
+    .history-item {
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(28, 61, 90, 0.1);
+      padding: 0.9rem 1.1rem;
+      display: grid;
+      gap: 0.35rem;
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    .history-item span.when {
+      font-size: 0.78rem;
+      color: rgba(28, 61, 90, 0.65);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .history-item strong.what {
+      color: var(--nav);
+      font-size: 0.95rem;
+    }
+
+    .history-item p.summary {
+      color: rgba(28, 61, 90, 0.75);
+      font-size: 0.88rem;
+      margin: 0;
+    }
+
+    .search-input {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      background: rgba(28, 61, 90, 0.08);
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      color: rgba(28, 61, 90, 0.72);
+    }
+
+    .search-input input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 0.9rem;
+      min-width: 160px;
+    }
+
+    .template-preview,
+    .request-preview {
+      border: 1px solid rgba(28, 61, 90, 0.14);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.96);
+      padding: 1.1rem;
+      font-family: 'Georgia', 'Times New Roman', serif;
+      line-height: 1.6;
+      font-size: 0.95rem;
+      color: #202c3c;
+      max-height: 360px;
+      overflow: auto;
+      box-shadow: inset 0 1px 2px rgba(15, 157, 88, 0.1);
+    }
+
+    .pill-group {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+      background: rgba(28, 61, 90, 0.08);
+      font-size: 0.78rem;
+      color: rgba(28, 61, 90, 0.72);
+      letter-spacing: 0.02em;
+      font-weight: 600;
+    }
+
+    .template-help {
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    .template-help code {
+      background: rgba(28, 61, 90, 0.1);
+      padding: 0.25rem 0.55rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      color: rgba(28, 61, 90, 0.85);
+    }
+
+    .template-help li {
+      margin-left: 1.2rem;
+      color: rgba(28, 61, 90, 0.72);
+      line-height: 1.55;
+    }
+
+    .request-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.4rem;
+    }
+
+    .request-panel {
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(28, 61, 90, 0.08);
+      background: rgba(255, 255, 255, 0.92);
+      padding: 1.4rem;
+      display: grid;
+      gap: 0.85rem;
+    }
+
+    .request-panel header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .request-panel header span {
+      font-size: 0.82rem;
+      color: rgba(28, 61, 90, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .toast-stack {
+      position: fixed;
+      bottom: 2.2rem;
+      right: 2.2rem;
+      display: grid;
+      gap: 0.75rem;
+      z-index: 8;
+    }
+
+    .toast {
+      min-width: 240px;
+      max-width: 340px;
+      padding: 0.95rem 1.15rem;
+      border-radius: var(--radius-md);
+      background: rgba(15, 157, 88, 0.92);
+      color: #f8fbff;
+      box-shadow: 0 18px 36px rgba(15, 157, 88, 0.28);
+      display: grid;
+      gap: 0.4rem;
+      animation: toast-in 0.25s ease;
+    }
+
+    @keyframes toast-in {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .toast span.title {
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .toast p.detail {
+      margin: 0;
+      font-size: 0.82rem;
+    }
+
+    @media (max-width: 1100px) {
+      .app-shell {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 1.5rem;
+      }
+      .sidebar {
+        position: sticky;
+        top: 1.2rem;
+        z-index: 4;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .auth-body {
+        padding: 2rem;
+      }
+      .app-shell {
+        padding: 1rem;
+      }
+      .main-panel {
+        padding: 1.5rem;
+      }
+      .card {
+        padding: 1.2rem;
+      }
+      .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .main-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col brand-gray">
+
+<!-- ===== HEADER ===== -->
+<header class="brand-bg text-white p-4 flex justify-between items-center">
+  <h1 class="text-xl font-bold tracking-wide">
+    Blaszkow Legal PLLC
+  </h1>
+  <div id="userArea" class="text-sm"></div>
+</header>
+
+<!-- ===== MAIN LAYOUT ===== -->
+<main class="flex flex-1">
+  <!-- SIDEBAR -->
+  <nav class="bg-gray-800 w-56 text-white flex flex-col space-y-2 p-4">
+    <button class="nav-btn" onclick="showPage('dashboard')">Dashboard</button>
+    <button class="nav-btn" onclick="showPage('clients')">Clients</button>
+    <button class="nav-btn" onclick="showPage('providers')">Providers</button>
+    <button class="nav-btn" onclick="showPage('templates')">Templates</button>
+    <button class="nav-btn" onclick="showPage('settings')">Settings</button>
+  </nav>
+
+  <!-- CONTENT AREA -->
+  <section id="content" class="flex-1 p-6 overflow-y-auto bg-white">
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="page">
+      <h2 class="text-2xl font-bold mb-4 brand-red">Generate Correspondence</h2>
+      <p class="text-gray-700 mb-3">
+        Select a client and provider, then click “Generate PDF.”  (PDF logic added in Part 3.)
+      </p>
+
+      <div class="grid grid-cols-2 gap-4 mb-4">
+<body>
+  <div class="auth-overlay" id="authOverlay">
+    <div class="auth-modal">
+      <header>
+        <div class="logo" style="width:54px;height:54px;border-radius:16px;display:grid;place-items:center;background:rgba(255,255,255,0.2);font-weight:700;font-size:1.2rem;">MC</div>
+        <h1>Medical Correspondence Workspace</h1>
+        <p>
+          Streamline HIPAA releases and medical records requests. Maintain client and provider profiles, merge them into
+          correspondence templates, and export PDF packets in a single secure console inspired by our lost wage
+          calculator workflow.
+        </p>
+        <div class="auth-intro-tags">
+          <span>Seeded admin: admin / admin</span>
+          <span>Local-only authentication</span>
+          <span>HIPAA-compliant placeholders</span>
+        </div>
+      </header>
+      <div class="auth-body">
+        <div class="tab-list" role="tablist">
+          <button class="tab-button active" data-tab="sign-in" id="tabSignIn" aria-controls="panelSignIn" role="tab">Sign In</button>
+          <button class="tab-button" data-tab="register" id="tabRegister" aria-controls="panelRegister" role="tab">Create Account</button>
+          <button class="tab-button" data-tab="recover" id="tabRecover" aria-controls="panelRecover" role="tab">Recover Access</button>
+        </div>
+        <section class="tab-panel active" id="panelSignIn" role="tabpanel" aria-labelledby="tabSignIn">
+          <p class="auth-note">
+            Enter your credentials. Accounts are stored locally. Use the seeded administrator to configure your firm,
+            then invite teammates using the Create Account tab.
+          </p>
+          <div class="auth-grid">
+            <label class="field">
+              <span>Username</span>
+              <input type="text" id="loginUsername" autocomplete="username" placeholder="case.manager" />
+            </label>
+            <label class="field">
+              <span>Password</span>
+              <input type="password" id="loginPassword" autocomplete="current-password" placeholder="••••••••" />
+            </label>
+          </div>
+          <div class="auth-actions">
+            <button class="btn primary" id="loginSubmit">Enter Workspace</button>
+            <button class="btn ghost" data-switch="register">Need an account?</button>
+            <button class="btn ghost" data-switch="recover">Forgot username or password?</button>
+          </div>
+          <div class="auth-note" id="loginMessage"></div>
+        </section>
+        <section class="tab-panel" id="panelRegister" role="tabpanel" aria-labelledby="tabRegister">
+          <p class="auth-note">
+            Accounts created here stay within this browser. Administrators can promote roles from the Settings tab.
+            Provide an email for easier local recovery.
+          </p>
+          <div class="auth-grid">
+            <label class="field">
+              <span>Username</span>
+              <input type="text" id="registerUsername" placeholder="jdoe" />
+            </label>
+            <label class="field">
+              <span>Password</span>
+              <input type="password" id="registerPassword" placeholder="Choose a password" />
+            </label>
+            <label class="field">
+              <span>Full name</span>
+              <input type="text" id="registerName" placeholder="Jordan Doe" />
+            </label>
+            <label class="field">
+              <span>Email</span>
+              <input type="email" id="registerEmail" placeholder="team@practice.com" />
+            </label>
+            <label class="field">
+              <span>Role</span>
+              <select id="registerRole">
+                <option value="staff">Staff</option>
+                <option value="manager">Manager</option>
+                <option value="admin">Administrator</option>
+              </select>
+            </label>
+          </div>
+          <div class="auth-actions">
+            <button class="btn primary" id="registerSubmit">Create Account</button>
+            <button class="btn secondary" data-switch="sign-in">Back to Sign In</button>
+          </div>
+          <div class="auth-note" id="registerMessage"></div>
+        </section>
+        <section class="tab-panel" id="panelRecover" role="tabpanel" aria-labelledby="tabRecover">
+          <p class="auth-note">
+            Enter the email used during registration to list usernames available in this browser. For password resets we
+            need both username and email.
+          </p>
+          <div class="auth-grid">
+            <label class="field">
+              <span>Email</span>
+              <input type="email" id="recoverEmail" placeholder="team@practice.com" />
+            </label>
+            <label class="field">
+              <span>Username</span>
+              <input type="text" id="recoverUsername" placeholder="case.manager" />
+            </label>
+          </div>
+          <div class="auth-actions">
+            <button class="btn primary" id="recoverPassword">Reset Password</button>
+            <button class="btn secondary" id="recoverUsernameBtn">Recover Username(s)</button>
+            <button class="btn ghost" data-switch="sign-in">Back to Sign In</button>
+          </div>
+          <div class="auth-note" id="recoverMessage"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-stack" id="toastStack"></div>
+
+  <main class="app-shell hidden" id="appShell">
+    <aside class="sidebar">
+      <header>
+        <div class="logo">MC</div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Client</label>
+          <select id="dashClient" class="border p-2 w-full rounded"></select>
+          <h2>Medical Correspondence</h2>
+          <p>HIPAA &amp; records automation</p>
+        </div>
+      </header>
+      <div class="nav-list">
+        <button class="nav-button active" data-view="dashboardView"><span class="icon">🏠</span>Overview</button>
+        <button class="nav-button" data-view="clientsView"><span class="icon">🧑</span>Clients</button>
+        <button class="nav-button" data-view="providersView"><span class="icon">🏥</span>Providers</button>
+        <button class="nav-button" data-view="templatesView"><span class="icon">📝</span>Templates</button>
+        <button class="nav-button" data-view="generatorView"><span class="icon">📦</span>Generator</button>
+        <button class="nav-button" data-view="historyView"><span class="icon">🗂️</span>Audit Trail</button>
+        <button class="nav-button" data-view="settingsView"><span class="icon">⚙️</span>Settings</button>
+      </div>
+      <footer>
+        <strong>Workspace quick tips</strong>
+        <p>Use Templates to configure HIPAA and medical request documents. The Generator merges client/provider data into
+          ready-to-send packets.</p>
+        <button class="btn ghost" id="sidebarExport">Export data snapshot</button>
+      </footer>
+    </aside>
+    <div class="main-panel">
+      <div class="main-header">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Provider</label>
+          <select id="dashProvider" class="border p-2 w-full rounded"></select>
+          <h1 id="viewTitle">Dashboard</h1>
+          <span id="viewSubtitle">Review status cards and latest activity.</span>
+        </div>
+        <button class="btn danger" id="logoutBtn">Sign Out</button>
+      </div>
+      <div class="view-panel">
+        <section id="dashboardView" class="active">
+          <div class="status-grid">
+            <div class="status-card">
+              <span class="label">Clients</span>
+              <strong class="value" id="statClients">0</strong>
+              <small class="meta">Profiles ready for HIPAA release generation.</small>
+            </div>
+            <div class="status-card">
+              <span class="label">Providers</span>
+              <strong class="value" id="statProviders">0</strong>
+              <small class="meta">Custodians, facilities, and contacts.</small>
+            </div>
+            <div class="status-card">
+              <span class="label">Templates</span>
+              <strong class="value" id="statTemplates">0</strong>
+              <small class="meta">HIPAA releases and medical requests.</small>
+            </div>
+            <div class="status-card">
+              <span class="label">Packets generated</span>
+              <strong class="value" id="statPackets">0</strong>
+              <small class="meta">Tracked locally for auditing.</small>
+            </div>
+          </div>
+          <div class="grid-two">
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3>Quick actions</h3>
+                  <p>Speed through intake tasks using single-click shortcuts.</p>
+                </div>
+              </div>
+              <div class="pill-group">
+                <button class="btn primary" id="quickClient">New client</button>
+                <button class="btn primary" id="quickProvider">New provider</button>
+                <button class="btn ghost" id="quickTemplate">New template</button>
+                <button class="btn ghost" id="quickGenerator">Generate packet</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3>Checklist</h3>
+                  <p>Reference our recommended flow to produce compliant packets.</p>
+                </div>
+              </div>
+              <div class="timeline">
+                <div class="timeline-entry">
+                  <span class="when">Step 1</span>
+                  <strong class="title">Collect client consent</strong>
+                  <p class="detail">Verify identity, gather DOB, and document authorization to release PHI.</p>
+                </div>
+                <div class="timeline-entry">
+                  <span class="when">Step 2</span>
+                  <strong class="title">Capture provider routing</strong>
+                  <p class="detail">Record custodians, fax numbers, and any account identifiers to match records.</p>
+                </div>
+                <div class="timeline-entry">
+                  <span class="when">Step 3</span>
+                  <strong class="title">Customize templates</strong>
+                  <p class="detail">Review letterhead, placeholder coverage, and firm signature details.</p>
+                </div>
+                <div class="timeline-entry">
+                  <span class="when">Step 4</span>
+                  <strong class="title">Generate and track</strong>
+                  <p class="detail">Merge data into HIPAA and request letters, then document delivery status.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="grid-two">
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3>Recent activity</h3>
+                  <p>Packet generations, profile edits, and template updates log here.</p>
+                </div>
+              </div>
+              <div class="history-list" id="activityList"></div>
+              <div class="empty-state" id="activityEmpty">No activity captured yet. Generate your first packet to seed
+                the log.</div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3>Placeholder reference</h3>
+                  <p>Use these merge tags in templates to insert client/provider data.</p>
+                </div>
+              </div>
+              <div class="history-list" id="placeholderGuide"></div>
+            </div>
+          </div>
+        </section>
+
+      <button id="generateBtn"
+        class="brand-bg text-white px-4 py-2 rounded shadow hover:bg-red-700 transition">
+        Generate Combined PDF
+      </button>
+    </div>
+        <section id="clientsView">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3>Clients</h3>
+                <p>Maintain patient/client details for HIPAA releases.</p>
+              </div>
+              <div class="actions">
+                <div class="search-input">🔍<input type="search" id="clientSearch" placeholder="Search clients" /></div>
+                <button class="btn primary" id="addClientBtn">Add client</button>
+                <button class="btn ghost" id="sampleClients">Sample data</button>
+              </div>
+            </div>
+            <div class="table-shell">
+              <table id="clientsTable">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>DOB</th>
+                    <th>Incident date</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+              <div class="empty-state" id="clientsEmpty">
+                <strong>No clients yet.</strong>
+                Add a client to unlock HIPAA generation.
+              </div>
+            </div>
+          </div>
+          <div class="card" id="clientFormCard" hidden>
+            <div class="card-header">
+              <div>
+                <h3 id="clientFormTitle">New client</h3>
+                <p>Complete intake details and consent tracking.</p>
+              </div>
+              <div class="actions">
+                <button class="btn ghost" id="cancelClient">Cancel</button>
+                <button class="btn primary" id="saveClient">Save client</button>
+              </div>
+            </div>
+            <div class="grid-three">
+              <label class="field"><span>First name</span><input type="text" id="clientFirstName" /></label>
+              <label class="field"><span>Middle name</span><input type="text" id="clientMiddleName" /></label>
+              <label class="field"><span>Last name</span><input type="text" id="clientLastName" /></label>
+              <label class="field"><span>Date of birth</span><input type="date" id="clientDob" /></label>
+              <label class="field"><span>Incident date</span><input type="date" id="clientIncident" /></label>
+              <label class="field"><span>SSN (last 4)</span><input type="text" id="clientSsn" maxlength="4" /></label>
+              <label class="field"><span>Phone</span><input type="tel" id="clientPhone" placeholder="(555) 123-4567" /></label>
+              <label class="field"><span>Email</span><input type="email" id="clientEmail" placeholder="client@domain.com" /></label>
+              <label class="field"><span>Preferred contact</span>
+                <select id="clientPreference">
+                  <option value="email">Email</option>
+                  <option value="phone">Phone</option>
+                  <option value="mail">Mail</option>
+                </select>
+              </label>
+            </div>
+            <div class="grid-three">
+              <label class="field"><span>Address line 1</span><input type="text" id="clientAddress1" /></label>
+              <label class="field"><span>Address line 2</span><input type="text" id="clientAddress2" /></label>
+              <label class="field"><span>City</span><input type="text" id="clientCity" /></label>
+              <label class="field"><span>State</span><input type="text" id="clientState" maxlength="2" /></label>
+              <label class="field"><span>ZIP</span><input type="text" id="clientZip" /></label>
+              <label class="field"><span>Emergency contact</span><input type="text" id="clientEmergency" /></label>
+            </div>
+            <label class="field"><span>Medical notes</span><textarea id="clientNotes" rows="6" placeholder="Diagnoses, treating providers, restrictions"></textarea></label>
+          </div>
+        </section>
+                <section id="providersView">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3>Providers</h3>
+                <p>Track release contacts and facility routing.</p>
+              </div>
+              <div class="actions">
+                <div class="search-input">🔍<input type="search" id="providerSearch" placeholder="Search providers" /></div>
+                <button class="btn primary" id="addProviderBtn">Add provider</button>
+                <button class="btn ghost" id="sampleProviders">Sample data</button>
+              </div>
+            </div>
+            <div class="table-shell">
+              <table id="providersTable">
+                <thead>
+                  <tr>
+                    <th>Facility</th>
+                    <th>Department</th>
+                    <th>Phone</th>
+                    <th>Fax</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+              <div class="empty-state" id="providersEmpty">
+                <strong>No providers yet.</strong>
+                Add providers to direct HIPAA requests.
+              </div>
+            </div>
+          </div>
+          <div class="card" id="providerFormCard" hidden>
+            <div class="card-header">
+              <div>
+                <h3 id="providerFormTitle">New provider</h3>
+                <p>Include custodial department instructions.</p>
+              </div>
+              <div class="actions">
+                <button class="btn ghost" id="cancelProvider">Cancel</button>
+                <button class="btn primary" id="saveProvider">Save provider</button>
+              </div>
+            </div>
+            <div class="grid-three">
+              <label class="field"><span>Facility name</span><input type="text" id="providerName" /></label>
+              <label class="field"><span>Department</span><input type="text" id="providerDepartment" /></label>
+              <label class="field"><span>Contact person</span><input type="text" id="providerContact" /></label>
+              <label class="field"><span>Phone</span><input type="tel" id="providerPhone" /></label>
+              <label class="field"><span>Fax</span><input type="tel" id="providerFax" /></label>
+              <label class="field"><span>Email</span><input type="email" id="providerEmail" /></label>
+              <label class="field"><span>Address</span><input type="text" id="providerAddress" /></label>
+              <label class="field"><span>City</span><input type="text" id="providerCity" /></label>
+              <label class="field"><span>State</span><input type="text" id="providerState" maxlength="2" /></label>
+              <label class="field"><span>ZIP</span><input type="text" id="providerZip" /></label>
+              <label class="field"><span>Records portal URL</span><input type="text" id="providerPortal" /></label>
+              <label class="field"><span>Account/chart #</span><input type="text" id="providerAccount" /></label>
+            </div>
+            <label class="field"><span>Submission notes</span><textarea id="providerNotes" rows="6" placeholder="Preferred delivery, fees, additional docs"></textarea></label>
+          </div>
+        </section>
+        <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Blaszkow Legal PLLC – Records Request Portal</title>
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- PDF Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+
+<style>
+  body { font-family: ui-sans-serif, system-ui, -apple-system; }
+  .brand-red { color:#b91c1c; }
+  .brand-bg { background-color:#b91c1c; }
+  .brand-gray { background-color:#f3f4f6; }
+  .nav-btn { @apply text-white hover:bg-red-700 px-3 py-2 rounded-md cursor-pointer; }
+</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Medical Correspondence Workspace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <style>
+    :root {
+      --bg: #eff4f9;
+      --surface: #ffffff;
+      --ink: #102a43;
+      --muted: #6b7b8c;
+      --accent: #0f9d58;
+      --accent-dark: #0b7d46;
+      --nav: #1c3d5a;
+      --danger: #c81e4d;
+      --border: #d7e3f4;
+      --radius-lg: 22px;
+      --radius-md: 14px;
+      --radius-sm: 8px;
+      --shadow: 0 24px 60px rgba(16, 42, 67, 0.16);
+      font-size: 16px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(12, 64, 98, 0.12), transparent 65%),
+        radial-gradient(circle at bottom right, rgba(15, 157, 88, 0.12), transparent 60%),
+        var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: var(--nav);
+      font-weight: 600;
+      margin: 0;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    a {
+      color: var(--accent);
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    .auth-overlay {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: rgba(9, 20, 35, 0.72);
+      backdrop-filter: blur(8px);
+      z-index: 10;
+      padding: 2rem;
+    }
+
+    .auth-overlay.hidden {
+      display: none;
+    }
+
+    .auth-modal {
+      width: min(900px, 96vw);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(255, 255, 255, 0.92));
+      border-radius: var(--radius-lg);
+      box-shadow: 0 40px 90px rgba(9, 20, 35, 0.35);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .auth-modal header {
+      padding: 2.6rem 3rem 2.2rem;
+      background: linear-gradient(140deg, rgba(28, 61, 90, 0.92), rgba(15, 157, 88, 0.85));
+      color: var(--surface);
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .auth-modal header h1 {
+      color: var(--surface);
+      font-size: 2rem;
+    }
+
+    .auth-modal header p {
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.55;
+      font-size: 1rem;
+      max-width: 540px;
+    }
+
+    .auth-intro-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.4rem;
+    }
+
+    .auth-intro-tags span {
+      background: rgba(255, 255, 255, 0.18);
+      color: #f8fbff;
+      padding: 0.35rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    .auth-body {
+      padding: 2.4rem 3rem 3rem;
+      display: grid;
+      gap: 1.8rem;
+    }
+
+    .tab-list {
+      display: flex;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-button {
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 999px;
+      font-weight: 600;
+      color: rgba(28, 61, 90, 0.78);
+      background: rgba(28, 61, 90, 0.08);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-button.active {
+      background: linear-gradient(135deg, var(--nav), var(--accent));
+      color: var(--surface);
+      box-shadow: 0 18px 32px rgba(15, 157, 88, 0.3);
+    }
+
+    .tab-panel {
+      display: none;
+      gap: 1.6rem;
+    }
+
+    .tab-panel.active {
+      display: grid;
+    }
+
+    .auth-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    label.field {
+      display: grid;
+      gap: 0.55rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    label.field span {
+      color: var(--ink);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    textarea,
+    select {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.7rem 0.8rem;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: inset 0 1px 2px rgba(16, 42, 67, 0.08);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(15, 157, 88, 0.18);
+    }
+
+    .auth-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 0.65rem 1.2rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, var(--nav), var(--accent));
+      color: var(--surface);
+      box-shadow: 0 20px 36px rgba(16, 42, 67, 0.25);
+    }
+
+    .btn.primary:hover,
+    .btn.primary:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 28px 44px rgba(16, 42, 67, 0.28);
+    }
+
+    .btn.ghost {
+      background: rgba(28, 61, 90, 0.08);
+      color: var(--nav);
+    }
+
+    .btn.ghost:hover,
+    .btn.ghost:focus {
+      background: rgba(15, 157, 88, 0.12);
+    }
+
+    .btn.secondary {
+      background: rgba(16, 42, 67, 0.12);
+      color: var(--nav);
+    }
+
+    .btn.secondary:hover,
+    .btn.secondary:focus {
+      background: rgba(16, 42, 67, 0.2);
+    }
+
+    .btn.danger {
+      background: rgba(200, 30, 77, 0.16);
+      color: var(--danger);
+    }
+
+    .btn.danger:hover,
+    .btn.danger:focus {
+      background: rgba(200, 30, 77, 0.24);
+    }
+
+    .auth-note {
+      font-size: 0.9rem;
+      color: rgba(28, 61, 90, 0.72);
+      line-height: 1.55;
+    }
+
+    .app-shell {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2rem;
+      padding: 2.5rem 3rem 3rem;
+    }
+
+    .app-shell.hidden {
+      display: none;
+    }
+
+    .sidebar {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sidebar header {
+      background: linear-gradient(135deg, rgba(28, 61, 90, 0.95), rgba(16, 42, 67, 0.92));
+      padding: 2.1rem 2rem 1.8rem;
+      color: rgba(255, 255, 255, 0.92);
+      display: grid;
+      gap: 0.4rem;
+    }
+
+    .sidebar header .logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.2);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .sidebar header h2 {
+      color: #f8fbff;
+      font-size: 1.35rem;
+    }
+
+    .nav-list {
+      display: grid;
+      gap: 0.25rem;
+      padding: 1.2rem 0;
+    }
+
+    .nav-button {
+      border: none;
+      background: transparent;
+      padding: 0.85rem 1.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      color: rgba(28, 61, 90, 0.7);
+      cursor: pointer;
+      font-weight: 600;
+      text-align: left;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-button span.icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: rgba(15, 157, 88, 0.14);
+      display: grid;
+      place-items: center;
+      font-size: 0.95rem;
+      color: var(--nav);
+    }
+
+    .nav-button:hover,
+    .nav-button:focus {
+      background: rgba(15, 157, 88, 0.14);
+      color: var(--nav);
+      outline: none;
+    }
+
+    .nav-button.active {
+      background: linear-gradient(135deg, rgba(15, 157, 88, 0.85), rgba(28, 61, 90, 0.9));
+      color: var(--surface);
+      box-shadow: 0 16px 28px rgba(15, 157, 88, 0.25);
+    }
+
+    .nav-button.active span.icon {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+
+    .sidebar footer {
+      margin-top: auto;
+      padding: 1.4rem 1.8rem 2.1rem;
+      display: grid;
+      gap: 0.6rem;
+      border-top: 1px solid rgba(28, 61, 90, 0.08);
+    }
+
+    .sidebar footer strong {
+      color: var(--nav);
+      font-size: 0.95rem;
+    }
+
+    .sidebar footer p {
+      color: rgba(28, 61, 90, 0.72);
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    .main-panel {
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      padding: 2.5rem;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 2rem;
+      min-height: 0;
+    }
+
+    .main-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1.4rem;
+    }
+
+    .main-header h1 {
+      font-size: 1.75rem;
+    }
+
+    .main-header span {
+      color: var(--muted);
+    }
+
+    .view-panel {
+      overflow: auto;
+      padding-right: 0.25rem;
+      display: grid;
+    }
+
+    .view-panel section {
+      display: none;
+      gap: 1.8rem;
+    }
+
+    .view-panel section.active {
+      display: grid;
+      animation: fade-in 0.25s ease;
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(28, 61, 90, 0.08);
+      box-shadow: 0 18px 38px rgba(15, 23, 42, 0.08);
+      padding: 1.8rem;
+      display: grid;
+      gap: 1.4rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .card-header h3 {
+      font-size: 1.25rem;
+    }
+
+    .card-header p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .card-header .actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .status-card {
+      padding: 1.4rem;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, rgba(15, 157, 88, 0.12), rgba(28, 61, 90, 0.12));
+      border: 1px solid rgba(28, 61, 90, 0.1);
+      display: grid;
+      gap: 0.45rem;
+    }
+
+    .status-card span.label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(28, 61, 90, 0.7);
+    }
+
+    .status-card strong.value {
+      font-size: 2rem;
+      color: var(--nav);
+    }
+
+    .status-card small.meta {
+      color: rgba(28, 61, 90, 0.65);
+      font-size: 0.82rem;
+    }
+
+    .grid-two {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .grid-three {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.1rem;
+    }
+
+    .table-shell {
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(28, 61, 90, 0.1);
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+
+    thead {
+      background: rgba(28, 61, 90, 0.08);
+      color: var(--nav);
+    }
+
+    th,
+    td {
+      padding: 0.8rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(28, 61, 90, 0.08);
+    }
+
+    tbody tr:hover {
+      background: rgba(15, 157, 88, 0.08);
+    }
+
+    .table-actions {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 2.2rem 1.2rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .empty-state strong {
+      display: block;
+      color: var(--nav);
+      margin-bottom: 0.4rem;
+    }
+
+    .tag {
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(15, 157, 88, 0.14);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--nav);
+      letter-spacing: 0.03em;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 1.1rem;
+    }
+
+    .timeline-entry {
+      border: 1px dashed rgba(15, 157, 88, 0.4);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.2rem;
+      background: rgba(15, 157, 88, 0.06);
+      display: grid;
+      gap: 0.4rem;
+    }
+
+    .timeline-entry span.when {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(28, 61, 90, 0.6);
+    }
+
+    .timeline-entry strong.title {
+      font-size: 1rem;
+      color: var(--nav);
+    }
+
+    .timeline-entry p.detail {
+      font-size: 0.92rem;
+      color: rgba(28, 61, 90, 0.72);
+    }
+
+    .history-list {
+      display: grid;
+      gap: 0.8rem;
+      max-height: 340px;
+      overflow: auto;
+    }
+
+    .history-item {
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(28, 61, 90, 0.1);
+      padding: 0.9rem 1.1rem;
+      display: grid;
+      gap: 0.35rem;
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    .history-item span.when {
+      font-size: 0.78rem;
+      color: rgba(28, 61, 90, 0.65);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .history-item strong.what {
+      color: var(--nav);
+      font-size: 0.95rem;
+    }
+
+    .history-item p.summary {
+      color: rgba(28, 61, 90, 0.75);
+      font-size: 0.88rem;
+      margin: 0;
+    }
+
+    .search-input {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      background: rgba(28, 61, 90, 0.08);
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      color: rgba(28, 61, 90, 0.72);
+    }
+
+    .search-input input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 0.9rem;
+      min-width: 160px;
+    }
+
+    .template-preview,
+    .request-preview {
+      border: 1px solid rgba(28, 61, 90, 0.14);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.96);
+      padding: 1.1rem;
+      font-family: 'Georgia', 'Times New Roman', serif;
+      line-height: 1.6;
+      font-size: 0.95rem;
+      color: #202c3c;
+      max-height: 360px;
+      overflow: auto;
+      box-shadow: inset 0 1px 2px rgba(15, 157, 88, 0.1);
+    }
+
+    .pill-group {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+      background: rgba(28, 61, 90, 0.08);
+      font-size: 0.78rem;
+      color: rgba(28, 61, 90, 0.72);
+      letter-spacing: 0.02em;
+      font-weight: 600;
+    }
+
+    .template-help {
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    .template-help code {
+      background: rgba(28, 61, 90, 0.1);
+      padding: 0.25rem 0.55rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      color: rgba(28, 61, 90, 0.85);
+    }
+
+    .template-help li {
+      margin-left: 1.2rem;
+      color: rgba(28, 61, 90, 0.72);
+      line-height: 1.55;
+    }
+
+    .request-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.4rem;
+    }
+
+    .request-panel {
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(28, 61, 90, 0.08);
+      background: rgba(255, 255, 255, 0.92);
+      padding: 1.4rem;
+      display: grid;
+      gap: 0.85rem;
+    }
+
+    .request-panel header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .request-panel header span {
+      font-size: 0.82rem;
+      color: rgba(28, 61, 90, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .toast-stack {
+      position: fixed;
+      bottom: 2.2rem;
+      right: 2.2rem;
+      display: grid;
+      gap: 0.75rem;
+      z-index: 8;
+    }
+
+    .toast {
+      min-width: 240px;
+      max-width: 340px;
+      padding: 0.95rem 1.15rem;
+      border-radius: var(--radius-md);
+      background: rgba(15, 157, 88, 0.92);
+      color: #f8fbff;
+      box-shadow: 0 18px 36px rgba(15, 157, 88, 0.28);
+      display: grid;
+      gap: 0.4rem;
+      animation: toast-in 0.25s ease;
+    }
+
+    @keyframes toast-in {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .toast span.title {
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .toast p.detail {
+      margin: 0;
+      font-size: 0.82rem;
+    }
+
+    @media (max-width: 1100px) {
+      .app-shell {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 1.5rem;
+      }
+      .sidebar {
+        position: sticky;
+        top: 1.2rem;
+        z-index: 4;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .auth-body {
+        padding: 2rem;
+      }
+      .app-shell {
+        padding: 1rem;
+      }
+      .main-panel {
+        padding: 1.5rem;
+      }
+      .card {
+        padding: 1.2rem;
+      }
+      .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .main-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col brand-gray">
+
+<!-- ===== HEADER ===== -->
+<header class="brand-bg text-white p-4 flex justify-between items-center">
+  <h1 class="text-xl font-bold tracking-wide">
+    Blaszkow Legal PLLC
+  </h1>
+  <div id="userArea" class="text-sm"></div>
+</header>
+
+<!-- ===== MAIN LAYOUT ===== -->
+<main class="flex flex-1">
+  <!-- SIDEBAR -->
+  <nav class="bg-gray-800 w-56 text-white flex flex-col space-y-2 p-4">
+    <button class="nav-btn" onclick="showPage('dashboard')">Dashboard</button>
+    <button class="nav-btn" onclick="showPage('clients')">Clients</button>
+    <button class="nav-btn" onclick="showPage('providers')">Providers</button>
+    <button class="nav-btn" onclick="showPage('templates')">Templates</button>
+    <button class="nav-btn" onclick="showPage('settings')">Settings</button>
+  </nav>
+
+  <!-- CONTENT AREA -->
+  <section id="content" class="flex-1 p-6 overflow-y-auto bg-white">
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="page">
+      <h2 class="text-2xl font-bold mb-4 brand-red">Generate Correspondence</h2>
+      <p class="text-gray-700 mb-3">
+        Select a client and provider, then click “Generate PDF.”  (PDF logic added in Part 3.)
+      </p>
+
+      <div class="grid grid-cols-2 gap-4 mb-4">
+<body>
+  <div class="auth-overlay" id="authOverlay">
+    <div class="auth-modal">
+      <header>
+        <div class="logo" style="width:54px;height:54px;border-radius:16px;display:grid;place-items:center;background:rgba(255,255,255,0.2);font-weight:700;font-size:1.2rem;">MC</div>
+        <h1>Medical Correspondence Workspace</h1>
+        <p>
+          Streamline HIPAA releases and medical records requests. Maintain client and provider profiles, merge them into
+          correspondence templates, and export PDF packets in a single secure console inspired by our lost wage
+          calculator workflow.
+        </p>
+        <div class="auth-intro-tags">
+          <span>Seeded admin: admin / admin</span>
+          <span>Local-only authentication</span>
+          <span>HIPAA-compliant placeholders</span>
+        </div>
+      </header>
+      <div class="auth-body">
+        <div class="tab-list" role="tablist">
+          <button class="tab-button active" data-tab="sign-in" id="tabSignIn" aria-controls="panelSignIn" role="tab">Sign In</button>
+          <button class="tab-button" data-tab="register" id="tabRegister" aria-controls="panelRegister" role="tab">Create Account</button>
+          <button class="tab-button" data-tab="recover" id="tabRecover" aria-controls="panelRecover" role="tab">Recover Access</button>
+        </div>
+        <section class="tab-panel active" id="panelSignIn" role="tabpanel" aria-labelledby="tabSignIn">
+          <p class="auth-note">
+            Enter your credentials. Accounts are stored locally. Use the seeded administrator to configure your firm,
+            then invite teammates using the Create Account tab.
+          </p>
+          <div class="auth-grid">
+            <label class="field">
+              <span>Username</span>
+              <input type="text" id="loginUsername" autocomplete="username" placeholder="case.manager" />
+            </label>
+            <label class="field">
+              <span>Password</span>
+              <input type="password" id="loginPassword" autocomplete="current-password" placeholder="••••••••" />
+            </label>
+          </div>
+          <div class="auth-actions">
+            <button class="btn primary" id="loginSubmit">Enter Workspace</button>
+            <button class="btn ghost" data-switch="register">Need an account?</button>
+            <button class="btn ghost" data-switch="recover">Forgot username or password?</button>
+          </div>
+          <div class="auth-note" id="loginMessage"></div>
+        </section>
+        <section class="tab-panel" id="panelRegister" role="tabpanel" aria-labelledby="tabRegister">
+          <p class="auth-note">
+            Accounts created here stay within this browser. Administrators can promote roles from the Settings tab.
+            Provide an email for easier local recovery.
+          </p>
+          <div class="auth-grid">
+            <label class="field">
+              <span>Username</span>
+              <input type="text" id="registerUsername" placeholder="jdoe" />
+            </label>
+            <label class="field">
+              <span>Password</span>
+              <input type="password" id="registerPassword" placeholder="Choose a password" />
+            </label>
+            <label class="field">
+              <span>Full name</span>
+              <input type="text" id="registerName" placeholder="Jordan Doe" />
+            </label>
+            <label class="field">
+              <span>Email</span>
+              <input type="email" id="registerEmail" placeholder="team@practice.com" />
+            </label>
+            <label class="field">
+              <span>Role</span>
+              <select id="registerRole">
+                <option value="staff">Staff</option>
+                <option value="manager">Manager</option>
+                <option value="admin">Administrator</option>
+              </select>
+            </label>
+          </div>
+          <div class="auth-actions">
+            <button class="btn primary" id="registerSubmit">Create Account</button>
+            <button class="btn secondary" data-switch="sign-in">Back to Sign In</button>
+          </div>
+          <div class="auth-note" id="registerMessage"></div>
+        </section>
+        <section class="tab-panel" id="panelRecover" role="tabpanel" aria-labelledby="tabRecover">
+          <p class="auth-note">
+            Enter the email used during registration to list usernames available in this browser. For password resets we
+            need both username and email.
+          </p>
+          <div class="auth-grid">
+            <label class="field">
+              <span>Email</span>
+              <input type="email" id="recoverEmail" placeholder="team@practice.com" />
+            </label>
+            <label class="field">
+              <span>Username</span>
+              <input type="text" id="recoverUsername" placeholder="case.manager" />
+            </label>
+          </div>
+          <div class="auth-actions">
+            <button class="btn primary" id="recoverPassword">Reset Password</button>
+            <button class="btn secondary" id="recoverUsernameBtn">Recover Username(s)</button>
+            <button class="btn ghost" data-switch="sign-in">Back to Sign In</button>
+          </div>
+          <div class="auth-note" id="recoverMessage"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-stack" id="toastStack"></div>
+
+  <main class="app-shell hidden" id="appShell">
+    <aside class="sidebar">
+      <header>
+        <div class="logo">MC</div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Client</label>
+          <select id="dashClient" class="border p-2 w-full rounded"></select>
+          <h2>Medical Correspondence</h2>
+          <p>HIPAA &amp; records automation</p>
+        </div>
+      </header>
+      <div class="nav-list">
+        <button class="nav-button active" data-view="dashboardView"><span class="icon">🏠</span>Overview</button>
+        <button class="nav-button" data-view="clientsView"><span class="icon">🧑</span>Clients</button>
+        <button class="nav-button" data-view="providersView"><span class="icon">🏥</span>Providers</button>
+        <button class="nav-button" data-view="templatesView"><span class="icon">📝</span>Templates</button>
+        <button class="nav-button" data-view="generatorView"><span class="icon">📦</span>Generator</button>
+        <button class="nav-button" data-view="historyView"><span class="icon">🗂️</span>Audit Trail</button>
+        <button class="nav-button" data-view="settingsView"><span class="icon">⚙️</span>Settings</button>
+      </div>
+      <footer>
+        <strong>Workspace quick tips</strong>
+        <p>Use Templates to configure HIPAA and medical request documents. The Generator merges client/provider data into
+          ready-to-send packets.</p>
+        <button class="btn ghost" id="sidebarExport">Export data snapshot</button>
+      </footer>
+    </aside>
+    <div class="main-panel">
+      <div class="main-header">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Provider</label>
+          <select id="dashProvider" class="border p-2 w-full rounded"></select>
+          <h1 id="viewTitle">Dashboard</h1>
+          <span id="viewSubtitle">Review status cards and latest activity.</span>
+        </div>
+        <button class="btn danger" id="logoutBtn">Sign Out</button>
+      </div>
+      <div class="view-panel">
+        <section id="dashboardView" class="active">
+          <div class="status-grid">
+            <div class="status-card">
+              <span class="label">Clients</span>
+              <strong class="value" id="statClients">0</strong>
+              <small class="meta">Profiles ready for HIPAA release generation.</small>
+            </div>
+            <div class="status-card">
+              <span class="label">Providers</span>
+              <strong class="value" id="statProviders">0</strong>
+              <small class="meta">Custodians, facilities, and contacts.</small>
+            </div>
+            <div class="status-card">
+              <span class="label">Templates</span>
+              <strong class="value" id="statTemplates">0</strong>
+              <small class="meta">HIPAA releases and medical requests.</small>
+            </div>
+            <div class="status-card">
+              <span class="label">Packets generated</span>
+              <strong class="value" id="statPackets">0</strong>
+              <small class="meta">Tracked locally for auditing.</small>
+            </div>
+          </div>
+          <div class="grid-two">
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3>Quick actions</h3>
+                  <p>Speed through intake tasks using single-click shortcuts.</p>
+                </div>
+              </div>
+              <div class="pill-group">
+                <button class="btn primary" id="quickClient">New client</button>
+                <button class="btn primary" id="quickProvider">New provider</button>
+                <button class="btn ghost" id="quickTemplate">New template</button>
+                <button class="btn ghost" id="quickGenerator">Generate packet</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3>Checklist</h3>
+                  <p>Reference our recommended flow to produce compliant packets.</p>
+                </div>
+              </div>
+              <div class="timeline">
+                <div class="timeline-entry">
+                  <span class="when">Step 1</span>
+                  <strong class="title">Collect client consent</strong>
+                  <p class="detail">Verify identity, gather DOB, and document authorization to release PHI.</p>
+                </div>
+                <div class="timeline-entry">
+                  <span class="when">Step 2</span>
+                  <strong class="title">Capture provider routing</strong>
+                  <p class="detail">Record custodians, fax numbers, and any account identifiers to match records.</p>
+                </div>
+                <div class="timeline-entry">
+                  <span class="when">Step 3</span>
+                  <strong class="title">Customize templates</strong>
+                  <p class="detail">Review letterhead, placeholder coverage, and firm signature details.</p>
+                </div>
+                <div class="timeline-entry">
+                  <span class="when">Step 4</span>
+                  <strong class="title">Generate and track</strong>
+                  <p class="detail">Merge data into HIPAA and request letters, then document delivery status.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="grid-two">
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3>Recent activity</h3>
+                  <p>Packet generations, profile edits, and template updates log here.</p>
+                </div>
+              </div>
+              <div class="history-list" id="activityList"></div>
+              <div class="empty-state" id="activityEmpty">No activity captured yet. Generate your first packet to seed
+                the log.</div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3>Placeholder reference</h3>
+                  <p>Use these merge tags in templates to insert client/provider data.</p>
+                </div>
+              </div>
+              <div class="history-list" id="placeholderGuide"></div>
+            </div>
+          </div>
+        </section>
+
+      <button id="generateBtn"
+        class="brand-bg text-white px-4 py-2 rounded shadow hover:bg-red-700 transition">
+        Generate Combined PDF
+      </button>
+    </div>
+        <section id="clientsView">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3>Clients</h3>
+                <p>Maintain patient/client details for HIPAA releases.</p>
+              </div>
+              <div class="actions">
+                <div class="search-input">🔍<input type="search" id="clientSearch" placeholder="Search clients" /></div>
+                <button class="btn primary" id="addClientBtn">Add client</button>
+                <button class="btn ghost" id="sampleClients">Sample data</button>
+              </div>
+            </div>
+            <div class="table-shell">
+              <table id="clientsTable">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>DOB</th>
+                    <th>Incident date</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+              <div class="empty-state" id="clientsEmpty">
+                <strong>No clients yet.</strong>
+                Add a client to unlock HIPAA generation.
+              </div>
+            </div>
+          </div>
+          <div class="card" id="clientFormCard" hidden>
+            <div class="card-header">
+              <div>
+                <h3 id="clientFormTitle">New client</h3>
+                <p>Complete intake details and consent tracking.</p>
+              </div>
+              <div class="actions">
+                <button class="btn ghost" id="cancelClient">Cancel</button>
+                <button class="btn primary" id="saveClient">Save client</button>
+              </div>
+            </div>
+            <div class="grid-three">
+              <label class="field"><span>First name</span><input type="text" id="clientFirstName" /></label>
+              <label class="field"><span>Middle name</span><input type="text" id="clientMiddleName" /></label>
+              <label class="field"><span>Last name</span><input type="text" id="clientLastName" /></label>
+              <label class="field"><span>Date of birth</span><input type="date" id="clientDob" /></label>
+              <label class="field"><span>Incident date</span><input type="date" id="clientIncident" /></label>
+              <label class="field"><span>SSN (last 4)</span><input type="text" id="clientSsn" maxlength="4" /></label>
+              <label class="field"><span>Phone</span><input type="tel" id="clientPhone" placeholder="(555) 123-4567" /></label>
+              <label class="field"><span>Email</span><input type="email" id="clientEmail" placeholder="client@domain.com" /></label>
+              <label class="field"><span>Preferred contact</span>
+                <select id="clientPreference">
+                  <option value="email">Email</option>
+                  <option value="phone">Phone</option>
+                  <option value="mail">Mail</option>
+                </select>
+              </label>
+            </div>
+            <div class="grid-three">
+              <label class="field"><span>Address line 1</span><input type="text" id="clientAddress1" /></label>
+              <label class="field"><span>Address line 2</span><input type="text" id="clientAddress2" /></label>
+              <label class="field"><span>City</span><input type="text" id="clientCity" /></label>
+              <label class="field"><span>State</span><input type="text" id="clientState" maxlength="2" /></label>
+              <label class="field"><span>ZIP</span><input type="text" id="clientZip" /></label>
+              <label class="field"><span>Emergency contact</span><input type="text" id="clientEmergency" /></label>
+            </div>
+            <label class="field"><span>Medical notes</span><textarea id="clientNotes" rows="6" placeholder="Diagnoses, treating providers, restrictions"></textarea></label>
+          </div>
+        </section>
+
+    <!-- CLIENTS PAGE -->
+    <div id="clients" class="page hidden">
+      <h2 class="text-2xl font-bold mb-4 brand-red">Client Profiles</h2>
+      <form id="clientForm" class="space-y-2 mb-4">
+        <input type="text" id="cName" placeholder="Full Name" class="border p-2 w-full rounded" />
+        <input type="date" id="cDOB" class="border p-2 w-full rounded" />
+        <input type="text" id="cSSN" placeholder="SSN" class="border p-2 w-full rounded" />
+        <input type="date" id="cInjury" class="border p-2 w-full rounded" />
+        <button type="button" onclick="saveClient()"
+          class="brand-bg text-white px-4 py-2 rounded">Save Client</button>
+      </form>
+      <ul id="clientList" class="list-disc pl-6 text-gray-700"></ul>
+    </div>
+        <section id="providersView">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3>Providers</h3>
+                <p>Track release contacts and facility routing.</p>
+              </div>
+              <div class="actions">
+                <div class="search-input">🔍<input type="search" id="providerSearch" placeholder="Search providers" /></div>
+                <button class="btn primary" id="addProviderBtn">Add provider</button>
+                <button class="btn ghost" id="sampleProviders">Sample data</button>
+              </div>
+            </div>
+            <div class="table-shell">
+              <table id="providersTable">
+                <thead>
+                  <tr>
+                    <th>Facility</th>
+                    <th>Department</th>
+                    <th>Phone</th>
+                    <th>Fax</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+              <div class="empty-state" id="providersEmpty">
+                <strong>No providers yet.</strong>
+                Add providers to direct HIPAA requests.
+              </div>
+            </div>
+          </div>
+          <div class="card" id="providerFormCard" hidden>
+            <div class="card-header">
+              <div>
+                <h3 id="providerFormTitle">New provider</h3>
+                <p>Include custodial department instructions.</p>
+              </div>
+              <div class="actions">
+                <button class="btn ghost" id="cancelProvider">Cancel</button>
+                <button class="btn primary" id="saveProvider">Save provider</button>
+              </div>
+            </div>
+            <div class="grid-three">
+              <label class="field"><span>Facility name</span><input type="text" id="providerName" /></label>
+              <label class="field"><span>Department</span><input type="text" id="providerDepartment" /></label>
+              <label class="field"><span>Contact person</span><input type="text" id="providerContact" /></label>
+              <label class="field"><span>Phone</span><input type="tel" id="providerPhone" /></label>
+              <label class="field"><span>Fax</span><input type="tel" id="providerFax" /></label>
+              <label class="field"><span>Email</span><input type="email" id="providerEmail" /></label>
+              <label class="field"><span>Address</span><input type="text" id="providerAddress" /></label>
+              <label class="field"><span>City</span><input type="text" id="providerCity" /></label>
+              <label class="field"><span>State</span><input type="text" id="providerState" maxlength="2" /></label>
+              <label class="field"><span>ZIP</span><input type="text" id="providerZip" /></label>
+              <label class="field"><span>Records portal URL</span><input type="text" id="providerPortal" /></label>
+              <label class="field"><span>Account/chart #</span><input type="text" id="providerAccount" /></label>
+            </div>
+            <label class="field"><span>Submission notes</span><textarea id="providerNotes" rows="6" placeholder="Preferred delivery, fees, additional docs"></textarea></label>
+          </div>
+        </section>
+
+    <!-- PROVIDERS PAGE -->
+    <div id="providers" class="page hidden">
+      <h2 class="text-2xl font-bold mb-4 brand-red">Provider Profiles</h2>
+      <form id="provForm" class="space-y-2 mb-4">
+        <input type="text" id="pName" placeholder="Provider Name" class="border p-2 w-full rounded" />
+        <textarea id="pAddress" placeholder="Address" class="border p-2 w-full rounded"></textarea>
+        <input type="text" id="pFax" placeholder="Fax" class="border p-2 w-full rounded" />
+        <input type="text" id="pEmail" placeholder="Email" class="border p-2 w-full rounded" />
+        <button type="button" onclick="saveProvider()"
+          class="brand-bg text-white px-4 py-2 rounded">Save Provider</button>
+      </f
+    <!-- ===== TEMPLATES PAGE ===== -->
+    <div id="templates" class="page hidden">
+      <h2 class="text-2xl font-bold mb-4 brand-red">Templates</h2>
+      <p class="text-gray-700 mb-2">
+        Upload or update your HIPAA PDF and Letter templates. They’re saved in your browser.
+      </p>
+      <div class="space-y-3">
+        <input type="file" id="hipaaFile" accept=".pdf" class="border p-2 w-full rounded" />
+        <input type="file" id="letterFile" accept=".doc,.docx,.wpd,.pdf" class="border p-2 w-full rounded" />
+        <button type="button" onclick="saveTemplates()"
+          class="brand-bg text-white px-4 py-2 rounded">Save Templates</button>
+      </div>
+    </div>
+        <section id="templatesView">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3>Templates</h3>
+                <p>Author HIPAA releases and medical request letters with merge fields.</p>
+              </div>
+              <div class="actions">
+                <button class="btn primary" id="addTemplateBtn">Add template</button>
+                <button class="btn ghost" id="sampleTemplates">Sample templates</button>
+              </div>
+            </div>
+            <div class="stacked-list" id="templateList"></div>
+            <div class="empty-state" id="templatesEmpty"><strong>No templates yet.</strong> Add HIPAA and medical request letters to enable packets.</div>
+          </div>
+          <div class="card" id="templateFormCard" hidden>
+            <div class="card-header">
+              <div>
+                <h3 id="templateFormTitle">New template</h3>
+                <p>Use double braces for placeholders, e.g. <code>{{client.firstName}}</code>.</p>
+              </div>
+              <div class="actions">
+                <button class="btn ghost" id="cancelTemplate">Cancel</button>
+                <button class="btn primary" id="saveTemplate">Save template</button>
+              </div>
+            </div>
+            <div class="grid-two">
+              <label class="field"><span>Template name</span><input type="text" id="templateName" placeholder="HIPAA Release" /></label>
+              <label class="field"><span>Category</span>
+                <select id="templateCategory">
+                  <option value="hipaa">HIPAA Release</option>
+                  <option value="medical-request">Medical Records Request</option>
+                  <option value="cover-letter">Cover Letter</option>
+                </select>
+              </label>
+            </div>
+            <label class="field"><span>Subject</span><input type="text" id="templateSubject" placeholder="Request for Medical Records" /></label>
+            <label class="field"><span>Body</span><textarea id="templateBody" rows="14" placeholder="Dear {{provider.contact}},\n\nPlease release ..."></textarea></label>
+            <div class="template-help">
+              <strong>Available placeholders</strong>
+              <ul>
+                <li><code>{{client.firstName}}</code>, <code>{{client.lastName}}</code>, <code>{{client.dob}}</code>, <code>{{client.incidentDate}}</code>, <code>{{client.phone}}</code>, <code>{{client.email}}</code></li>
+                <li><code>{{client.address}}</code>, <code>{{client.city}}</code>, <code>{{client.state}}</code>, <code>{{client.zip}}</code>, <code>{{client.preference}}</code></li>
+                <li><code>{{provider.name}}</code>, <code>{{provider.department}}</code>, <code>{{provider.contact}}</code>, <code>{{provider.phone}}</code>, <code>{{provider.fax}}</code>, <code>{{provider.portal}}</code></li>
+                <li><code>{{today}}</code>, <code>{{user.name}}</code>, <code>{{user.role}}</code>, <code>{{workspace.firm}}</code></li>
+              </ul>
+            </div>
+            <div class="template-preview" id="templatePreview"></div>
+          </div>
+        </section>
+
+        <section id="generatorView">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3>Correspondence generator</h3>
+                <p>Merge profiles into HIPAA releases and medical requests.</p>
+              </div>
+              <div class="actions">
+                <button class="btn ghost" id="generatorRefresh">Refresh selections</button>
+              </div>
+            </div>
+            <div class="grid-two">
+              <label class="field"><span>Select client</span><select id="generatorClient"></select></label>
+              <label class="field"><span>Select provider</span><select id="generatorProvider"></select></label>
+            </div>
+            <div class="grid-two">
+              <label class="field"><span>HIPAA template</span><select id="generatorHipaa"></select></label>
+              <label class="field"><span>Request template</span><select id="generatorRequest"></select></label>
+            </div>
+            <div class="grid-two">
+              <label class="field"><span>Include cover letter</span><select id="generatorCover"></select></label>
+              <label class="field"><span>Delivery method</span>
+                <select id="generatorDelivery">
+                  <option value="fax">Fax</option>
+                  <option value="mail">Mail</option>
+                  <option value="portal">Portal Upload</option>
+                </select>
+              </label>
+            </div>
+            <div class="pill-group">
+              <span class="pill" id="generatorClientBadge">No client selected</span>
+              <span class="pill" id="generatorProviderBadge">No provider selected</span>
+              <span class="pill" id="generatorTemplateBadge">Templates pending</span>
+            </div>
+            <div class="request-grid">
+              <div class="request-panel">
+                <header><h4>HIPAA Authorization</h4><span>Preview</span></header>
+                <div class="request-preview" id="previewHipaa"></div>
+              </div>
+              <div class="request-panel">
+                <header><h4>Medical Records Request</h4><span>Preview</span></header>
+                <div class="request-preview" id="previewRequest"></div>
+              </div>
+              <div class="request-panel">
+                <header><h4>Cover Letter</h4><span>Optional</span></header>
+                <div class="request-preview" id="previewCover"></div>
+              </div>
+            </div>
+            <div class="auth-actions">
+              <button class="btn primary" id="generatePacket">Download PDF Packet</button>
+              <button class="btn secondary" id="logDelivery">Log delivery only</button>
+            </div>
+            <div class="history-list" id="generatorWarnings"></div>
+          </div>
+        </section>
+
+        <section id="historyView">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3>Audit trail</h3>
+                <p>Generated packets, login events, and profile updates.</p>
+              </div>
+              <div class="actions">
+                <button class="btn ghost" id="auditExport">Export audit log</button>
+                <button class="btn danger" id="auditClear">Clear log</button>
+              </div>
+            </div>
+            <div class="history-list" id="auditList"></div>
+            <div class="empty-state" id="auditEmpty"><strong>No audit entries yet.</strong> Activity populates as you
+              work.</div>
+          </div>
+        </section>
+                <section id="settingsView">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3>Workspace settings</h3>
+                <p>Customize firm identity, manage exports, and configure defaults.</p>
+              </div>
+            </div>
+            <div class="grid-two">
+              <label class="field"><span>Firm name</span><input type="text" id="settingsFirm" placeholder="Your Firm, PLLC" /></label>
+              <label class="field"><span>Default signature block</span><textarea id="settingsSignature" rows="6" placeholder="Sincerely,\n{{user.name}}\n{{workspace.firm}}\nPhone: ..."></textarea></label>
+            </div>
+            <div class="grid-two">
+              <label class="field"><span>Default footer</span><textarea id="settingsFooter" rows="4" placeholder="Enclosures: HIPAA Authorization"></textarea></label>
+              <label class="field"><span>Letterhead image</span><input type="file" id="settingsLetterhead" accept="image/png, image/jpeg" /></label>
+            </div>
+            <div class="pill-group">
+              <label class="switch"><input type="checkbox" id="settingsAutoActivity" checked /><span class="slider"></span>Auto-log profile edits</label>
+              <label class="switch"><input type="checkbox" id="settingsAutoPreview" checked /><span class="slider"></span>Live template preview</label>
+            </div>
+            <div class="auth-actions">
+              <button class="btn primary" id="saveSettings">Save settings</button>
+              <button class="btn secondary" id="exportWorkspace">Export workspace</button>
+              <button class="btn danger" id="resetWorkspace">Reset workspace</button>
+            </div>
+            <div class="history-list" id="teamList"></div>
+          </div>
+        </section>
+      </div>
+    </div>
+            <section id="settingsView">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3>Workspace settings</h3>
+                <p>Customize firm identity, manage exports, and configure defaults.</p>
+              </div>
+            </div>
+            <div class="grid-two">
+              <label class="field"><span>Firm name</span><input type="text" id="settingsFirm" placeholder="Your Firm, PLLC" /></label>
+              <label class="field"><span>Default signature block</span><textarea id="settingsSignature" rows="6" placeholder="Sincerely,\n{{user.name}}\n{{workspace.firm}}\nPhone: ..."></textarea></label>
+            </div>
+            <div class="grid-two">
+              <label class="field"><span>Default footer</span><textarea id="settingsFooter" rows="4" placeholder="Enclosures: HIPAA Authorization"></textarea></label>
+              <label class="field"><span>Letterhead image</span><input type="file" id="settingsLetterhead" accept="image/png, image/jpeg" /></label>
+            </div>
+            <div class="pill-group">
+              <label class="switch"><input type="checkbox" id="settingsAutoActivity" checked /><span class="slider"></span>Auto-log profile edits</label>
+              <label class="switch"><input type="checkbox" id="settingsAutoPreview" checked /><span class="slider"></span>Live template preview</label>
+            </div>
+            <div class="auth-actions">
+              <button class="btn primary" id="saveSettings">Save settings</button>
+              <button class="btn secondary" id="exportWorkspace">Export workspace</button>
+              <button class="btn danger" id="resetWorkspace">Reset workspace</button>
+            </div>
+            <div class="history-list" id="teamList"></div>
+          </div>
+        </section>
+      </div>
+    </div>
+      </main>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
+      const $ = (sel, ctx = document) => ctx.querySelector(sel);
+
+      const STORAGE_KEYS = {
+        USERS: 'mc_users',
+        AUTH: 'mc_auth',
+        CLIENTS: 'mc_clients',
+        PROVIDERS: 'mc_providers',
+        TEMPLATES: 'mc_templates',
+        SETTINGS: 'mc_settings',
+        ACTIVITY: 'mc_activity',
+        PACKETS: 'mc_packets'
+      };
+
+      const DEFAULT_SETTINGS = {
+        firm: 'Your Firm, PLLC',
+        signature: 'Sincerely,\n{{user.name}}\n{{workspace.firm}}\nPhone: (555) 555-0100',
+        footer: 'Enclosures: HIPAA Authorization',
+        autoActivity: true,
+        autoPreview: true,
+        letterhead: null,
+        letterheadName: ''
+      };
+
+      const placeholderCatalog = [
+        { key: '{{client.firstName}}', description: 'Client first name' },
+        { key: '{{client.middleName}}', description: 'Client middle name' },
+        { key: '{{client.lastName}}', description: 'Client last name' },
+        { key: '{{client.fullName}}', description: 'Client full name' },
+        { key: '{{client.dob}}', description: 'Client date of birth' },
+        { key: '{{client.incidentDate}}', description: 'Incident or loss date' },
+        { key: '{{client.ssnLast4}}', description: 'Last four digits of SSN' },
+        { key: '{{client.phone}}', description: 'Primary phone number' },
+        { key: '{{client.email}}', description: 'Email address' },
+        { key: '{{client.preference}}', description: 'Preferred contact method' },
+        { key: '{{client.address1}}', description: 'Street address line 1' },
+        { key: '{{client.address2}}', description: 'Street address line 2' },
+        { key: '{{client.city}}', description: 'City' },
+        { key: '{{client.state}}', description: 'State or province' },
+        { key: '{{client.zip}}', description: 'Postal code' },
+        { key: '{{client.emergencyContact}}', description: 'Emergency contact' },
+        { key: '{{client.notes}}', description: 'Medical notes summary' },
+        { key: '{{provider.name}}', description: 'Provider or facility name' },
+        { key: '{{provider.department}}', description: 'Department or unit' },
+        { key: '{{provider.contact}}', description: 'Primary contact name' },
+        { key: '{{provider.phone}}', description: 'Phone number' },
+        { key: '{{provider.fax}}', description: 'Fax number' },
+        { key: '{{provider.email}}', description: 'Email address' },
+        { key: '{{provider.address}}', description: 'Facility address' },
+        { key: '{{provider.city}}', description: 'City' },
+        { key: '{{provider.state}}', description: 'State' },
+        { key: '{{provider.zip}}', description: 'Postal code' },
+        { key: '{{provider.portal}}', description: 'Portal URL' },
+        { key: '{{provider.account}}', description: 'Account or chart number' },
+        { key: '{{provider.notes}}', description: 'Submission notes' },
+        { key: '{{today}}', description: 'Current date (locale formatted)' },
+        { key: '{{now}}', description: 'Current date and time stamp' },
+        { key: '{{user.name}}', description: 'Current user display name' },
+        { key: '{{user.role}}', description: 'Current user role' },
+        { key: '{{workspace.firm}}', description: 'Firm name from settings' },
+        { key: '{{workspace.signature}}', description: 'Default signature block' },
+        { key: '{{workspace.footer}}', description: 'Default footer text' }
+      ];
+
+      const safeStorage = {
+        get(key, fallback) {
+          try {
+            const raw = localStorage.getItem(key);
+            if (!raw) return fallback;
+            return JSON.parse(raw);
+          } catch (err) {
+            console.warn('Storage read failed', err);
+            return fallback;
+          }
+        },
+        set(key, value) {
+          try {
+            localStorage.setItem(key, JSON.stringify(value));
+            return true;
+          } catch (err) {
+            console.warn('Storage write failed', err);
+            return false;
+          }
+        },
+        remove(key) {
+          try {
+            localStorage.removeItem(key);
+          } catch (err) {
+            console.warn('Storage remove failed', err);
+          }
+        }
+      };
+
+      function ensureArray(value) {
+        return Array.isArray(value) ? value : [];
       }
 
-      .toolbar-title span:first-child {
-        font-size: 24px;
-        font-weight: 700;
-        letter-spacing: -0.03em;
+      function clone(value) {
+        return JSON.parse(JSON.stringify(value));
       }
 
-      .toolbar-title span:last-child {
-        font-size: 13px;
-        color: var(--text-muted);
+      function createId() {
+        if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+          return window.crypto.randomUUID();
+        }
+        if (window.crypto && typeof window.crypto.getRandomValues === 'function') {
+          const buffer = new Uint8Array(16);
+          window.crypto.getRandomValues(buffer);
+          return `id-${Array.from(buffer, byte => byte.toString(16).padStart(2, '0')).join('')}`;
+        }
+        const random = Math.random().toString(36).slice(2, 10);
+        return `id-${Date.now().toString(36)}-${random}`;
       }
 
-      .toolbar-actions {
-        display: flex;
-        alignments: center;
-        gap: 12px;
+      function formatDateInput(value) {
+        if (!value) return '';
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return value;
+        return date.toISOString().split('T')[0];
       }
 
-      ...
-      <!-- Entire contents continue through line 2764 exactly as in the repository -->
-</script>
-  </body>
+      function formatDisplayDate(value) {
+        if (!value) return '';
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return value;
+        return date.toLocaleDateString();
+      }
+
+      function formatPhone(value) {
+        if (!value) return '';
+        const digits = value.replace(/\D+/g, '');
+        if (digits.length === 10) {
+          return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+        }
+        if (digits.length === 7) {
+          return `${digits.slice(0, 3)}-${digits.slice(3)}`;
+        }
+        return value;
+      }
+
+      function mergeAddress(record) {
+        const parts = [record.address1, record.address2, record.city, record.state, record.zip]
+          .map(part => part || '')
+          .filter(Boolean);
+        return parts.join(', ');
+      }
+
+      function showToast(title, detail = '') {
+        const stack = $('#toastStack');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = `<span class="title">${title}</span><p class="detail">${detail}</p>`;
+        stack.appendChild(toast);
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          toast.style.transform = 'translateY(12px)';
+        }, 3200);
+        setTimeout(() => toast.remove(), 3800);
+      }
+
+      function logActivity(entry) {
+        const activity = ensureArray(safeStorage.get(STORAGE_KEYS.ACTIVITY, []));
+        const timestamp = new Date().toISOString();
+        activity.unshift({ ...entry, timestamp });
+        safeStorage.set(STORAGE_KEYS.ACTIVITY, activity.slice(0, 200));
+        renderActivity();
+      }
+
+      function getCurrentUser() {
+        const auth = safeStorage.get(STORAGE_KEYS.AUTH, null);
+        if (!auth) return null;
+        const users = ensureArray(safeStorage.get(STORAGE_KEYS.USERS, []));
+        return users.find(u => u.username === auth.username) || null;
+      }
+
+      function setCurrentUser(username) {
+        safeStorage.set(STORAGE_KEYS.AUTH, { username });
+      }
+
+      function clearCurrentUser() {
+        safeStorage.remove(STORAGE_KEYS.AUTH);
+      }
+
+      function ensureSeedUser() {
+        const existing = ensureArray(safeStorage.get(STORAGE_KEYS.USERS, []));
+        if (existing.length === 0) {
+          existing.push({
+            username: 'admin',
+            password: 'admin',
+            name: 'Administrator',
+            email: '',
+            role: 'admin'
+          });
+          safeStorage.set(STORAGE_KEYS.USERS, existing);
+        }
+      }
+
+      function renderPlaceholderGuide() {
+        const list = $('#placeholderGuide');
+        list.innerHTML = '';
+        placeholderCatalog.forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'history-item';
+          card.innerHTML = `<span class="when">Placeholder</span><strong class="what">${item.key}</strong><p class="summary">${item.description}</p>`;
+          list.appendChild(card);
+        });
+      }
+
+      function updateNavStats() {
+        const clients = ensureArray(safeStorage.get(STORAGE_KEYS.CLIENTS, []));
+        const providers = ensureArray(safeStorage.get(STORAGE_KEYS.PROVIDERS, []));
+        const templates = ensureArray(safeStorage.get(STORAGE_KEYS.TEMPLATES, []));
+        const packets = safeStorage.get(STORAGE_KEYS.PACKETS, 0) || 0;
+        $('#statClients').textContent = clients.length;
+        $('#statProviders').textContent = providers.length;
+        $('#statTemplates').textContent = templates.length;
+        $('#statPackets').textContent = packets;
+      }
+
+      function renderActivity() {
+        const activity = ensureArray(safeStorage.get(STORAGE_KEYS.ACTIVITY, []));
+        const container = $('#activityList');
+        const empty = $('#activityEmpty');
+        container.innerHTML = '';
+        if (activity.length === 0) {
+          empty.style.display = 'block';
+          return;
+        }
+        empty.style.display = 'none';
+        activity.slice(0, 12).forEach(entry => {
+          const item = document.createElement('div');
+          item.className = 'history-item';
+          const when = new Date(entry.timestamp).toLocaleString();
+          item.innerHTML = `<span class="when">${when}</span><strong class="what">${entry.title}</strong><p class="summary">${entry.detail || ''}</p>`;
+          container.appendChild(item);
+        });
+      }
+
+      function renderAuditTrail() {
+        const activity = ensureArray(safeStorage.get(STORAGE_KEYS.ACTIVITY, []));
+        const container = $('#auditList');
+        const empty = $('#auditEmpty');
+        container.innerHTML = '';
+        if (activity.length === 0) {
+          empty.style.display = 'block';
+          return;
+        }
+        empty.style.display = 'none';
+        activity.forEach(entry => {
+          const item = document.createElement('div');
+          item.className = 'history-item';
+          item.innerHTML = `<span class="when">${new Date(entry.timestamp).toLocaleString()}</span><strong class="what">${entry.title}</strong><p class="summary">${entry.detail || ''}</p>`;
+          container.appendChild(item);
+        });
+      }
+
+      function loadSettings() {
+        const settings = { ...DEFAULT_SETTINGS, ...safeStorage.get(STORAGE_KEYS.SETTINGS, {}) };
+        $('#settingsFirm').value = settings.firm;
+        $('#settingsSignature').value = settings.signature;
+        $('#settingsFooter').value = settings.footer;
+        $('#settingsAutoActivity').checked = Boolean(settings.autoActivity);
+        $('#settingsAutoPreview').checked = Boolean(settings.autoPreview);
+        if (settings.letterheadName) {
+          $('#settingsLetterhead').setAttribute('data-name', settings.letterheadName);
+        }
+        renderTeamList();
+      }
+
+      function saveSettings() {
+        const current = safeStorage.get(STORAGE_KEYS.SETTINGS, {});
+        const updated = {
+          ...DEFAULT_SETTINGS,
+          ...current,
+          firm: $('#settingsFirm').value.trim() || DEFAULT_SETTINGS.firm,
+          signature: $('#settingsSignature').value.trim() || DEFAULT_SETTINGS.signature,
+          footer: $('#settingsFooter').value.trim() || DEFAULT_SETTINGS.footer,
+          autoActivity: $('#settingsAutoActivity').checked,
+          autoPreview: $('#settingsAutoPreview').checked
+        };
+        safeStorage.set(STORAGE_KEYS.SETTINGS, updated);
+        showToast('Settings saved', 'Workspace identity updated.');
+        logActivity({ title: 'Updated settings', detail: `Firm set to ${updated.firm}` });
+      }
+
+      function renderTeamList() {
+        const list = $('#teamList');
+        list.innerHTML = '';
+        const users = ensureArray(safeStorage.get(STORAGE_KEYS.USERS, []));
+        users.forEach(user => {
+          const item = document.createElement('div');
+          item.className = 'history-item';
+          item.innerHTML = `<span class="when">${user.role.toUpperCase()}</span><strong class="what">${user.username}${user.name ? ` – ${user.name}` : ''}</strong><p class="summary">${user.email || 'No email recorded'}</p>`;
+          list.appendChild(item);
+        });
+      }
+
+      function handleLetterheadUpload(file) {
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          const settings = { ...DEFAULT_SETTINGS, ...safeStorage.get(STORAGE_KEYS.SETTINGS, {}) };
+          settings.letterhead = reader.result;
+          settings.letterheadName = file.name;
+          safeStorage.set(STORAGE_KEYS.SETTINGS, settings);
+          showToast('Letterhead stored', file.name);
+          logActivity({ title: 'Updated letterhead', detail: file.name });
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function compileTemplate(template, context) {
+        let output = template || '';
+        Object.entries(context).forEach(([key, value]) => {
+          const pattern = new RegExp(`\\{\\{${key}\\}\\}`, 'g');
+          output = output.replace(pattern, value == null ? '' : String(value));
+        });
+        return output;
+      }
+
+      function templateContext(client, provider, user, settings, extra = {}) {
+        const context = {
+          'client.firstName': client?.firstName || '',
+          'client.middleName': client?.middleName || '',
+          'client.lastName': client?.lastName || '',
+          'client.fullName': client ? [client.firstName, client.middleName, client.lastName].filter(Boolean).join(' ') : '',
+          'client.dob': client?.dob ? formatDisplayDate(client.dob) : '',
+          'client.incidentDate': client?.incidentDate ? formatDisplayDate(client.incidentDate) : '',
+          'client.ssnLast4': client?.ssnLast4 || '',
+          'client.phone': client?.phone ? formatPhone(client.phone) : '',
+          'client.email': client?.email || '',
+          'client.preference': client?.preference || '',
+          'client.address1': client?.address1 || '',
+          'client.address2': client?.address2 || '',
+          'client.city': client?.city || '',
+          'client.state': client?.state || '',
+          'client.zip': client?.zip || '',
+          'client.address': client ? mergeAddress(client) : '',
+          'client.emergencyContact': client?.emergencyContact || '',
+          'client.notes': client?.notes || '',
+          'provider.name': provider?.name || '',
+          'provider.department': provider?.department || '',
+          'provider.contact': provider?.contact || '',
+          'provider.phone': provider?.phone ? formatPhone(provider.phone) : '',
+          'provider.fax': provider?.fax ? formatPhone(provider.fax) : '',
+          'provider.email': provider?.email || '',
+          'provider.address': provider?.address || '',
+          'provider.city': provider?.city || '',
+          'provider.state': provider?.state || '',
+          'provider.zip': provider?.zip || '',
+          'provider.portal': provider?.portal || '',
+          'provider.account': provider?.account || '',
+          'provider.notes': provider?.notes || '',
+          'today': new Date().toLocaleDateString(),
+          'now': new Date().toLocaleString(),
+          'user.name': user?.name || user?.username || 'Workspace User',
+          'user.role': user?.role || '',
+          'workspace.firm': settings?.firm || DEFAULT_SETTINGS.firm,
+          'workspace.signature': settings?.signature || DEFAULT_SETTINGS.signature,
+          'workspace.footer': settings?.footer || DEFAULT_SETTINGS.footer,
+          'generator.delivery': extra['generator.delivery'] || '',
+          'generator.methodLabel': extra['generator.methodLabel'] || ''
+        };
+        return { ...context, ...extra };
+      }
+
+      function renderTemplatePreview() {
+        const settings = { ...DEFAULT_SETTINGS, ...safeStorage.get(STORAGE_KEYS.SETTINGS, {}) };
+        const user = getCurrentUser();
+        const clients = ensureArray(safeStorage.get(STORAGE_KEYS.CLIENTS, []));
+        const providers = ensureArray(safeStorage.get(STORAGE_KEYS.PROVIDERS, []));
+        const template = {
+          body: $('#templateBody').value,
+          subject: $('#templateSubject').value
+        };
+        const context = templateContext(clients[0], providers[0], user, settings, { 'generator.delivery': 'fax' });
+        const compiled = compileTemplate(template.body, context);
+        $('#templatePreview').textContent = compiled;
+      }
+
+      function renderClientsTable() {
+        const tbody = $('#clientsTable tbody');
+        const empty = $('#clientsEmpty');
+        const searchTerm = $('#clientSearch').value.trim().toLowerCase();
+        const clients = ensureArray(safeStorage.get(STORAGE_KEYS.CLIENTS, []));
+        tbody.innerHTML = '';
+        const filtered = clients.filter(client => {
+          if (!searchTerm) return true;
+          return [client.firstName, client.lastName, client.email, client.phone]
+            .some(field => (field || '').toLowerCase().includes(searchTerm));
+        });
+        if (filtered.length === 0) {
+          empty.style.display = 'block';
+          return;
+        }
+        empty.style.display = 'none';
+        filtered.forEach(client => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${client.firstName || ''} ${client.lastName || ''}</td>
+            <td>${client.dob ? formatDisplayDate(client.dob) : ''}</td>
+            <td>${client.incidentDate ? formatDisplayDate(client.incidentDate) : ''}</td>
+            <td>${formatPhone(client.phone || '')}</td>
+            <td>${client.email || ''}</td>
+            <td class="table-actions">
+              <button class="btn ghost" data-action="edit" data-id="${client.id}">Edit</button>
+              <button class="btn danger" data-action="delete" data-id="${client.id}">Delete</button>
+            </td>`;
+          tbody.appendChild(tr);
+        });
+      }
+
+      function renderProvidersTable() {
+        const tbody = $('#providersTable tbody');
+        const empty = $('#providersEmpty');
+        const searchTerm = $('#providerSearch').value.trim().toLowerCase();
+        const providers = ensureArray(safeStorage.get(STORAGE_KEYS.PROVIDERS, []));
+        tbody.innerHTML = '';
+        const filtered = providers.filter(provider => {
+          if (!searchTerm) return true;
+          return [provider.name, provider.department, provider.contact]
+            .some(field => (field || '').toLowerCase().includes(searchTerm));
+        });
+        if (filtered.length === 0) {
+          empty.style.display = 'block';
+          return;
+        }
+        empty.style.display = 'none';
+        filtered.forEach(provider => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${provider.name || ''}</td>
+            <td>${provider.department || ''}</td>
+            <td>${formatPhone(provider.phone || '')}</td>
+            <td>${formatPhone(provider.fax || '')}</td>
+            <td class="table-actions">
+              <button class="btn ghost" data-action="edit" data-id="${provider.id}">Edit</button>
+              <button class="btn danger" data-action="delete" data-id="${provider.id}">Delete</button>
+            </td>`;
+          tbody.appendChild(tr);
+        });
+      }
+
+      function renderTemplates() {
+        const list = $('#templateList');
+        const empty = $('#templatesEmpty');
+        const templates = ensureArray(safeStorage.get(STORAGE_KEYS.TEMPLATES, []));
+        list.innerHTML = '';
+        if (templates.length === 0) {
+          empty.style.display = 'block';
+          return;
+        }
+        empty.style.display = 'none';
+        templates.forEach(template => {
+          const item = document.createElement('div');
+          item.className = 'history-item';
+          const usage = template.body.match(/\{\{.*?\}\}/g) || [];
+          item.innerHTML = `
+            <span class="when">${template.category.toUpperCase()}</span>
+            <strong class="what">${template.name}</strong>
+            <p class="summary">Subject: ${template.subject || '—'}<br/>Placeholders: ${usage.length}</p>
+            <div class="table-actions">
+              <button class="btn ghost" data-action="edit" data-id="${template.id}">Edit</button>
+              <button class="btn danger" data-action="delete" data-id="${template.id}">Delete</button>
+            </div>`;
+          item.dataset.id = template.id;
+          list.appendChild(item);
+        });
+      }
+
+      function renderGeneratorSelectors() {
+        const clients = ensureArray(safeStorage.get(STORAGE_KEYS.CLIENTS, []));
+        const providers = ensureArray(safeStorage.get(STORAGE_KEYS.PROVIDERS, []));
+        const templates = ensureArray(safeStorage.get(STORAGE_KEYS.TEMPLATES, []));
+        const clientSelect = $('#generatorClient');
+        const providerSelect = $('#generatorProvider');
+        const hipaaSelect = $('#generatorHipaa');
+        const requestSelect = $('#generatorRequest');
+        const coverSelect = $('#generatorCover');
+
+        clientSelect.innerHTML = '<option value="">Select client</option>';
+        clients.forEach(client => {
+          const option = document.createElement('option');
+          option.value = client.id;
+          option.textContent = `${client.firstName || ''} ${client.lastName || ''}`.trim() || 'Unnamed client';
+          clientSelect.appendChild(option);
+        });
+
+        providerSelect.innerHTML = '<option value="">Select provider</option>';
+        providers.forEach(provider => {
+          const option = document.createElement('option');
+          option.value = provider.id;
+          option.textContent = provider.name || 'Unnamed provider';
+          providerSelect.appendChild(option);
+        });
+
+        const hipaaTemplates = templates.filter(t => t.category === 'hipaa');
+        const requestTemplates = templates.filter(t => t.category === 'medical-request');
+        const coverTemplates = templates.filter(t => t.category === 'cover-letter');
+
+        hipaaSelect.innerHTML = '<option value="">Select HIPAA template</option>';
+        hipaaTemplates.forEach(template => {
+          const option = document.createElement('option');
+          option.value = template.id;
+          option.textContent = template.name;
+          hipaaSelect.appendChild(option);
+        });
+
+        requestSelect.innerHTML = '<option value="">Select request template</option>';
+        requestTemplates.forEach(template => {
+          const option = document.createElement('option');
+          option.value = template.id;
+          option.textContent = template.name;
+          requestSelect.appendChild(option);
+        });
+
+        coverSelect.innerHTML = '<option value="">Optional cover letter</option>';
+        coverSelect.appendChild(new Option('None', ''));
+        coverTemplates.forEach(template => {
+          const option = document.createElement('option');
+          option.value = template.id;
+          option.textContent = template.name;
+          coverSelect.appendChild(option);
+        });
+      }
+
+      function setView(viewId) {
+        $$('.view-panel section').forEach(section => {
+          section.classList.toggle('active', section.id === viewId);
+        });
+        const button = $(`.nav-button[data-view="${viewId}"]`);
+        if (button) {
+          $$('.nav-button').forEach(btn => btn.classList.remove('active'));
+          button.classList.add('active');
+          $('#viewTitle').textContent = button.textContent.trim();
+          const subtitles = {
+            dashboardView: 'Review status cards and latest activity.',
+            clientsView: 'Maintain client profiles for HIPAA releases.',
+            providersView: 'Manage provider routing and custodians.',
+            templatesView: 'Author HIPAA and request templates.',
+            generatorView: 'Merge data into outbound correspondence.',
+            historyView: 'Audit workspace activity.',
+            settingsView: 'Configure workspace identity and exports.'
+          };
+          $('#viewSubtitle').textContent = subtitles[viewId] || '';
+        }
+      }
+
+      function resetClientForm() {
+        $('#clientFormCard').hidden = true;
+        $('#clientFormTitle').textContent = 'New client';
+        $('#clientFormCard').dataset.id = '';
+        $('#clientFirstName').value = '';
+        $('#clientMiddleName').value = '';
+        $('#clientLastName').value = '';
+        $('#clientDob').value = '';
+        $('#clientIncident').value = '';
+        $('#clientSsn').value = '';
+        $('#clientPhone').value = '';
+        $('#clientEmail').value = '';
+        $('#clientPreference').value = 'email';
+        $('#clientAddress1').value = '';
+        $('#clientAddress2').value = '';
+        $('#clientCity').value = '';
+        $('#clientState').value = '';
+        $('#clientZip').value = '';
+        $('#clientEmergency').value = '';
+        $('#clientNotes').value = '';
+      }
+
+      function resetProviderForm() {
+        $('#providerFormCard').hidden = true;
+        $('#providerFormTitle').textContent = 'New provider';
+        $('#providerFormCard').dataset.id = '';
+        $('#providerName').value = '';
+        $('#providerDepartment').value = '';
+        $('#providerContact').value = '';
+        $('#providerPhone').value = '';
+        $('#providerFax').value = '';
+        $('#providerEmail').value = '';
+        $('#providerAddress').value = '';
+        $('#providerCity').value = '';
+        $('#providerState').value = '';
+        $('#providerZip').value = '';
+        $('#providerPortal').value = '';
+        $('#providerAccount').value = '';
+        $('#providerNotes').value = '';
+      }
+
+      function resetTemplateForm() {
+        $('#templateFormCard').hidden = true;
+        $('#templateFormCard').dataset.id = '';
+        $('#templateFormTitle').textContent = 'New template';
+        $('#templateName').value = '';
+        $('#templateCategory').value = 'hipaa';
+        $('#templateSubject').value = '';
+        $('#templateBody').value = '';
+        $('#templatePreview').textContent = '';
+      }
+
+      function populateClientForm(client) {
+        $('#clientFormCard').hidden = false;
+        $('#clientFormCard').dataset.id = client.id;
+        $('#clientFormTitle').textContent = `Edit ${client.firstName || ''} ${client.lastName || ''}`.trim();
+        $('#clientFirstName').value = client.firstName || '';
+        $('#clientMiddleName').value = client.middleName || '';
+        $('#clientLastName').value = client.lastName || '';
+        $('#clientDob').value = formatDateInput(client.dob);
+        $('#clientIncident').value = formatDateInput(client.incidentDate);
+        $('#clientSsn').value = client.ssnLast4 || '';
+        $('#clientPhone').value = client.phone || '';
+        $('#clientEmail').value = client.email || '';
+        $('#clientPreference').value = client.preference || 'email';
+        $('#clientAddress1').value = client.address1 || '';
+        $('#clientAddress2').value = client.address2 || '';
+        $('#clientCity').value = client.city || '';
+        $('#clientState').value = client.state || '';
+        $('#clientZip').value = client.zip || '';
+        $('#clientEmergency').value = client.emergencyContact || '';
+        $('#clientNotes').value = client.notes || '';
+      }
+
+      function populateProviderForm(provider) {
+        $('#providerFormCard').hidden = false;
+        $('#providerFormCard').dataset.id = provider.id;
+        $('#providerFormTitle').textContent = `Edit ${provider.name || 'provider'}`;
+        $('#providerName').value = provider.name || '';
+        $('#providerDepartment').value = provider.department || '';
+        $('#providerContact').value = provider.contact || '';
+        $('#providerPhone').value = provider.phone || '';
+        $('#providerFax').value = provider.fax || '';
+        $('#providerEmail').value = provider.email || '';
+        $('#providerAddress').value = provider.address || '';
+        $('#providerCity').value = provider.city || '';
+        $('#providerState').value = provider.state || '';
+        $('#providerZip').value = provider.zip || '';
+        $('#providerPortal').value = provider.portal || '';
+        $('#providerAccount').value = provider.account || '';
+        $('#providerNotes').value = provider.notes || '';
+      }
+
+      function populateTemplateForm(template) {
+        $('#templateFormCard').hidden = false;
+        $('#templateFormCard').dataset.id = template.id;
+        $('#templateFormTitle').textContent = `Edit ${template.name}`;
+        $('#templateName').value = template.name || '';
+        $('#templateCategory').value = template.category || 'hipaa';
+        $('#templateSubject').value = template.subject || '';
+        $('#templateBody').value = template.body || '';
+        renderTemplatePreview();
+      }
+
+      function captureClientForm() {
+        return {
+          id: $('#clientFormCard').dataset.id || createId(),
+          firstName: $('#clientFirstName').value.trim(),
+          middleName: $('#clientMiddleName').value.trim(),
+          lastName: $('#clientLastName').value.trim(),
+          dob: $('#clientDob').value,
+          incidentDate: $('#clientIncident').value,
+          ssnLast4: $('#clientSsn').value.trim(),
+          phone: $('#clientPhone').value.trim(),
+          email: $('#clientEmail').value.trim(),
+          preference: $('#clientPreference').value,
+          address1: $('#clientAddress1').value.trim(),
+          address2: $('#clientAddress2').value.trim(),
+          city: $('#clientCity').value.trim(),
+          state: $('#clientState').value.trim(),
+          zip: $('#clientZip').value.trim(),
+          emergencyContact: $('#clientEmergency').value.trim(),
+          notes: $('#clientNotes').value.trim()
+        };
+      }
+
+      function captureProviderForm() {
+        return {
+          id: $('#providerFormCard').dataset.id || createId(),
+          name: $('#providerName').value.trim(),
+          department: $('#providerDepartment').value.trim(),
+          contact: $('#providerContact').value.trim(),
+          phone: $('#providerPhone').value.trim(),
+          fax: $('#providerFax').value.trim(),
+          email: $('#providerEmail').value.trim(),
+          address: $('#providerAddress').value.trim(),
+          city: $('#providerCity').value.trim(),
+          state: $('#providerState').value.trim(),
+          zip: $('#providerZip').value.trim(),
+          portal: $('#providerPortal').value.trim(),
+          account: $('#providerAccount').value.trim(),
+          notes: $('#providerNotes').value.trim()
+        };
+      }
+
+      function captureTemplateForm() {
+        return {
+          id: $('#templateFormCard').dataset.id || createId(),
+          name: $('#templateName').value.trim() || 'Untitled template',
+          category: $('#templateCategory').value,
+          subject: $('#templateSubject').value.trim(),
+          body: $('#templateBody').value
+        };
+      }
+
+      function addClient(client) {
+        const clients = ensureArray(safeStorage.get(STORAGE_KEYS.CLIENTS, []));
+        const existing = clients.findIndex(c => c.id === client.id);
+        if (existing >= 0) {
+          clients[existing] = client;
+        } else {
+          clients.push(client);
+        }
+        safeStorage.set(STORAGE_KEYS.CLIENTS, clients);
+        renderClientsTable();
+        updateNavStats();
+        renderGeneratorSelectors();
+        showToast('Client saved', `${client.firstName || ''} ${client.lastName || ''}`.trim());
+        const settings = { ...DEFAULT_SETTINGS, ...safeStorage.get(STORAGE_KEYS.SETTINGS, {}) };
+        if (settings.autoActivity) {
+          logActivity({ title: 'Client saved', detail: `${client.firstName || ''} ${client.lastName || ''}`.trim() });
+        }
+      }
+
+      function deleteClient(id) {
+        const clients = ensureArray(safeStorage.get(STORAGE_KEYS.CLIENTS, []));
+        const next = clients.filter(client => client.id !== id);
+        safeStorage.set(STORAGE_KEYS.CLIENTS, next);
+        renderClientsTable();
+        updateNavStats();
+        renderGeneratorSelectors();
+        showToast('Client deleted');
+        logActivity({ title: 'Client deleted', detail: id });
+      }
+
+      function addProvider(provider) {
+        const providers = ensureArray(safeStorage.get(STORAGE_KEYS.PROVIDERS, []));
+        const existing = providers.findIndex(p => p.id === provider.id);
+        if (existing >= 0) {
+          providers[existing] = provider;
+        } else {
+          providers.push(provider);
+        }
+        safeStorage.set(STORAGE_KEYS.PROVIDERS, providers);
+        renderProvidersTable();
+        updateNavStats();
+        renderGeneratorSelectors();
+        showToast('Provider saved', provider.name);
+        const settings = { ...DEFAULT_SETTINGS, ...safeStorage.get(STORAGE_KEYS.SETTINGS, {}) };
+        if (settings.autoActivity) {
+          logActivity({ title: 'Provider saved', detail: provider.name });
+        }
+      }
+
+      function deleteProvider(id) {
+        const providers = ensureArray(safeStorage.get(STORAGE_KEYS.PROVIDERS, []));
+        const next = providers.filter(provider => provider.id !== id);
+        safeStorage.set(STORAGE_KEYS.PROVIDERS, next);
+        renderProvidersTable();
+        updateNavStats();
+        renderGeneratorSelectors();
+        showToast('Provider deleted');
+        logActivity({ title: 'Provider deleted', detail: id });
+      }
+
+      function addTemplate(template) {
+        const templates = ensureArray(safeStorage.get(STORAGE_KEYS.TEMPLATES, []));
+        const existing = templates.findIndex(t => t.id === template.id);
+        if (existing >= 0) {
+          templates[existing] = template;
+        } else {
+          templates.push(template);
+        }
+        safeStorage.set(STORAGE_KEYS.TEMPLATES, templates);
+        renderTemplates();
+        updateNavStats();
+        renderGeneratorSelectors();
+        showToast('Template saved', template.name);
+        const settings = { ...DEFAULT_SETTINGS, ...safeStorage.get(STORAGE_KEYS.SETTINGS, {}) };
+        if (settings.autoActivity) {
+          logActivity({ title: 'Template saved', detail: template.name });
+        }
+      }
+
+      function deleteTemplate(id) {
+        const templates = ensureArray(safeStorage.get(STORAGE_KEYS.TEMPLATES, []));
+        const next = templates.filter(template => template.id !== id);
+        safeStorage.set(STORAGE_KEYS.TEMPLATES, next);
+        renderTemplates();
+        updateNavStats();
+        renderGeneratorSelectors();
+        showToast('Template deleted');
+        logActivity({ title: 'Template deleted', detail: id });
+      }
+
+      function renderGeneratorPreviews() {
+        const user = getCurrentUser();
+        const settings = { ...DEFAULT_SETTINGS, ...safeStorage.get(STORAGE_KEYS.SETTINGS, {}) };
+        const clients = ensureArray(safeStorage.get(STORAGE_KEYS.CLIENTS, []));
+        const providers = ensureArray(safeStorage.get(STORAGE_KEYS.PROVIDERS, []));
+        const templates = ensureArray(safeStorage.get(STORAGE_KEYS.TEMPLATES, []));
+
+        const clientId = $('#generatorClient').value;
+        const providerId = $('#generatorProvider').value;
+        const hipaaId = $('#generatorHipaa').value;
+        const requestId = $('#generatorRequest').value;
+        const coverId = $('#generatorCover').value;
+
+        const client = clients.find(c => c.id === clientId) || null;
+        const provider = providers.find(p => p.id === providerId) || null;
+        const hipaaTemplate = templates.find(t => t.id === hipaaId) || null;
+        const requestTemplate = templates.find(t => t.id === requestId) || null;
+        const coverTemplate = templates.find(t => t.id === coverId) || null;
+
+        $('#generatorClientBadge').textContent = client ? `${client.firstName || ''} ${client.lastName || ''}`.trim() : 'No client selected';
+        $('#generatorProviderBadge').textContent = provider ? provider.name : 'No provider selected';
+        const templateBadge = [];
+        if (hipaaTemplate) templateBadge.push('HIPAA');
+        if (requestTemplate) templateBadge.push('Request');
+        if (coverTemplate) templateBadge.push('Cover');
+        $('#generatorTemplateBadge').textContent = templateBadge.length ? templateBadge.join(', ') : 'Templates pending';
+
+        const delivery = $('#generatorDelivery').value || 'fax';
+        const deliveryLabel = delivery.charAt(0).toUpperCase() + delivery.slice(1);
+        const context = templateContext(client, provider, user, settings, {
+          'generator.delivery': delivery,
+          'generator.methodLabel': deliveryLabel
+        });
+        const hipaaPreview = hipaaTemplate ? compileTemplate(hipaaTemplate.body, context) : 'Select a HIPAA template to preview content.';
+        const requestPreview = requestTemplate ? compileTemplate(requestTemplate.body, context) : 'Select a medical request template to preview content.';
+        const coverPreview = coverTemplate ? compileTemplate(coverTemplate.body, context) : 'Cover letter optional.';
+
+        $('#previewHipaa').textContent = hipaaPreview;
+        $('#previewRequest').textContent = requestPreview;
+        $('#previewCover').textContent = coverPreview;
+      }
+
+      async function generatePdfPacket() {
+        if (!window.jspdf || typeof window.jspdf.jsPDF !== 'function') {
+          showToast('PDF engine unavailable', 'Check your connection and reload to enable packet downloads.');
+          return;
+        }
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ unit: 'pt', format: 'letter' });
+        const settings = { ...DEFAULT_SETTINGS, ...safeStorage.get(STORAGE_KEYS.SETTINGS, {}) };
+        const user = getCurrentUser();
+
+        const clients = ensureArray(safeStorage.get(STORAGE_KEYS.CLIENTS, []));
+        const providers = ensureArray(safeStorage.get(STORAGE_KEYS.PROVIDERS, []));
+        const templates = ensureArray(safeStorage.get(STORAGE_KEYS.TEMPLATES, []));
+
+        const clientId = $('#generatorClient').value;
+        const providerId = $('#generatorProvider').value;
+        const hipaaId = $('#generatorHipaa').value;
+        const requestId = $('#generatorRequest').value;
+        const coverId = $('#generatorCover').value;
+
+        const client = clients.find(c => c.id === clientId);
+        const provider = providers.find(p => p.id === providerId);
+        const hipaaTemplate = templates.find(t => t.id === hipaaId);
+        const requestTemplate = templates.find(t => t.id === requestId);
+        const coverTemplate = templates.find(t => t.id === coverId);
+
+        if (!client || !provider || !hipaaTemplate || !requestTemplate) {
+          showToast('Selection incomplete', 'Client, provider, HIPAA, and request templates are required.');
+          return;
+        }
+
+        const delivery = $('#generatorDelivery').value || 'fax';
+        const deliveryLabel = delivery.charAt(0).toUpperCase() + delivery.slice(1);
+        const context = templateContext(client, provider, user, settings, {
+          'generator.delivery': delivery,
+          'generator.methodLabel': deliveryLabel
+        });
+        const pages = [];
+        if (settings.letterhead) {
+          pages.push({ title: 'Letterhead', body: '', isLetterhead: true });
+        }
+        pages.push({ title: hipaaTemplate.name, body: compileTemplate(hipaaTemplate.body, context) });
+        pages.push({ title: requestTemplate.name, body: compileTemplate(requestTemplate.body, context) });
+        if (coverTemplate) {
+          pages.unshift({ title: coverTemplate.name, body: compileTemplate(coverTemplate.body, context) });
+        }
+
+        doc.setFont('Times', 'Roman');
+        doc.setFontSize(12);
+        const margin = 56;
+
+        for (let i = 0; i < pages.length; i += 1) {
+          if (i > 0) doc.addPage();
+          const page = pages[i];
+          let y = margin;
+          if (page.isLetterhead && settings.letterhead) {
+            try {
+              const img = new Image();
+              img.src = settings.letterhead;
+              await new Promise((resolve, reject) => {
+                img.onload = resolve;
+                img.onerror = reject;
+              });
+              const width = 400;
+              const ratio = width / img.width;
+              const height = img.height * ratio;
+              doc.addImage(img, 'PNG', margin, margin, width, height);
+              y += height + 12;
+            } catch (err) {
+              console.warn('Letterhead load failed', err);
+            }
+          }
+          const subject = page.title;
+          doc.setFont('Times', 'Bold');
+          doc.setFontSize(14);
+          doc.text(subject, margin, y);
+          y += 18;
+          doc.setFont('Times', 'Roman');
+          doc.setFontSize(12);
+          const lines = doc.splitTextToSize(page.body, 612 - margin * 2);
+          doc.text(lines, margin, y, { maxWidth: 612 - margin * 2, lineHeightFactor: 1.4 });
+          if (settings.footer && settings.footer.trim()) {
+            doc.setFontSize(10);
+            doc.text(settings.footer, margin, 770);
+          }
+        }
+
+        const fileName = `${client.firstName || 'Client'}_${client.lastName || 'Packet'}_${Date.now()}.pdf`;
+        doc.save(fileName);
+
+        const count = safeStorage.get(STORAGE_KEYS.PACKETS, 0) || 0;
+        safeStorage.set(STORAGE_KEYS.PACKETS, count + 1);
+        updateNavStats();
+        logActivity({
+          title: 'Packet generated',
+          detail: `${client.firstName || ''} ${client.lastName || ''} → ${provider.name} (${fileName})`
+        });
+        showToast('Packet downloaded', fileName);
+      }
+
+      function logGeneratorDelivery() {
+        const clients = ensureArray(safeStorage.get(STORAGE_KEYS.CLIENTS, []));
+        const providers = ensureArray(safeStorage.get(STORAGE_KEYS.PROVIDERS, []));
+        const client = clients.find(c => c.id === $('#generatorClient').value);
+        const provider = providers.find(p => p.id === $('#generatorProvider').value);
+        const method = $('#generatorDelivery').value;
+        if (!client || !provider) {
+          showToast('Select client and provider first');
+          return;
+        }
+        logActivity({ title: 'Delivery logged', detail: `${client.firstName || ''} ${client.lastName || ''} to ${provider.name} via ${method}` });
+        showToast('Delivery logged', method.toUpperCase());
+      }
+
+      function renderAuditExport() {
+        const data = {
+          clients: safeStorage.get(STORAGE_KEYS.CLIENTS, []),
+          providers: safeStorage.get(STORAGE_KEYS.PROVIDERS, []),
+          templates: safeStorage.get(STORAGE_KEYS.TEMPLATES, []),
+          settings: safeStorage.get(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS),
+          activity: safeStorage.get(STORAGE_KEYS.ACTIVITY, []),
+          packets: safeStorage.get(STORAGE_KEYS.PACKETS, 0)
+        };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `workspace-export-${Date.now()}.json`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        showToast('Workspace exported');
+      }
+
+      function importSampleClients() {
+        const samples = [
+          {
+            id: createId(),
+            firstName: 'Alicia',
+            middleName: 'M.',
+            lastName: 'Stone',
+            dob: '1990-05-14',
+            incidentDate: '2024-02-10',
+            ssnLast4: '1123',
+            phone: '555-867-9900',
+            email: 'alicia.stone@example.com',
+            preference: 'email',
+            address1: '742 Evergreen Terrace',
+            address2: '',
+            city: 'Richmond',
+            state: 'VA',
+            zip: '23220',
+            emergencyContact: 'Marcus Stone (Spouse)',
+            notes: 'MVC on 02/10/2024; ongoing PT twice weekly.'
+          },
+          {
+            id: createId(),
+            firstName: 'Brian',
+            middleName: '',
+            lastName: 'Nguyen',
+            dob: '1985-09-02',
+            incidentDate: '2023-12-03',
+            ssnLast4: '7788',
+            phone: '555-312-4433',
+            email: 'brian.nguyen@example.com',
+            preference: 'phone',
+            address1: '1204 Harbor Point',
+            address2: 'Unit 6B',
+            city: 'Norfolk',
+            state: 'VA',
+            zip: '23510',
+            emergencyContact: 'Kim Nguyen (Sister)',
+            notes: 'Slip and fall; requesting ortho and imaging records.'
+          }
+        ];
+        const clients = ensureArray(safeStorage.get(STORAGE_KEYS.CLIENTS, []));
+        clients.push(...samples);
+        safeStorage.set(STORAGE_KEYS.CLIENTS, clients);
+        renderClientsTable();
+        renderGeneratorSelectors();
+        updateNavStats();
+        showToast('Sample clients imported', `${samples.length} records added`);
+      }
+
+      function importSampleProviders() {
+        const samples = [
+          {
+            id: createId(),
+            name: 'Riverside General Hospital',
+            department: 'Medical Records',
+            contact: 'Olivia Carter',
+            phone: '804-555-2400',
+            fax: '804-555-2405',
+            email: 'records@riversidegeneral.org',
+            address: '500 Wellness Ave',
+            city: 'Richmond',
+            state: 'VA',
+            zip: '23219',
+            portal: 'https://records.riversidegeneral.org',
+            account: 'MR-459302',
+            notes: 'Fax preferred; include patient authorization and incident date.'
+          },
+          {
+            id: createId(),
+            name: 'Peninsula Orthopedics',
+            department: 'Release of Information',
+            contact: 'Derrick Shaw',
+            phone: '757-555-1188',
+            fax: '757-555-1189',
+            email: 'roi@peninsulaortho.com',
+            address: '88 Care Blvd',
+            city: 'Newport News',
+            state: 'VA',
+            zip: '23601',
+            portal: '',
+            account: 'PO-77412',
+            notes: 'Portal uploads accepted; include claim number if available.'
+          }
+        ];
+        const providers = ensureArray(safeStorage.get(STORAGE_KEYS.PROVIDERS, []));
+        providers.push(...samples);
+        safeStorage.set(STORAGE_KEYS.PROVIDERS, providers);
+        renderProvidersTable();
+        renderGeneratorSelectors();
+        updateNavStats();
+        showToast('Sample providers imported', `${samples.length} records added`);
+      }
+
+      function importSampleTemplates() {
+        const samples = [
+          {
+            id: createId(),
+            name: 'Standard HIPAA Authorization',
+            category: 'hipaa',
+            subject: 'HIPAA Authorization for Release of Information',
+            body: `I, {{client.fullName}}, born {{client.dob}}, authorize {{provider.name}} to disclose medical information to {{workspace.firm}} regarding treatment related to the incident on {{client.incidentDate}}.\n\nThis authorization permits release via {{generator.delivery}} to {{workspace.firm}}. This release expires one year from the date signed.\n\n{{workspace.signature}}`
+          },
+          {
+            id: createId(),
+            name: 'Records Request Letter',
+            category: 'medical-request',
+            subject: 'Request for Medical Records: {{client.fullName}}',
+            body: `{{today}}\n\n{{provider.name}}\n{{provider.address}}\n{{provider.city}}, {{provider.state}} {{provider.zip}}\n\nRe: {{client.fullName}}, DOB {{client.dob}}, Incident {{client.incidentDate}}\n\nDear {{provider.contact}},\n\nPlease provide a complete copy of the medical records for {{client.fullName}} for all treatment dates related to the incident on {{client.incidentDate}}. Enclosed is a HIPAA authorization executed by our client.\n\nRecords may be sent via {{generator.delivery}}. If fees apply, please contact us at {{user.name}} – {{client.phone}}.\n\n{{workspace.signature}}\n\n{{workspace.footer}}`
+          },
+          {
+            id: createId(),
+            name: 'Cover Letter',
+            category: 'cover-letter',
+            subject: 'Cover Letter for Medical Packet',
+            body: `{{today}}\n\n{{provider.name}}\n{{provider.address}}\n{{provider.city}}, {{provider.state}} {{provider.zip}}\n\nPlease find enclosed the following for {{client.fullName}}:\n- HIPAA Authorization\n- Medical Records Request\n- Supporting incident documentation (if applicable)\n\n{{workspace.signature}}`
+          }
+        ];
+        const templates = ensureArray(safeStorage.get(STORAGE_KEYS.TEMPLATES, []));
+        templates.push(...samples);
+        safeStorage.set(STORAGE_KEYS.TEMPLATES, templates);
+        renderTemplates();
+        renderGeneratorSelectors();
+        updateNavStats();
+        showToast('Sample templates imported', `${samples.length} templates added`);
+      }
+
+      function authenticate(username, password) {
+        const users = ensureArray(safeStorage.get(STORAGE_KEYS.USERS, []));
+        const found = users.find(user => user.username === username && user.password === password);
+        if (found) {
+          setCurrentUser(found.username);
+          renderTeamList();
+          return found;
+        }
+        return null;
+      }
+
+      function registerUser({ username, password, name, email, role }) {
+        const users = ensureArray(safeStorage.get(STORAGE_KEYS.USERS, []));
+        if (users.some(user => user.username === username)) {
+          return { ok: false, message: 'Username already exists.' };
+        }
+        users.push({ username, password, name, email, role });
+        safeStorage.set(STORAGE_KEYS.USERS, users);
+        renderTeamList();
+        logActivity({ title: 'User registered', detail: `${username} (${role})` });
+        return { ok: true };
+      }
+
+      function recoverUsernames(email) {
+        const users = ensureArray(safeStorage.get(STORAGE_KEYS.USERS, []));
+        const matches = users.filter(user => (user.email || '').toLowerCase() === email.toLowerCase());
+        return matches.map(user => user.username);
+      }
+
+      function resetPassword(username, email, newPassword) {
+        const users = ensureArray(safeStorage.get(STORAGE_KEYS.USERS, []));
+        const match = users.find(user => user.username === username && (user.email || '').toLowerCase() === email.toLowerCase());
+        if (!match) return false;
+        match.password = newPassword;
+        safeStorage.set(STORAGE_KEYS.USERS, users);
+        logActivity({ title: 'Password reset', detail: username });
+        return true;
+      }
+
+      function showAppShell() {
+        $('#authOverlay').classList.add('hidden');
+        $('#appShell').classList.remove('hidden');
+        updateNavStats();
+        renderClientsTable();
+        renderProvidersTable();
+        renderTemplates();
+        renderGeneratorSelectors();
+        renderGeneratorPreviews();
+        renderActivity();
+        renderAuditTrail();
+        renderPlaceholderGuide();
+        loadSettings();
+        const user = getCurrentUser();
+        $('#viewTitle').textContent = 'Dashboard';
+        $('#viewSubtitle').textContent = 'Review status cards and latest activity.';
+        $('#activeUserBadge').textContent = user ? `Signed in as ${user.username} (${user.role})` : 'Signed in';
+        setView('dashboardView');
+      }
+
+      function showAuthOverlay() {
+        $('#authOverlay').classList.remove('hidden');
+        $('#appShell').classList.add('hidden');
+      }
+
+      ensureSeedUser();
+
+      const authState = getCurrentUser();
+      if (authState) {
+        showAppShell();
+      } else {
+        showAuthOverlay();
+      }
+
+      $$('.tab-button').forEach(button => {
+        button.addEventListener('click', () => {
+          const tab = button.dataset.tab;
+          $$('.tab-button').forEach(btn => btn.classList.toggle('active', btn === button));
+          $$('.tab-panel').forEach(panel => panel.classList.toggle('active', panel.id === `panel${tab.replace(/(^|-)\w/g, s => s.slice(-1).toUpperCase())}`));
+        });
+      });
+
+      $$('[data-switch]').forEach(button => {
+        button.addEventListener('click', () => {
+          const target = button.dataset.switch;
+          $(`.tab-button[data-tab="${target}"]`).click();
+        });
+      });
+
+      $('#loginSubmit').addEventListener('click', () => {
+        const username = $('#loginUsername').value.trim();
+        const password = $('#loginPassword').value;
+        const user = authenticate(username, password);
+        if (user) {
+          showToast('Welcome back', user.username);
+          logActivity({ title: 'User signed in', detail: user.username });
+          showAppShell();
+        } else {
+          $('#loginMessage').textContent = 'Invalid credentials. Try admin / admin if you are starting fresh.';
+        }
+      });
+
+      $('#registerSubmit').addEventListener('click', () => {
+        const payload = {
+          username: $('#registerUsername').value.trim(),
+          password: $('#registerPassword').value,
+          name: $('#registerName').value.trim(),
+          email: $('#registerEmail').value.trim(),
+          role: $('#registerRole').value
+        };
+        if (!payload.username || !payload.password) {
+          $('#registerMessage').textContent = 'Username and password required.';
+          return;
+        }
+        const result = registerUser(payload);
+        if (result.ok) {
+          $('#registerMessage').textContent = 'Account created. Sign in on the Sign In tab.';
+          showToast('Account created', payload.username);
+        } else {
+          $('#registerMessage').textContent = result.message;
+        }
+      });
+
+      $('#recoverUsernameBtn').addEventListener('click', () => {
+        const email = $('#recoverEmail').value.trim();
+        if (!email) {
+          $('#recoverMessage').textContent = 'Enter an email to search.';
+          return;
+        }
+        const matches = recoverUsernames(email);
+        if (matches.length === 0) {
+          $('#recoverMessage').textContent = 'No usernames found for that email.';
+        } else {
+          $('#recoverMessage').textContent = `Found usernames: ${matches.join(', ')}`;
+        }
+      });
+
+      $('#recoverPassword').addEventListener('click', () => {
+        const email = $('#recoverEmail').value.trim();
+        const username = $('#recoverUsername').value.trim();
+        if (!email || !username) {
+          $('#recoverMessage').textContent = 'Provide username and email to reset.';
+          return;
+        }
+        const newPassword = prompt('Enter a new password');
+        if (!newPassword) return;
+        const ok = resetPassword(username, email, newPassword);
+        $('#recoverMessage').textContent = ok ? 'Password reset. Sign in with your new password.' : 'No matching account found.';
+        if (ok) showToast('Password updated', username);
+      });
+
+      $('#logoutBtn').addEventListener('click', () => {
+        clearCurrentUser();
+        showToast('Signed out');
+        showAuthOverlay();
+      });
+
+      $$('.nav-button').forEach(button => {
+        button.addEventListener('click', () => {
+          setView(button.dataset.view);
+        });
+      });
+
+      $('#sidebarExport').addEventListener('click', renderAuditExport);
+
+      $('#quickClient').addEventListener('click', () => {
+        setView('clientsView');
+        $('#clientFormCard').hidden = false;
+      });
+      $('#quickProvider').addEventListener('click', () => {
+        setView('providersView');
+        $('#providerFormCard').hidden = false;
+      });
+      $('#quickTemplate').addEventListener('click', () => {
+        setView('templatesView');
+        $('#templateFormCard').hidden = false;
+      });
+      $('#quickGenerator').addEventListener('click', () => {
+        setView('generatorView');
+      });
+
+      $('#addClientBtn').addEventListener('click', () => {
+        resetClientForm();
+        $('#clientFormCard').hidden = false;
+      });
+
+      $('#cancelClient').addEventListener('click', resetClientForm);
+
+      $('#saveClient').addEventListener('click', () => {
+        const client = captureClientForm();
+        addClient(client);
+        resetClientForm();
+      });
+
+      $('#clientsTable').addEventListener('click', event => {
+        const action = event.target.dataset.action;
+        const id = event.target.dataset.id;
+        if (!action || !id) return;
+        const clients = ensureArray(safeStorage.get(STORAGE_KEYS.CLIENTS, []));
+        const client = clients.find(c => c.id === id);
+        if (action === 'edit' && client) {
+          populateClientForm(client);
+        }
+        if (action === 'delete') {
+          if (confirm('Delete this client?')) deleteClient(id);
+        }
+      });
+
+      $('#clientSearch').addEventListener('input', renderClientsTable);
+      $('#sampleClients').addEventListener('click', importSampleClients);
+
+      $('#addProviderBtn').addEventListener('click', () => {
+        resetProviderForm();
+        $('#providerFormCard').hidden = false;
+      });
+      $('#cancelProvider').addEventListener('click', resetProviderForm);
+      $('#saveProvider').addEventListener('click', () => {
+        const provider = captureProviderForm();
+        addProvider(provider);
+        resetProviderForm();
+      });
+      $('#providersTable').addEventListener('click', event => {
+        const action = event.target.dataset.action;
+        const id = event.target.dataset.id;
+        if (!action || !id) return;
+        const providers = ensureArray(safeStorage.get(STORAGE_KEYS.PROVIDERS, []));
+        const provider = providers.find(p => p.id === id);
+        if (action === 'edit' && provider) {
+          populateProviderForm(provider);
+        }
+        if (action === 'delete') {
+          if (confirm('Delete this provider?')) deleteProvider(id);
+        }
+      });
+      $('#providerSearch').addEventListener('input', renderProvidersTable);
+      $('#sampleProviders').addEventListener('click', importSampleProviders);
+
+      $('#addTemplateBtn').addEventListener('click', () => {
+        resetTemplateForm();
+        $('#templateFormCard').hidden = false;
+      });
+      $('#cancelTemplate').addEventListener('click', resetTemplateForm);
+      $('#saveTemplate').addEventListener('click', () => {
+        const template = captureTemplateForm();
+        addTemplate(template);
+        resetTemplateForm();
+      });
+      $('#templateList').addEventListener('click', event => {
+        const action = event.target.dataset.action;
+        const id = event.target.dataset.id || event.target.closest('.history-item')?.dataset.id;
+        if (!action || !id) return;
+        const templates = ensureArray(safeStorage.get(STORAGE_KEYS.TEMPLATES, []));
+        const template = templates.find(t => t.id === id);
+        if (action === 'edit' && template) {
+          populateTemplateForm(template);
+        }
+        if (action === 'delete') {
+          if (confirm('Delete this template?')) deleteTemplate(id);
+        }
+      });
+      $('#templateBody').addEventListener('input', () => {
+        const settings = { ...DEFAULT_SETTINGS, ...safeStorage.get(STORAGE_KEYS.SETTINGS, {}) };
+        if (settings.autoPreview) renderTemplatePreview();
+      });
+      $('#templateSubject').addEventListener('input', () => {
+        const settings = { ...DEFAULT_SETTINGS, ...safeStorage.get(STORAGE_KEYS.SETTINGS, {}) };
+        if (settings.autoPreview) renderTemplatePreview();
+      });
+      $('#sampleTemplates').addEventListener('click', importSampleTemplates);
+
+      $('#generatorClient').addEventListener('change', renderGeneratorPreviews);
+      $('#generatorProvider').addEventListener('change', renderGeneratorPreviews);
+      $('#generatorHipaa').addEventListener('change', renderGeneratorPreviews);
+      $('#generatorRequest').addEventListener('change', renderGeneratorPreviews);
+      $('#generatorCover').addEventListener('change', renderGeneratorPreviews);
+      $('#generatorRefresh').addEventListener('click', () => {
+        renderGeneratorSelectors();
+        renderGeneratorPreviews();
+      });
+      $('#generatePacket').addEventListener('click', generatePdfPacket);
+      $('#logDelivery').addEventListener('click', logGeneratorDelivery);
+
+      $('#auditExport').addEventListener('click', renderAuditExport);
+      $('#auditClear').addEventListener('click', () => {
+        if (!confirm('Clear audit log?')) return;
+        safeStorage.set(STORAGE_KEYS.ACTIVITY, []);
+        renderAuditTrail();
+        renderActivity();
+        showToast('Audit log cleared');
+      });
+      $('#saveSettings').addEventListener('click', saveSettings);
+      $('#exportWorkspace').addEventListener('click', renderAuditExport);
+      $('#resetWorkspace').addEventListener('click', () => {
+        if (!confirm('This will remove all data stored in this browser. Proceed?')) return;
+        Object.values(STORAGE_KEYS).forEach(key => safeStorage.remove(key));
+        ensureSeedUser();
+        clearCurrentUser();
+        showToast('Workspace reset');
+        location.reload();
+      });
+
+      $('#settingsLetterhead').addEventListener('change', event => {
+        const [file] = event.target.files;
+        if (file) handleLetterheadUpload(file);
+      });
+      $('#generatorDelivery').addEventListener('change', renderGeneratorPreviews);
+
+      renderActivity();
+      renderAuditTrail();
+      renderPlaceholderGuide();
+      renderTeamList();
+      renderGeneratorSelectors();
+      renderGeneratorPreviews();
+    });
+      </script>
+</body>
 </html>
