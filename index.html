@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-     <meta charset="UTF-8" />
+       <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Medical Correspondence Workspace</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -1043,7 +1043,7 @@
       <header>
         <div class="logo">MC</div>
         <div>
-                     <h2>Medical Correspondence</h2>
+                       <h2>Medical Correspondence</h2>
           <p>HIPAA &amp; records automation</p>
         </div>
       </header>
@@ -1066,7 +1066,7 @@
     <div class="main-panel">
       <div class="main-header">
         <div>
-           <!DOCTYPE html>
+             <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -2289,7 +2289,7 @@
             </div>
           </div>
         </section>
-               <section id="clientsView">
+                <section id="clientsView">
           <div class="card">
             <div class="card-header">
               <div>
@@ -2372,7 +2372,1333 @@
             </div>
           </div>
         </section>
-                <section id="providersView">
+        <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Blaszkow Legal PLLC – Records Request Portal</title>
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- PDF Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+
+<style>
+  body { font-family: ui-sans-serif, system-ui, -apple-system; }
+  .brand-red { color:#b91c1c; }
+  .brand-bg { background-color:#b91c1c; }
+  .brand-gray { background-color:#f3f4f6; }
+  .nav-btn { @apply text-white hover:bg-red-700 px-3 py-2 rounded-md cursor-pointer; }
+</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Medical Correspondence Workspace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" defer></script>
+  <style>
+    :root {
+      --bg: #eff4f9;
+      --surface: #ffffff;
+      --ink: #102a43;
+      --muted: #6b7b8c;
+      --accent: #0f9d58;
+      --accent-dark: #0b7d46;
+      --nav: #1c3d5a;
+      --danger: #c81e4d;
+      --border: #d7e3f4;
+      --radius-lg: 22px;
+      --radius-md: 14px;
+      --radius-sm: 8px;
+      --shadow: 0 24px 60px rgba(16, 42, 67, 0.16);
+      font-size: 16px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(12, 64, 98, 0.12), transparent 65%),
+        radial-gradient(circle at bottom right, rgba(15, 157, 88, 0.12), transparent 60%),
+        var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: var(--nav);
+      font-weight: 600;
+      margin: 0;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    a {
+      color: var(--accent);
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    .auth-overlay {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: rgba(9, 20, 35, 0.72);
+      backdrop-filter: blur(8px);
+      z-index: 10;
+      padding: 2rem;
+    }
+
+    .auth-overlay.hidden {
+      display: none;
+    }
+
+    .auth-modal {
+      width: min(900px, 96vw);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(255, 255, 255, 0.92));
+      border-radius: var(--radius-lg);
+      box-shadow: 0 40px 90px rgba(9, 20, 35, 0.35);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .auth-modal header {
+      padding: 2.6rem 3rem 2.2rem;
+      background: linear-gradient(140deg, rgba(28, 61, 90, 0.92), rgba(15, 157, 88, 0.85));
+      color: var(--surface);
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .auth-modal header h1 {
+      color: var(--surface);
+      font-size: 2rem;
+    }
+
+    .auth-modal header p {
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.55;
+      font-size: 1rem;
+      max-width: 540px;
+    }
+
+    .auth-intro-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.4rem;
+    }
+
+    .auth-intro-tags span {
+      background: rgba(255, 255, 255, 0.18);
+      color: #f8fbff;
+      padding: 0.35rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    .auth-body {
+      padding: 2.4rem 3rem 3rem;
+      display: grid;
+      gap: 1.8rem;
+    }
+
+    .tab-list {
+      display: flex;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-button {
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 999px;
+      font-weight: 600;
+      color: rgba(28, 61, 90, 0.78);
+      background: rgba(28, 61, 90, 0.08);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-button.active {
+      background: linear-gradient(135deg, var(--nav), var(--accent));
+      color: var(--surface);
+      box-shadow: 0 18px 32px rgba(15, 157, 88, 0.3);
+    }
+
+    .tab-panel {
+      display: none;
+      gap: 1.6rem;
+    }
+
+    .tab-panel.active {
+      display: grid;
+    }
+
+    .auth-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    label.field {
+      display: grid;
+      gap: 0.55rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    label.field span {
+      color: var(--ink);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    textarea,
+    select {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.7rem 0.8rem;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: inset 0 1px 2px rgba(16, 42, 67, 0.08);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(15, 157, 88, 0.18);
+    }
+
+    .auth-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 0.65rem 1.2rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .btn.small {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, var(--nav), var(--accent));
+      color: var(--surface);
+      box-shadow: 0 20px 36px rgba(16, 42, 67, 0.25);
+    }
+
+    .btn.primary:hover,
+    .btn.primary:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 28px 44px rgba(16, 42, 67, 0.28);
+    }
+
+    .btn.ghost {
+      background: rgba(28, 61, 90, 0.08);
+      color: var(--nav);
+    }
+
+    .btn.ghost:hover,
+    .btn.ghost:focus {
+      background: rgba(15, 157, 88, 0.12);
+    }
+
+    .btn.secondary {
+      background: rgba(16, 42, 67, 0.12);
+      color: var(--nav);
+    }
+
+    .btn.secondary:hover,
+    .btn.secondary:focus {
+      background: rgba(16, 42, 67, 0.2);
+    }
+
+    .btn.danger {
+      background: rgba(200, 30, 77, 0.16);
+      color: var(--danger);
+    }
+
+    .btn.danger:hover,
+    .btn.danger:focus {
+      background: rgba(200, 30, 77, 0.24);
+    }
+
+    .auth-note {
+      font-size: 0.9rem;
+      color: rgba(28, 61, 90, 0.72);
+      line-height: 1.55;
+    }
+
+    .field-group {
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    .signature-preview {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.78);
+      min-height: 96px;
+    }
+
+    .signature-preview img {
+      max-height: 80px;
+      width: auto;
+      border-radius: var(--radius-sm);
+      box-shadow: 0 8px 20px rgba(16, 42, 67, 0.18);
+      background: #fff;
+      padding: 0.25rem 0.35rem;
+    }
+
+    .signature-placeholder {
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .signature-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .field-note {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .app-shell {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2rem;
+      padding: 2.5rem 3rem 3rem;
+    }
+
+    .app-shell.hidden {
+      display: none;
+    }
+
+    .sidebar {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sidebar header {
+      background: linear-gradient(135deg, rgba(28, 61, 90, 0.95), rgba(16, 42, 67, 0.92));
+      padding: 2.1rem 2rem 1.8rem;
+      color: rgba(255, 255, 255, 0.92);
+      display: grid;
+      gap: 0.4rem;
+    }
+
+    .sidebar header .logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.2);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .sidebar header h2 {
+      color: #f8fbff;
+      font-size: 1.35rem;
+    }
+
+    .nav-list {
+      display: grid;
+      gap: 0.25rem;
+      padding: 1.2rem 0;
+    }
+
+    .nav-button {
+      border: none;
+      background: transparent;
+      padding: 0.85rem 1.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      color: rgba(28, 61, 90, 0.7);
+      cursor: pointer;
+      font-weight: 600;
+      text-align: left;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-button span.icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: rgba(15, 157, 88, 0.14);
+      display: grid;
+      place-items: center;
+      font-size: 0.95rem;
+      color: var(--nav);
+    }
+
+    .nav-button:hover,
+    .nav-button:focus {
+      background: rgba(15, 157, 88, 0.14);
+      color: var(--nav);
+      outline: none;
+    }
+
+    .nav-button.active {
+      background: linear-gradient(135deg, rgba(15, 157, 88, 0.85), rgba(28, 61, 90, 0.9));
+      color: var(--surface);
+      box-shadow: 0 16px 28px rgba(15, 157, 88, 0.25);
+    }
+
+    .nav-button.active span.icon {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+
+    .sidebar footer {
+      margin-top: auto;
+      padding: 1.4rem 1.8rem 2.1rem;
+      display: grid;
+      gap: 0.6rem;
+      border-top: 1px solid rgba(28, 61, 90, 0.08);
+    }
+
+    .sidebar footer strong {
+      color: var(--nav);
+      font-size: 0.95rem;
+    }
+
+    .sidebar footer p {
+      color: rgba(28, 61, 90, 0.72);
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    .main-panel {
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      padding: 2.5rem;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 2rem;
+      min-height: 0;
+    }
+
+    .main-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.4rem;
+    }
+
+    .main-header h1 {
+      font-size: 1.75rem;
+    }
+
+    .main-header > div > span {
+      color: var(--muted);
+    }
+
+    .main-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .user-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      background: rgba(59, 130, 246, 0.14);
+      color: var(--accent-strong);
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .view-panel {
+      overflow: auto;
+      padding-right: 0.25rem;
+      display: grid;
+    }
+
+    .view-panel section {
+      display: none;
+      gap: 1.8rem;
+    }
+
+    .view-panel section.active {
+      display: grid;
+      animation: fade-in 0.25s ease;
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(28, 61, 90, 0.08);
+      box-shadow: 0 18px 38px rgba(15, 23, 42, 0.08);
+      padding: 1.8rem;
+      display: grid;
+      gap: 1.4rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .card-header h3 {
+      font-size: 1.25rem;
+    }
+
+    .card-header p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .card-header .actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .status-card {
+      padding: 1.4rem;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, rgba(15, 157, 88, 0.12), rgba(28, 61, 90, 0.12));
+      border: 1px solid rgba(28, 61, 90, 0.1);
+      display: grid;
+      gap: 0.45rem;
+    }
+
+    .status-card span.label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(28, 61, 90, 0.7);
+    }
+
+    .status-card strong.value {
+      font-size: 2rem;
+      color: var(--nav);
+    }
+
+    .status-card small.meta {
+      color: rgba(28, 61, 90, 0.65);
+      font-size: 0.82rem;
+    }
+
+    .grid-two {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .grid-three {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.1rem;
+    }
+
+    .table-shell {
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(28, 61, 90, 0.1);
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+
+    thead {
+      background: rgba(28, 61, 90, 0.08);
+      color: var(--nav);
+    }
+
+    th,
+    td {
+      padding: 0.8rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(28, 61, 90, 0.08);
+    }
+
+    tbody tr:hover {
+      background: rgba(15, 157, 88, 0.08);
+    }
+
+    .table-actions {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 2.2rem 1.2rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .empty-state strong {
+      display: block;
+      color: var(--nav);
+      margin-bottom: 0.4rem;
+    }
+
+    .tag {
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(15, 157, 88, 0.14);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--nav);
+      letter-spacing: 0.03em;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 1.1rem;
+    }
+
+    .timeline-entry {
+      border: 1px dashed rgba(15, 157, 88, 0.4);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.2rem;
+      background: rgba(15, 157, 88, 0.06);
+      display: grid;
+      gap: 0.4rem;
+    }
+
+    .timeline-entry span.when {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(28, 61, 90, 0.6);
+    }
+
+    .timeline-entry strong.title {
+      font-size: 1rem;
+      color: var(--nav);
+    }
+
+    .timeline-entry p.detail {
+      font-size: 0.92rem;
+      color: rgba(28, 61, 90, 0.72);
+    }
+
+    .history-list {
+      display: grid;
+      gap: 0.8rem;
+      max-height: 340px;
+      overflow: auto;
+    }
+
+    .history-item {
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(28, 61, 90, 0.1);
+      padding: 0.9rem 1.1rem;
+      display: grid;
+      gap: 0.35rem;
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    .history-item span.when {
+      font-size: 0.78rem;
+      color: rgba(28, 61, 90, 0.65);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .history-item strong.what {
+      color: var(--nav);
+      font-size: 0.95rem;
+    }
+
+    .history-item p.summary {
+      color: rgba(28, 61, 90, 0.75);
+      font-size: 0.88rem;
+      margin: 0;
+    }
+
+    .search-input {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      background: rgba(28, 61, 90, 0.08);
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      color: rgba(28, 61, 90, 0.72);
+    }
+
+    .search-input input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 0.9rem;
+      min-width: 160px;
+    }
+
+    .template-preview,
+    .request-preview {
+      border: 1px solid rgba(28, 61, 90, 0.14);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.96);
+      padding: 1.1rem;
+      font-family: 'Georgia', 'Times New Roman', serif;
+      line-height: 1.6;
+      font-size: 0.95rem;
+      color: #202c3c;
+      max-height: 360px;
+      overflow: auto;
+      box-shadow: inset 0 1px 2px rgba(15, 157, 88, 0.1);
+    }
+
+    .pill-group {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+      background: rgba(28, 61, 90, 0.08);
+      font-size: 0.78rem;
+      color: rgba(28, 61, 90, 0.72);
+      letter-spacing: 0.02em;
+      font-weight: 600;
+    }
+
+    .file-slot {
+      background: rgba(16, 42, 67, 0.04);
+      border: 1px dashed rgba(148, 163, 184, 0.55);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .file-slot .field,
+    .file-slot label.field {
+      margin: 0;
+    }
+
+    .file-note {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .file-note strong {
+      font-weight: 600;
+      color: var(--nav);
+    }
+
+    .file-slot p {
+      margin: 0;
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .pdf-note {
+      margin-top: 0.75rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .template-help {
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    .template-help code {
+      background: rgba(28, 61, 90, 0.1);
+      padding: 0.25rem 0.55rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      color: rgba(28, 61, 90, 0.85);
+    }
+
+    .template-help li {
+      margin-left: 1.2rem;
+      color: rgba(28, 61, 90, 0.72);
+      line-height: 1.55;
+    }
+
+    .request-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.4rem;
+    }
+
+    .request-panel {
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(28, 61, 90, 0.08);
+      background: rgba(255, 255, 255, 0.92);
+      padding: 1.4rem;
+      display: grid;
+      gap: 0.85rem;
+    }
+
+    .request-panel header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .request-panel header span {
+      font-size: 0.82rem;
+      color: rgba(28, 61, 90, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .toast-stack {
+      position: fixed;
+      bottom: 2.2rem;
+      right: 2.2rem;
+      display: grid;
+      gap: 0.75rem;
+      z-index: 8;
+    }
+
+    .toast {
+      min-width: 240px;
+      max-width: 340px;
+      padding: 0.95rem 1.15rem;
+      border-radius: var(--radius-md);
+      background: rgba(15, 157, 88, 0.92);
+      color: #f8fbff;
+      box-shadow: 0 18px 36px rgba(15, 157, 88, 0.28);
+      display: grid;
+      gap: 0.4rem;
+      animation: toast-in 0.25s ease;
+    }
+
+    @keyframes toast-in {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .toast span.title {
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .toast p.detail {
+      margin: 0;
+      font-size: 0.82rem;
+    }
+
+    @media (max-width: 1100px) {
+      .app-shell {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 1.5rem;
+      }
+      .sidebar {
+        position: sticky;
+        top: 1.2rem;
+        z-index: 4;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .auth-body {
+        padding: 2rem;
+      }
+      .app-shell {
+        padding: 1rem;
+      }
+      .main-panel {
+        padding: 1.5rem;
+      }
+      .card {
+        padding: 1.2rem;
+      }
+      .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .main-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col brand-gray">
+
+<!-- ===== HEADER ===== -->
+<header class="brand-bg text-white p-4 flex justify-between items-center">
+  <h1 class="text-xl font-bold tracking-wide">
+    Blaszkow Legal PLLC
+  </h1>
+  <div id="userArea" class="text-sm"></div>
+</header>
+
+<!-- ===== MAIN LAYOUT ===== -->
+<main class="flex flex-1">
+  <!-- SIDEBAR -->
+  <nav class="bg-gray-800 w-56 text-white flex flex-col space-y-2 p-4">
+    <button class="nav-btn" onclick="showPage('dashboard')">Dashboard</button>
+    <button class="nav-btn" onclick="showPage('clients')">Clients</button>
+    <button class="nav-btn" onclick="showPage('providers')">Providers</button>
+    <button class="nav-btn" onclick="showPage('templates')">Templates</button>
+    <button class="nav-btn" onclick="showPage('settings')">Settings</button>
+  </nav>
+
+  <!-- CONTENT AREA -->
+  <section id="content" class="flex-1 p-6 overflow-y-auto bg-white">
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="page">
+      <h2 class="text-2xl font-bold mb-4 brand-red">Generate Correspondence</h2>
+      <p class="text-gray-700 mb-3">
+        Select a client and provider, then click “Generate PDF.”  (PDF logic added in Part 3.)
+      </p>
+
+      <div class="grid grid-cols-2 gap-4 mb-4">
+<body>
+  <div class="auth-overlay" id="authOverlay">
+    <div class="auth-modal">
+      <header>
+        <div class="logo" style="width:54px;height:54px;border-radius:16px;display:grid;place-items:center;background:rgba(255,255,255,0.2);font-weight:700;font-size:1.2rem;">MC</div>
+        <h1>Medical Correspondence Workspace</h1>
+        <p>
+          Streamline HIPAA releases and medical records requests. Maintain client and provider profiles, merge them into
+          correspondence templates, and export PDF packets in a single secure console inspired by our lost wage
+          calculator workflow.
+        </p>
+        <div class="auth-intro-tags">
+          <span>Seeded admin: admin / admin</span>
+          <span>Local-only authentication</span>
+          <span>HIPAA-compliant placeholders</span>
+        </div>
+      </header>
+      <div class="auth-body">
+        <div class="tab-list" role="tablist">
+          <button class="tab-button active" data-tab="sign-in" id="tabSignIn" aria-controls="panelSignIn" role="tab">Sign In</button>
+          <button class="tab-button" data-tab="register" id="tabRegister" aria-controls="panelRegister" role="tab">Create Account</button>
+          <button class="tab-button" data-tab="recover" id="tabRecover" aria-controls="panelRecover" role="tab">Recover Access</button>
+        </div>
+        <section class="tab-panel active" id="panelSignIn" role="tabpanel" aria-labelledby="tabSignIn">
+          <p class="auth-note">
+            Enter your credentials. Accounts are stored locally. Use the seeded administrator to configure your firm,
+            then invite teammates using the Create Account tab.
+          </p>
+          <div class="auth-grid">
+            <label class="field">
+              <span>Username</span>
+              <input type="text" id="loginUsername" autocomplete="username" placeholder="case.manager" />
+            </label>
+            <label class="field">
+              <span>Password</span>
+              <input type="password" id="loginPassword" autocomplete="current-password" placeholder="••••••••" />
+            </label>
+          </div>
+          <div class="auth-actions">
+            <button class="btn primary" id="loginSubmit">Enter Workspace</button>
+            <button class="btn ghost" data-switch="register">Need an account?</button>
+            <button class="btn ghost" data-switch="recover">Forgot username or password?</button>
+          </div>
+          <div class="auth-note" id="loginMessage"></div>
+        </section>
+        <section class="tab-panel" id="panelRegister" role="tabpanel" aria-labelledby="tabRegister">
+          <p class="auth-note">
+            Accounts created here stay within this browser. Administrators can promote roles from the Settings tab.
+            Provide an email for easier local recovery.
+          </p>
+          <div class="auth-grid">
+            <label class="field">
+              <span>Username</span>
+              <input type="text" id="registerUsername" placeholder="jdoe" />
+            </label>
+            <label class="field">
+              <span>Password</span>
+              <input type="password" id="registerPassword" placeholder="Choose a password" />
+            </label>
+            <label class="field">
+              <span>Full name</span>
+              <input type="text" id="registerName" placeholder="Jordan Doe" />
+            </label>
+            <label class="field">
+              <span>Email</span>
+              <input type="email" id="registerEmail" placeholder="team@practice.com" />
+            </label>
+            <label class="field">
+              <span>Role</span>
+              <select id="registerRole">
+                <option value="staff">Staff</option>
+                <option value="manager">Manager</option>
+                <option value="admin">Administrator</option>
+              </select>
+            </label>
+          </div>
+          <div class="auth-actions">
+            <button class="btn primary" id="registerSubmit">Create Account</button>
+            <button class="btn secondary" data-switch="sign-in">Back to Sign In</button>
+          </div>
+          <div class="auth-note" id="registerMessage"></div>
+        </section>
+        <section class="tab-panel" id="panelRecover" role="tabpanel" aria-labelledby="tabRecover">
+          <p class="auth-note">
+            Enter the email used during registration to list usernames available in this browser. For password resets we
+            need both username and email.
+          </p>
+          <div class="auth-grid">
+            <label class="field">
+              <span>Email</span>
+              <input type="email" id="recoverEmail" placeholder="team@practice.com" />
+            </label>
+            <label class="field">
+              <span>Username</span>
+              <input type="text" id="recoverUsername" placeholder="case.manager" />
+            </label>
+          </div>
+          <div class="auth-actions">
+            <button class="btn primary" id="recoverPassword">Reset Password</button>
+            <button class="btn secondary" id="recoverUsernameBtn">Recover Username(s)</button>
+            <button class="btn ghost" data-switch="sign-in">Back to Sign In</button>
+          </div>
+          <div class="auth-note" id="recoverMessage"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-stack" id="toastStack"></div>
+
+  <main class="app-shell hidden" id="appShell">
+    <aside class="sidebar">
+      <header>
+        <div class="logo">MC</div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Client</label>
+          <select id="dashClient" class="border p-2 w-full rounded"></select>
+          <h2>Medical Correspondence</h2>
+          <p>HIPAA &amp; records automation</p>
+        </div>
+      </header>
+      <div class="nav-list">
+        <button class="nav-button active" data-view="dashboardView"><span class="icon">🏠</span>Overview</button>
+        <button class="nav-button" data-view="clientsView"><span class="icon">🧑</span>Clients</button>
+        <button class="nav-button" data-view="providersView"><span class="icon">🏥</span>Providers</button>
+        <button class="nav-button" data-view="templatesView"><span class="icon">📝</span>Templates</button>
+        <button class="nav-button" data-view="generatorView"><span class="icon">📦</span>Generator</button>
+        <button class="nav-button" data-view="historyView"><span class="icon">🗂️</span>Audit Trail</button>
+        <button class="nav-button" data-view="settingsView"><span class="icon">⚙️</span>Settings</button>
+      </div>
+      <footer>
+        <strong>Workspace quick tips</strong>
+        <p>Use Templates to configure HIPAA and medical request documents. The Generator merges client/provider data into
+          ready-to-send packets.</p>
+        <button class="btn ghost" id="sidebarExport">Export data snapshot</button>
+      </footer>
+    </aside>
+    <div class="main-panel">
+      <div class="main-header">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Provider</label>
+          <select id="dashProvider" class="border p-2 w-full rounded"></select>
+          <h1 id="viewTitle">Dashboard</h1>
+          <span id="viewSubtitle">Review status cards and latest activity.</span>
+        </div>
+        <div class="main-header-actions">
+          <span class="user-badge" id="activeUserBadge">Signed in</span>
+          <button class="btn danger" id="logoutBtn">Sign Out</button>
+        </div>
+      </div>
+      <div class="view-panel">
+        <section id="dashboardView" class="active">
+          <div class="status-grid">
+            <div class="status-card">
+              <span class="label">Clients</span>
+              <strong class="value" id="statClients">0</strong>
+              <small class="meta">Profiles ready for HIPAA release generation.</small>
+            </div>
+            <div class="status-card">
+              <span class="label">Providers</span>
+              <strong class="value" id="statProviders">0</strong>
+              <small class="meta">Custodians, facilities, and contacts.</small>
+            </div>
+            <div class="status-card">
+              <span class="label">Templates</span>
+              <strong class="value" id="statTemplates">0</strong>
+              <small class="meta">HIPAA releases and medical requests.</small>
+            </div>
+            <div class="status-card">
+              <span class="label">Packets generated</span>
+              <strong class="value" id="statPackets">0</strong>
+              <small class="meta">Tracked locally for auditing.</small>
+            </div>
+          </div>
+          <div class="grid-two">
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3>Quick actions</h3>
+                  <p>Speed through intake tasks using single-click shortcuts.</p>
+                </div>
+              </div>
+              <div class="pill-group">
+                <button class="btn primary" id="quickClient">New client</button>
+                <button class="btn primary" id="quickProvider">New provider</button>
+                <button class="btn ghost" id="quickTemplate">New template</button>
+                <button class="btn ghost" id="quickGenerator">Generate packet</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3>Checklist</h3>
+                  <p>Reference our recommended flow to produce compliant packets.</p>
+                </div>
+              </div>
+              <div class="timeline">
+                <div class="timeline-entry">
+                  <span class="when">Step 1</span>
+                  <strong class="title">Collect client consent</strong>
+                  <p class="detail">Verify identity, gather DOB, and document authorization to release PHI.</p>
+                </div>
+                <div class="timeline-entry">
+                  <span class="when">Step 2</span>
+                  <strong class="title">Capture provider routing</strong>
+                  <p class="detail">Record custodians, fax numbers, and any account identifiers to match records.</p>
+                </div>
+                <div class="timeline-entry">
+                  <span class="when">Step 3</span>
+                  <strong class="title">Customize templates</strong>
+                  <p class="detail">Review letterhead, placeholder coverage, and firm signature details.</p>
+                </div>
+                <div class="timeline-entry">
+                  <span class="when">Step 4</span>
+                  <strong class="title">Generate and track</strong>
+                  <p class="detail">Merge data into HIPAA and request letters, then document delivery status.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="grid-two">
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3>Recent activity</h3>
+                  <p>Packet generations, profile edits, and template updates log here.</p>
+                </div>
+              </div>
+              <div class="history-list" id="activityList"></div>
+              <div class="empty-state" id="activityEmpty">No activity captured yet. Generate your first packet to seed
+                the log.</div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3>Placeholder reference</h3>
+                  <p>Use these merge tags in templates to insert client/provider data.</p>
+                </div>
+              </div>
+              <div class="history-list" id="placeholderGuide"></div>
+            </div>
+          </div>
+        </section>
+
+      <button id="generateBtn"
+        class="brand-bg text-white px-4 py-2 rounded shadow hover:bg-red-700 transition">
+        Generate Combined PDF
+      </button>
+    </div>
+        <section id="clientsView">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3>Clients</h3>
+                <p>Maintain patient/client details for HIPAA releases.</p>
+              </div>
+              <div class="actions">
+                <div class="search-input">🔍<input type="search" id="clientSearch" placeholder="Search clients" /></div>
+                <button class="btn primary" id="addClientBtn">Add client</button>
+                <button class="btn ghost" id="sampleClients">Sample data</button>
+              </div>
+            </div>
+            <div class="table-shell">
+              <table id="clientsTable">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>DOB</th>
+                    <th>Incident date</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+              <div class="empty-state" id="clientsEmpty">
+                <strong>No clients yet.</strong>
+                Add a client to unlock HIPAA generation.
+              </div>
+            </div>
+          </div>
+          <div class="card" id="clientFormCard" hidden>
+            <div class="card-header">
+              <div>
+                <h3 id="clientFormTitle">New client</h3>
+                <p>Complete intake details and consent tracking.</p>
+              </div>
+              <div class="actions">
+                <button class="btn ghost" id="cancelClient">Cancel</button>
+                <button class="btn primary" id="saveClient">Save client</button>
+              </div>
+            </div>
+            <div class="grid-three">
+              <label class="field"><span>First name</span><input type="text" id="clientFirstName" /></label>
+              <label class="field"><span>Middle name</span><input type="text" id="clientMiddleName" /></label>
+              <label class="field"><span>Last name</span><input type="text" id="clientLastName" /></label>
+              <label class="field"><span>Date of birth</span><input type="date" id="clientDob" /></label>
+              <label class="field"><span>Incident date</span><input type="date" id="clientIncident" /></label>
+              <label class="field"><span>SSN (last 4)</span><input type="text" id="clientSsn" maxlength="4" /></label>
+              <label class="field"><span>Phone</span><input type="tel" id="clientPhone" placeholder="(555) 123-4567" /></label>
+              <label class="field"><span>Email</span><input type="email" id="clientEmail" placeholder="client@domain.com" /></label>
+              <label class="field"><span>Preferred contact</span>
+                <select id="clientPreference">
+                  <option value="email">Email</option>
+                  <option value="phone">Phone</option>
+                  <option value="mail">Mail</option>
+                </select>
+              </label>
+            </div>
+            <div class="grid-three">
+              <label class="field"><span>Address line 1</span><input type="text" id="clientAddress1" /></label>
+              <label class="field"><span>Address line 2</span><input type="text" id="clientAddress2" /></label>
+              <label class="field"><span>City</span><input type="text" id="clientCity" /></label>
+              <label class="field"><span>State</span><input type="text" id="clientState" maxlength="2" /></label>
+              <label class="field"><span>ZIP</span><input type="text" id="clientZip" /></label>
+              <label class="field"><span>Emergency contact</span><input type="text" id="clientEmergency" /></label>
+            </div>
+            <label class="field"><span>Medical notes</span><textarea id="clientNotes" rows="6" placeholder="Diagnoses, treating providers, restrictions"></textarea></label>
+            <div class="field-group">
+              <label class="field"><span>Client signature</span><input type="file" id="clientSignatureUpload" accept="image/png, image/jpeg" /></label>
+              <input type="hidden" id="clientSignatureData" />
+              <div class="signature-preview" id="clientSignaturePreview">
+                <span class="signature-placeholder">No signature uploaded</span>
+              </div>
+              <div class="signature-actions">
+                <button type="button" class="btn ghost" id="clientSignatureClear" disabled>Remove signature</button>
+                <p class="field-note">PNG or JPG uploads remain in this browser and are applied to HIPAA releases automatically.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+    <!-- CLIENTS PAGE -->
+    <div id="clients" class="page hidden">
+      <h2 class="text-2xl font-bold mb-4 brand-red">Client Profiles</h2>
+      <form id="clientForm" class="space-y-2 mb-4">
+        <input type="text" id="cName" placeholder="Full Name" class="border p-2 w-full rounded" />
+        <input type="date" id="cDOB" class="border p-2 w-full rounded" />
+        <input type="text" id="cSSN" placeholder="SSN" class="border p-2 w-full rounded" />
+        <input type="date" id="cInjury" class="border p-2 w-full rounded" />
+        <button type="button" onclick="saveClient()"
+          class="brand-bg text-white px-4 py-2 rounded">Save Client</button>
+      </form>
+      <ul id="clientList" class="list-disc pl-6 text-gray-700"></ul>
+    </div>
+        <section id="providersView">
           <div class="card">
             <div class="card-header">
               <div>
@@ -2432,7 +3758,7 @@
             <label class="field"><span>Submission notes</span><textarea id="providerNotes" rows="6" placeholder="Preferred delivery, fees, additional docs"></textarea></label>
           </div>
         </section>
-               <section id="templatesView">
+                <section id="templatesView">
           <div class="card">
             <div class="card-header">
               <div>
@@ -2543,8 +3869,7 @@
             <div class="history-list" id="generatorWarnings"></div>
           </div>
         </section>
-
-        <section id="historyView">
+                <section id="historyView">
           <div class="card">
             <div class="card-header">
               <div>
@@ -2561,7 +3886,55 @@
               work.</div>
           </div>
         </section>
-        <!DOCTYPE html>
+
+        <section id="settingsView">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3>Workspace settings</h3>
+                <p>Customize firm identity, manage exports, and configure defaults.</p>
+              </div>
+            </div>
+            <div class="grid-two">
+              <label class="field"><span>Firm name</span><input type="text" id="settingsFirm" placeholder="Your Firm, PLLC" /></label>
+              <label class="field"><span>Default signature block</span><textarea id="settingsSignature" rows="6" placeholder="Sincerely,\n{{user.name}}\n{{workspace.firm}}\nPhone: ..."></textarea></label>
+            </div>
+            <div class="grid-two">
+              <label class="field"><span>Default footer</span><textarea id="settingsFooter" rows="4" placeholder="Enclosures: HIPAA Authorization"></textarea></label>
+              <label class="field"><span>Letterhead image</span><input type="file" id="settingsLetterhead" accept="image/png, image/jpeg" /></label>
+            </div>
+            <div class="grid-three">
+              <div class="file-slot" id="hipaaPdfSlot">
+                <label class="field"><span>HIPAA PDF template</span><input type="file" id="settingsHipaaPdf" accept="application/pdf" /></label>
+                <div class="file-note"><strong id="settingsHipaaPdfName">No PDF stored</strong><button class="btn ghost small" id="clearHipaaPdf">Remove</button></div>
+                <p>Upload the official HIPAA authorization PDF. Include form fields named after placeholders (e.g., <code>client.fullName</code>, <code>starting.DateofTreatment</code>) for precise placement.</p>
+              </div>
+              <div class="file-slot" id="requestPdfSlot">
+                <label class="field"><span>Medical request PDF template</span><input type="file" id="settingsRequestPdf" accept="application/pdf" /></label>
+                <div class="file-note"><strong id="settingsRequestPdfName">No PDF stored</strong><button class="btn ghost small" id="clearRequestPdf">Remove</button></div>
+                <p>Upload the exact medical records request letter PDF to preserve layout and branding. Fields matching placeholders are populated automatically.</p>
+              </div>
+              <div class="file-slot" id="coverPdfSlot">
+                <label class="field"><span>Cover letter PDF template</span><input type="file" id="settingsCoverPdf" accept="application/pdf" /></label>
+                <div class="file-note"><strong id="settingsCoverPdfName">Optional PDF</strong><button class="btn ghost small" id="clearCoverPdf">Remove</button></div>
+                <p>Optional cover letter PDF. If omitted, the text template renders instead.</p>
+              </div>
+            </div>
+            <div class="pill-group">
+              <label class="switch"><input type="checkbox" id="settingsAutoActivity" checked /><span class="slider"></span>Auto-log profile edits</label>
+              <label class="switch"><input type="checkbox" id="settingsAutoPreview" checked /><span class="slider"></span>Live template preview</label>
+            </div>
+            <div class="auth-actions">
+              <button class="btn primary" id="saveSettings">Save settings</button>
+              <button class="btn secondary" id="exportWorkspace">Export workspace</button>
+              <button class="btn danger" id="resetWorkspace">Reset workspace</button>
+            </div>
+            <div class="history-list" id="teamList"></div>
+          </div>
+        </section>
+      </div>
+    </div>
+       <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -4084,6 +5457,13 @@
           </div>
         </section>
 
+    <!-- ===== SETTINGS PAGE ===== -->
+    <div id="settings" class="page hidden">
+      <h2 class="text-2xl font-bold mb-4 brand-red">Settings & Account</h2>
+      <p class="text-gray-700 mb-3">Manage your account and clear local data.</p>
+      <div class="space-y-2">
+        <button class="brand-bg text-white px-4 py-2 rounded" onclick="logout()">Log Out</button>
+        <button class="bg-gray-600 text-white px-4 py-2 rounded" onclick="clearAll()">Clear All Local Data</button>
         <section id="historyView">
           <div class="card">
             <div class="card-header">
@@ -4102,13 +5482,6 @@
           </div>
         </section>
 
-    <!-- ===== SETTINGS PAGE ===== -->
-    <div id="settings" class="page hidden">
-      <h2 class="text-2xl font-bold mb-4 brand-red">Settings & Account</h2>
-      <p class="text-gray-700 mb-3">Manage your account and clear local data.</p>
-      <div class="space-y-2">
-        <button class="brand-bg text-white px-4 py-2 rounded" onclick="logout()">Log Out</button>
-        <button class="bg-gray-600 text-white px-4 py-2 rounded" onclick="clearAll()">Clear All Local Data</button>
         <section id="settingsView">
           <div class="card">
             <div class="card-header">
@@ -4156,7 +5529,144 @@
         </section>
       </div>
     </div>
-      </main>
+  </section>
+</main>
+
+<!-- ===== LOGIN / SIGNUP OVERLAY ===== -->
+<div id="authOverlay" class="fixed inset-0 bg-gray-100 flex items-center justify-center z-50">
+  <div class="bg-white p-8 rounded shadow-lg w-80 border border-gray-300">
+    <h2 id="authTitle" class="text-xl font-semibold mb-4 text-center brand-red">Login</h2>
+    <input type="email" id="authEmail" placeholder="Email" class="border p-2 w-full mb-2 rounded" />
+    <input type="password" id="authPass" placeholder="Password" class="border p-2 w-full mb-2 rounded" />
+    <button onclick="authAction()" class="brand-bg text-white px-4 py-2 rounded w-full">Login</button>
+    <p id="authToggle" class="text-center text-red-700 text-sm mt-3 cursor-pointer" onclick="toggleAuth()">Need an account? Sign up</p>
+  </div>
+</div>
+
+<!-- ===== JAVASCRIPT LOGIC ===== -->
+<script>
+let isSignup = false;
+
+/* ---------- AUTH ---------- */
+function toggleAuth(){
+  isSignup = !isSignup;
+  document.getElementById('authTitle').innerText = isSignup ? 'Sign Up' : 'Login';
+  document.querySelector('#authOverlay button').innerText = isSignup ? 'Sign Up' : 'Login';
+  document.getElementById('authToggle').innerText = isSignup
+    ? 'Already have an account? Login' : 'Need an account? Sign up';
+}
+
+function authAction(){
+  const email = authEmail.value.trim();
+  const pass  = authPass.value.trim();
+  if(!email || !pass) return alert('Enter email and password');
+  const users = JSON.parse(localStorage.getItem('users') || '{}');
+
+  if(isSignup){
+    if(users[email]) return alert('User exists');
+    users[email] = { password: pass };
+    localStorage.setItem('users', JSON.stringify(users));
+    alert('Account created');
+    toggleAuth();
+  } else {
+    if(!users[email] || users[email].password !== pass)
+      return alert('Invalid credentials');
+    localStorage.setItem('currentUser', email);
+    document.getElementById('authOverlay').classList.add('hidden');
+    userArea.innerText = email;
+  }
+}
+
+function logout(){
+  localStorage.removeItem('currentUser');
+  location.reload();
+}
+
+window.onload = ()=>{
+  const user = localStorage.getItem('currentUser');
+  if(user){
+    authOverlay.classList.add('hidden');
+    userArea.innerText = user;
+  }
+  renderClients();
+  renderProviders();
+};
+
+/* ---------- NAVIGATION ---------- */
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
+
+/* ---------- CLIENTS ---------- */
+function saveClient(){
+  const c = {
+    name: cName.value,
+    dob: cDOB.value,
+    ssn: cSSN.value,
+    inj: cInjury.value
+  };
+  if(!c.name) return alert('Enter client name');
+  let list = JSON.parse(localStorage.getItem('clients') || '[]');
+  list.push(c);
+  localStorage.setItem('clients', JSON.stringify(list));
+  cName.value = cDOB.value = cSSN.value = cInjury.value = '';
+  renderClients();
+}
+
+function renderClients(){
+  const ul = clientList;
+  ul.innerHTML = '';
+  const clients = JSON.parse(localStorage.getItem('clients') || '[]');
+  clients.forEach(c=>{
+    const li = document.createElement('li');
+    li.textContent = `${c.name} (DOB: ${c.dob})`;
+    ul.appendChild(li);
+  });
+  const select = dashClient;
+  if(select){
+    select.innerHTML = '<option value="">Select Client</option>';
+    clients.forEach((c,i)=>{
+      const opt = document.createElement('option');
+      opt.value = i; opt.textContent = c.name;
+      select.appendChild(opt);
+    });
+  }
+}
+
+/* ---------- PROVIDERS ---------- */
+function saveProvider(){
+  const p = {
+    name: pName.value,
+    address: pAddress.value,
+    fax: pFax.value,
+    email: pEmail.value
+  };
+  if(!p.name) return alert('Enter provider name');
+  let list = JSON.parse(localStorage.getItem('providers') || '[]');
+  list.push(p);
+  localStorage.setItem('providers', JSON.stringify(list));
+  pName.value = pAddress.value = pFax.value = pEmail.value = '';
+  renderProviders();
+}
+
+function renderProviders(){
+  const ul = provList;
+  ul.innerHTML = '';
+  const provs = JSON.parse(localStorage.getItem('providers') || '[]');
+  provs.forEach(p=>{
+    const li = document.createElement('li');
+    li.textContent = `${p.name} – ${p.address}`;
+    ul.appendChild(li);
+  });
+  const select = dashProvider;
+  if(select){
+    select.innerHTML = '<option value="">Select Provider</option>';
+    provs.forEach((p,i)=>{
+      const opt = document.createElement('option');
+      opt.value = i; opt.textContent = p.name;
+      select.appendChild(opt);
+  </main>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
@@ -4252,25 +5762,33 @@
         { key: '{{ending.DateofTreatment}}', description: 'Generator treatment end date' }
       ];
 
+      const memoryStore = new Map();
+
       const safeStorage = {
         get(key, fallback) {
           try {
             const raw = localStorage.getItem(key);
-            if (raw === null) return fallback;
-            const parsed = JSON.parse(raw);
-            if (parsed === null || parsed === undefined) return fallback;
-            return parsed;
+            if (raw !== null) {
+              const parsed = JSON.parse(raw);
+              return parsed === undefined ? fallback : parsed;
+            }
           } catch (err) {
             console.warn('Storage read failed', err);
-            return fallback;
           }
+          if (memoryStore.has(key)) {
+            return clone(memoryStore.get(key));
+          }
+          return fallback;
         },
         set(key, value) {
+          const serialized = JSON.stringify(value);
           try {
-            localStorage.setItem(key, JSON.stringify(value));
+            localStorage.setItem(key, serialized);
+            memoryStore.set(key, clone(value));
             return true;
           } catch (err) {
             console.warn('Storage write failed', err);
+            memoryStore.set(key, clone(value));
             return false;
           }
         },
@@ -4280,6 +5798,7 @@
           } catch (err) {
             console.warn('Storage remove failed', err);
           }
+          memoryStore.delete(key);
         }
       };
 
@@ -6217,6 +7736,6 @@
       renderGeneratorSelectors();
       renderGeneratorPreviews();
     });
-       </script>
+         </script>
 </body>
 </html>
