@@ -1,7 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-           <meta charset="UTF-8" />
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Blaszkow Legal PLLC – Records Request Portal</title>
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- PDF Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+
+<style>
+  body { font-family: ui-sans-serif, system-ui, -apple-system; }
+  .brand-red { color:#b91c1c; }
+  .brand-bg { background-color:#b91c1c; }
+  .brand-gray { background-color:#f3f4f6; }
+  .nav-btn { @apply text-white hover:bg-red-700 px-3 py-2 rounded-md cursor-pointer; }
+</style>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Medical Correspondence Workspace</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -1947,9 +1968,9 @@
             </label>
           </div>
           <div class="auth-actions">
-            <button class="btn primary" id="loginSubmit">Enter Workspace</button>
-            <button class="btn ghost" data-switch="register">Need an account?</button>
-            <button class="btn ghost" data-switch="recover">Forgot username or password?</button>
+            <button type="button" class="btn primary" id="loginSubmit">Enter Workspace</button>
+            <button type="button" class="btn ghost" data-switch="register">Need an account?</button>
+            <button type="button" class="btn ghost" data-switch="recover">Forgot username or password?</button>
           </div>
           <div class="auth-note" id="loginMessage"></div>
         </section>
@@ -1985,8 +2006,8 @@
             </label>
           </div>
           <div class="auth-actions">
-            <button class="btn primary" id="registerSubmit">Create Account</button>
-            <button class="btn secondary" data-switch="sign-in">Back to Sign In</button>
+            <button type="button" class="btn primary" id="registerSubmit">Create Account</button>
+            <button type="button" class="btn secondary" data-switch="sign-in">Back to Sign In</button>
           </div>
           <div class="auth-note" id="registerMessage"></div>
         </section>
@@ -2006,9 +2027,9 @@
             </label>
           </div>
           <div class="auth-actions">
-            <button class="btn primary" id="recoverPassword">Reset Password</button>
-            <button class="btn secondary" id="recoverUsernameBtn">Recover Username(s)</button>
-            <button class="btn ghost" data-switch="sign-in">Back to Sign In</button>
+            <button type="button" class="btn primary" id="recoverPassword">Reset Password</button>
+            <button type="button" class="btn secondary" id="recoverUsernameBtn">Recover Username(s)</button>
+            <button type="button" class="btn ghost" data-switch="sign-in">Back to Sign In</button>
           </div>
           <div class="auth-note" id="recoverMessage"></div>
         </section>
@@ -2023,7 +2044,7 @@
       <header>
         <div class="logo">MC</div>
         <div>
-                           <h2>Medical Correspondence</h2>
+                             <h2>Medical Correspondence</h2>
           <p>HIPAA &amp; records automation</p>
         </div>
       </header>
@@ -2046,7 +2067,7 @@
     <div class="main-panel">
       <div class="main-header">
         <div>
-                 <!DOCTYPE html>
+                   <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -3065,9 +3086,9 @@
             </label>
           </div>
           <div class="auth-actions">
-            <button class="btn primary" id="loginSubmit">Enter Workspace</button>
-            <button class="btn ghost" data-switch="register">Need an account?</button>
-            <button class="btn ghost" data-switch="recover">Forgot username or password?</button>
+            <button type="button" class="btn primary" id="loginSubmit">Enter Workspace</button>
+            <button type="button" class="btn ghost" data-switch="register">Need an account?</button>
+            <button type="button" class="btn ghost" data-switch="recover">Forgot username or password?</button>
           </div>
           <div class="auth-note" id="loginMessage"></div>
         </section>
@@ -3103,8 +3124,8 @@
             </label>
           </div>
           <div class="auth-actions">
-            <button class="btn primary" id="registerSubmit">Create Account</button>
-            <button class="btn secondary" data-switch="sign-in">Back to Sign In</button>
+            <button type="button" class="btn primary" id="registerSubmit">Create Account</button>
+            <button type="button" class="btn secondary" data-switch="sign-in">Back to Sign In</button>
           </div>
           <div class="auth-note" id="registerMessage"></div>
         </section>
@@ -3124,9 +3145,9 @@
             </label>
           </div>
           <div class="auth-actions">
-            <button class="btn primary" id="recoverPassword">Reset Password</button>
-            <button class="btn secondary" id="recoverUsernameBtn">Recover Username(s)</button>
-            <button class="btn ghost" data-switch="sign-in">Back to Sign In</button>
+            <button type="button" class="btn primary" id="recoverPassword">Reset Password</button>
+            <button type="button" class="btn secondary" id="recoverUsernameBtn">Recover Username(s)</button>
+            <button type="button" class="btn ghost" data-switch="sign-in">Back to Sign In</button>
           </div>
           <div class="auth-note" id="recoverMessage"></div>
         </section>
@@ -3269,7 +3290,7 @@
             </div>
           </div>
         </section>
-               <section id="clientsView">
+                <section id="clientsView">
           <div class="card">
             <div class="card-header">
               <div>
@@ -4371,9 +4392,9 @@
             </label>
           </div>
           <div class="auth-actions">
-            <button class="btn primary" id="loginSubmit">Enter Workspace</button>
-            <button class="btn ghost" data-switch="register">Need an account?</button>
-            <button class="btn ghost" data-switch="recover">Forgot username or password?</button>
+            <button type="button" class="btn primary" id="loginSubmit">Enter Workspace</button>
+            <button type="button" class="btn ghost" data-switch="register">Need an account?</button>
+            <button type="button" class="btn ghost" data-switch="recover">Forgot username or password?</button>
           </div>
           <div class="auth-note" id="loginMessage"></div>
         </section>
@@ -4409,8 +4430,8 @@
             </label>
           </div>
           <div class="auth-actions">
-            <button class="btn primary" id="registerSubmit">Create Account</button>
-            <button class="btn secondary" data-switch="sign-in">Back to Sign In</button>
+            <button type="button" class="btn primary" id="registerSubmit">Create Account</button>
+            <button type="button" class="btn secondary" data-switch="sign-in">Back to Sign In</button>
           </div>
           <div class="auth-note" id="registerMessage"></div>
         </section>
@@ -4430,9 +4451,9 @@
             </label>
           </div>
           <div class="auth-actions">
-            <button class="btn primary" id="recoverPassword">Reset Password</button>
-            <button class="btn secondary" id="recoverUsernameBtn">Recover Username(s)</button>
-            <button class="btn ghost" data-switch="sign-in">Back to Sign In</button>
+            <button type="button" class="btn primary" id="recoverPassword">Reset Password</button>
+            <button type="button" class="btn secondary" id="recoverUsernameBtn">Recover Username(s)</button>
+            <button type="button" class="btn ghost" data-switch="sign-in">Back to Sign In</button>
           </div>
           <div class="auth-note" id="recoverMessage"></div>
         </section>
@@ -4850,13 +4871,6 @@
           </div>
         </section>
 
-    <!-- ===== SETTINGS PAGE ===== -->
-    <div id="settings" class="page hidden">
-      <h2 class="text-2xl font-bold mb-4 brand-red">Settings & Account</h2>
-      <p class="text-gray-700 mb-3">Manage your account and clear local data.</p>
-      <div class="space-y-2">
-        <button class="brand-bg text-white px-4 py-2 rounded" onclick="logout()">Log Out</button>
-        <button class="bg-gray-600 text-white px-4 py-2 rounded" onclick="clearAll()">Clear All Local Data</button>
         <section id="historyView">
           <div class="card">
             <div class="card-header">
@@ -4874,55 +4888,7 @@
               work.</div>
           </div>
         </section>
-
-        <section id="settingsView">
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <h3>Workspace settings</h3>
-                <p>Customize firm identity, manage exports, and configure defaults.</p>
-              </div>
-            </div>
-            <div class="grid-two">
-              <label class="field"><span>Firm name</span><input type="text" id="settingsFirm" placeholder="Your Firm, PLLC" /></label>
-              <label class="field"><span>Default signature block</span><textarea id="settingsSignature" rows="6" placeholder="Sincerely,\n{{user.name}}\n{{workspace.firm}}\nPhone: ..."></textarea></label>
-            </div>
-            <div class="grid-two">
-              <label class="field"><span>Default footer</span><textarea id="settingsFooter" rows="4" placeholder="Enclosures: HIPAA Authorization"></textarea></label>
-              <label class="field"><span>Letterhead image</span><input type="file" id="settingsLetterhead" accept="image/png, image/jpeg" /></label>
-            </div>
-            <div class="grid-three">
-              <div class="file-slot" id="hipaaPdfSlot">
-                <label class="field"><span>HIPAA PDF template</span><input type="file" id="settingsHipaaPdf" accept="application/pdf" /></label>
-                <div class="file-note"><strong id="settingsHipaaPdfName">No PDF stored</strong><button class="btn ghost small" id="clearHipaaPdf">Remove</button></div>
-                <p>Upload the official HIPAA authorization PDF. Include form fields named after placeholders (e.g., <code>client.fullName</code>, <code>starting.DateofTreatment</code>) for precise placement.</p>
-              </div>
-              <div class="file-slot" id="requestPdfSlot">
-                <label class="field"><span>Medical request PDF template</span><input type="file" id="settingsRequestPdf" accept="application/pdf" /></label>
-                <div class="file-note"><strong id="settingsRequestPdfName">No PDF stored</strong><button class="btn ghost small" id="clearRequestPdf">Remove</button></div>
-                <p>Upload the exact medical records request letter PDF to preserve layout and branding. Fields matching placeholders are populated automatically.</p>
-              </div>
-              <div class="file-slot" id="coverPdfSlot">
-                <label class="field"><span>Cover letter PDF template</span><input type="file" id="settingsCoverPdf" accept="application/pdf" /></label>
-                <div class="file-note"><strong id="settingsCoverPdfName">Optional PDF</strong><button class="btn ghost small" id="clearCoverPdf">Remove</button></div>
-                <p>Optional cover letter PDF. If omitted, the text template renders instead.</p>
-              </div>
-            </div>
-            <div class="pill-group">
-              <label class="switch"><input type="checkbox" id="settingsAutoActivity" checked /><span class="slider"></span>Auto-log profile edits</label>
-              <label class="switch"><input type="checkbox" id="settingsAutoPreview" checked /><span class="slider"></span>Live template preview</label>
-            </div>
-            <div class="auth-actions">
-              <button class="btn primary" id="saveSettings">Save settings</button>
-              <button class="btn secondary" id="exportWorkspace">Export workspace</button>
-              <button class="btn danger" id="resetWorkspace">Reset workspace</button>
-            </div>
-            <div class="history-list" id="teamList"></div>
-          </div>
-        </section>
-      </div>
-    </div>
-    <!DOCTYPE html>
+        <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -5941,9 +5907,9 @@
             </label>
           </div>
           <div class="auth-actions">
-            <button class="btn primary" id="loginSubmit">Enter Workspace</button>
-            <button class="btn ghost" data-switch="register">Need an account?</button>
-            <button class="btn ghost" data-switch="recover">Forgot username or password?</button>
+            <button type="button" class="btn primary" id="loginSubmit">Enter Workspace</button>
+            <button type="button" class="btn ghost" data-switch="register">Need an account?</button>
+            <button type="button" class="btn ghost" data-switch="recover">Forgot username or password?</button>
           </div>
           <div class="auth-note" id="loginMessage"></div>
         </section>
@@ -5979,8 +5945,8 @@
             </label>
           </div>
           <div class="auth-actions">
-            <button class="btn primary" id="registerSubmit">Create Account</button>
-            <button class="btn secondary" data-switch="sign-in">Back to Sign In</button>
+            <button type="button" class="btn primary" id="registerSubmit">Create Account</button>
+            <button type="button" class="btn secondary" data-switch="sign-in">Back to Sign In</button>
           </div>
           <div class="auth-note" id="registerMessage"></div>
         </section>
@@ -6000,9 +5966,9 @@
             </label>
           </div>
           <div class="auth-actions">
-            <button class="btn primary" id="recoverPassword">Reset Password</button>
-            <button class="btn secondary" id="recoverUsernameBtn">Recover Username(s)</button>
-            <button class="btn ghost" data-switch="sign-in">Back to Sign In</button>
+            <button type="button" class="btn primary" id="recoverPassword">Reset Password</button>
+            <button type="button" class="btn secondary" id="recoverUsernameBtn">Recover Username(s)</button>
+            <button type="button" class="btn ghost" data-switch="sign-in">Back to Sign In</button>
           </div>
           <div class="auth-note" id="recoverMessage"></div>
         </section>
@@ -6445,13 +6411,6 @@
           </div>
         </section>
 
-    <!-- ===== SETTINGS PAGE ===== -->
-    <div id="settings" class="page hidden">
-      <h2 class="text-2xl font-bold mb-4 brand-red">Settings & Account</h2>
-      <p class="text-gray-700 mb-3">Manage your account and clear local data.</p>
-      <div class="space-y-2">
-        <button class="brand-bg text-white px-4 py-2 rounded" onclick="logout()">Log Out</button>
-        <button class="bg-gray-600 text-white px-4 py-2 rounded" onclick="clearAll()">Clear All Local Data</button>
         <section id="historyView">
           <div class="card">
             <div class="card-header">
@@ -6470,6 +6429,13 @@
           </div>
         </section>
 
+    <!-- ===== SETTINGS PAGE ===== -->
+    <div id="settings" class="page hidden">
+      <h2 class="text-2xl font-bold mb-4 brand-red">Settings & Account</h2>
+      <p class="text-gray-700 mb-3">Manage your account and clear local data.</p>
+      <div class="space-y-2">
+        <button class="brand-bg text-white px-4 py-2 rounded" onclick="logout()">Log Out</button>
+        <button class="bg-gray-600 text-white px-4 py-2 rounded" onclick="clearAll()">Clear All Local Data</button>
         <section id="settingsView">
           <div class="card">
             <div class="card-header">
@@ -6517,144 +6483,7 @@
         </section>
       </div>
     </div>
-  </section>
-</main>
-
-<!-- ===== LOGIN / SIGNUP OVERLAY ===== -->
-<div id="authOverlay" class="fixed inset-0 bg-gray-100 flex items-center justify-center z-50">
-  <div class="bg-white p-8 rounded shadow-lg w-80 border border-gray-300">
-    <h2 id="authTitle" class="text-xl font-semibold mb-4 text-center brand-red">Login</h2>
-    <input type="email" id="authEmail" placeholder="Email" class="border p-2 w-full mb-2 rounded" />
-    <input type="password" id="authPass" placeholder="Password" class="border p-2 w-full mb-2 rounded" />
-    <button onclick="authAction()" class="brand-bg text-white px-4 py-2 rounded w-full">Login</button>
-    <p id="authToggle" class="text-center text-red-700 text-sm mt-3 cursor-pointer" onclick="toggleAuth()">Need an account? Sign up</p>
-  </div>
-</div>
-
-<!-- ===== JAVASCRIPT LOGIC ===== -->
-<script>
-let isSignup = false;
-
-/* ---------- AUTH ---------- */
-function toggleAuth(){
-  isSignup = !isSignup;
-  document.getElementById('authTitle').innerText = isSignup ? 'Sign Up' : 'Login';
-  document.querySelector('#authOverlay button').innerText = isSignup ? 'Sign Up' : 'Login';
-  document.getElementById('authToggle').innerText = isSignup
-    ? 'Already have an account? Login' : 'Need an account? Sign up';
-}
-
-function authAction(){
-  const email = authEmail.value.trim();
-  const pass  = authPass.value.trim();
-  if(!email || !pass) return alert('Enter email and password');
-  const users = JSON.parse(localStorage.getItem('users') || '{}');
-
-  if(isSignup){
-    if(users[email]) return alert('User exists');
-    users[email] = { password: pass };
-    localStorage.setItem('users', JSON.stringify(users));
-    alert('Account created');
-    toggleAuth();
-  } else {
-    if(!users[email] || users[email].password !== pass)
-      return alert('Invalid credentials');
-    localStorage.setItem('currentUser', email);
-    document.getElementById('authOverlay').classList.add('hidden');
-    userArea.innerText = email;
-  }
-}
-
-function logout(){
-  localStorage.removeItem('currentUser');
-  location.reload();
-}
-
-window.onload = ()=>{
-  const user = localStorage.getItem('currentUser');
-  if(user){
-    authOverlay.classList.add('hidden');
-    userArea.innerText = user;
-  }
-  renderClients();
-  renderProviders();
-};
-
-/* ---------- NAVIGATION ---------- */
-function showPage(id){
-  document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
-  document.getElementById(id).classList.remove('hidden');
-}
-
-/* ---------- CLIENTS ---------- */
-function saveClient(){
-  const c = {
-    name: cName.value,
-    dob: cDOB.value,
-    ssn: cSSN.value,
-    inj: cInjury.value
-  };
-  if(!c.name) return alert('Enter client name');
-  let list = JSON.parse(localStorage.getItem('clients') || '[]');
-  list.push(c);
-  localStorage.setItem('clients', JSON.stringify(list));
-  cName.value = cDOB.value = cSSN.value = cInjury.value = '';
-  renderClients();
-}
-
-function renderClients(){
-  const ul = clientList;
-  ul.innerHTML = '';
-  const clients = JSON.parse(localStorage.getItem('clients') || '[]');
-  clients.forEach(c=>{
-    const li = document.createElement('li');
-    li.textContent = `${c.name} (DOB: ${c.dob})`;
-    ul.appendChild(li);
-  });
-  const select = dashClient;
-  if(select){
-    select.innerHTML = '<option value="">Select Client</option>';
-    clients.forEach((c,i)=>{
-      const opt = document.createElement('option');
-      opt.value = i; opt.textContent = c.name;
-      select.appendChild(opt);
-    });
-  }
-}
-
-/* ---------- PROVIDERS ---------- */
-function saveProvider(){
-  const p = {
-    name: pName.value,
-    address: pAddress.value,
-    fax: pFax.value,
-    email: pEmail.value
-  };
-  if(!p.name) return alert('Enter provider name');
-  let list = JSON.parse(localStorage.getItem('providers') || '[]');
-  list.push(p);
-  localStorage.setItem('providers', JSON.stringify(list));
-  pName.value = pAddress.value = pFax.value = pEmail.value = '';
-  renderProviders();
-}
-
-function renderProviders(){
-  const ul = provList;
-  ul.innerHTML = '';
-  const provs = JSON.parse(localStorage.getItem('providers') || '[]');
-  provs.forEach(p=>{
-    const li = document.createElement('li');
-    li.textContent = `${p.name} – ${p.address}`;
-    ul.appendChild(li);
-  });
-  const select = dashProvider;
-  if(select){
-    select.innerHTML = '<option value="">Select Provider</option>';
-    provs.forEach((p,i)=>{
-      const opt = document.createElement('option');
-      opt.value = i; opt.textContent = p.name;
-      select.appendChild(opt);
-  </main>
+      </main>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
@@ -6906,6 +6735,10 @@ function renderProviders(){
         return value;
       }
 
+      function canonicalUsername(value) {
+        return (value == null ? '' : String(value)).trim().toLowerCase();
+      }
+
       function mergeAddress(record) {
         const parts = [record.address1, record.address2, record.city, record.state, record.zip]
           .map(part => part || '')
@@ -6939,11 +6772,20 @@ function renderProviders(){
         if (!auth) return null;
         ensureSeedUser();
         const users = getUserStore();
-        return users.find(u => u.username === auth.username) || null;
+        const target = canonicalUsername(auth.canonical || auth.username);
+        if (!target) return null;
+        return (
+          users.find(user => canonicalUsername(user.username) === target) ||
+          null
+        );
       }
 
       function setCurrentUser(username) {
-        safeStorage.set(STORAGE_KEYS.AUTH, { username });
+        const trimmed = (username == null ? '' : String(username)).trim();
+        safeStorage.set(STORAGE_KEYS.AUTH, {
+          username: trimmed,
+          canonical: canonicalUsername(trimmed)
+        });
       }
 
       function clearCurrentUser() {
@@ -6952,15 +6794,21 @@ function renderProviders(){
 
       function ensureSeedUser() {
         const existing = ensureArray(safeStorage.get(STORAGE_KEYS.USERS, []));
+        const canonicalMap = new Map();
         let mutated = false;
-        const sanitized = [];
+
         existing.forEach(user => {
-          if (!user || typeof user.username !== 'string' || typeof user.password !== 'string') {
+          if (!user || typeof user.password !== 'string') {
+            mutated = true;
+            return;
+          }
+          const usernameCanonical = canonicalUsername(user.username);
+          if (!usernameCanonical) {
             mutated = true;
             return;
           }
           const normalized = {
-            username: user.username.trim(),
+            username: (user.username || '').trim() || usernameCanonical,
             password: String(user.password),
             name: (user.name || '').trim(),
             email: (user.email || '').trim(),
@@ -6975,10 +6823,16 @@ function renderProviders(){
           ) {
             mutated = true;
           }
-          sanitized.push(normalized);
+          if (canonicalMap.has(usernameCanonical)) {
+            mutated = true;
+          }
+          if (!canonicalMap.has(usernameCanonical)) {
+            canonicalMap.set(usernameCanonical, normalized);
+          }
         });
-        if (!sanitized.some(user => user.username === 'admin')) {
-          sanitized.push({
+
+        if (!canonicalMap.has('admin')) {
+          canonicalMap.set('admin', {
             username: 'admin',
             password: 'admin',
             name: 'Administrator',
@@ -6987,6 +6841,8 @@ function renderProviders(){
           });
           mutated = true;
         }
+
+        const sanitized = Array.from(canonicalMap.values());
         if (mutated || sanitized.length !== existing.length) {
           safeStorage.set(STORAGE_KEYS.USERS, sanitized);
         }
@@ -6994,13 +6850,20 @@ function renderProviders(){
 
       function getUserStore() {
         const users = ensureArray(safeStorage.get(STORAGE_KEYS.USERS, []));
-        return users.map(user => ({
-          username: user && typeof user.username === 'string' ? user.username.trim() : '',
-          password: user && typeof user.password === 'string' ? user.password : '',
-          name: user && typeof user.name === 'string' ? user.name : '',
-          email: user && typeof user.email === 'string' ? user.email : '',
-          role: user && typeof user.role === 'string' ? user.role : 'staff'
-        }));
+        const canonicalMap = new Map();
+        users.forEach(user => {
+          const canonical = canonicalUsername(user && user.username);
+          if (!canonical) return;
+          if (canonicalMap.has(canonical)) return;
+          canonicalMap.set(canonical, {
+            username: (user && typeof user.username === 'string' ? user.username : canonical).trim(),
+            password: user && typeof user.password === 'string' ? String(user.password) : '',
+            name: user && typeof user.name === 'string' ? user.name : '',
+            email: user && typeof user.email === 'string' ? user.email : '',
+            role: user && typeof user.role === 'string' ? user.role : 'staff'
+          });
+        });
+        return Array.from(canonicalMap.values());
       }
 
       function renderPlaceholderGuide() {
@@ -8497,11 +8360,20 @@ function renderProviders(){
 
       function authenticate(username, password) {
         ensureSeedUser();
+        const attempt = canonicalUsername(username);
+        if (!attempt || !password) {
+          return null;
+        }
         const users = getUserStore();
-        const found = users.find(user => user.username === username && user.password === password);
+        const found = users.find(
+          user =>
+            canonicalUsername(user.username) === attempt &&
+            String(user.password) === String(password)
+        );
         if (found) {
           setCurrentUser(found.username);
           renderTeamList();
+          $('#loginMessage').textContent = '';
           return found;
         }
         return null;
@@ -8510,11 +8382,15 @@ function renderProviders(){
       function registerUser({ username, password, name, email, role }) {
         ensureSeedUser();
         const users = getUserStore();
-        if (users.some(user => user.username === username)) {
+        const desired = canonicalUsername(username);
+        if (!desired) {
+          return { ok: false, message: 'Username required.' };
+        }
+        if (users.some(user => canonicalUsername(user.username) === desired)) {
           return { ok: false, message: 'Username already exists.' };
         }
         const newUser = {
-          username,
+          username: (username || '').trim(),
           password: String(password),
           name: name || '',
           email: email || '',
@@ -8537,7 +8413,12 @@ function renderProviders(){
       function resetPassword(username, email, newPassword) {
         ensureSeedUser();
         const users = getUserStore();
-        const match = users.find(user => user.username === username && (user.email || '').toLowerCase() === email.toLowerCase());
+        const canonical = canonicalUsername(username);
+        const match = users.find(
+          user =>
+            canonicalUsername(user.username) === canonical &&
+            (user.email || '').toLowerCase() === email.toLowerCase()
+        );
         if (!match) return false;
         match.password = newPassword;
         safeStorage.set(STORAGE_KEYS.USERS, users);
@@ -8617,6 +8498,10 @@ function renderProviders(){
         }
         const username = $('#loginUsername').value.trim();
         const password = $('#loginPassword').value;
+        if (!username || !password) {
+          $('#loginMessage').textContent = 'Enter both username and password.';
+          return;
+        }
         const user = authenticate(username, password);
         if (user) {
           showToast('Welcome back', user.username);
@@ -8902,6 +8787,6 @@ function renderProviders(){
       renderGeneratorSelectors();
       renderGeneratorPreviews();
     });
-             </script>
+               </script>
 </body>
 </html>
